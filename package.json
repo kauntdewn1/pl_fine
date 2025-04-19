@@ -10,13 +10,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@solana/web3.js": "^1.91.1",
-    "@supabase/supabase-js": "^2.39.7",
     "@stripe/stripe-js": "^3.0.7",
+    "@supabase/supabase-js": "^2.49.4",
+    "grammy": "^1.21.1",
     "lucide-react": "^0.344.0",
     "qrcode": "^1.5.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-hot-toast": "^2.4.1",
     "react-router-dom": "^6.22.3",
     "zustand": "^4.5.2"
   },

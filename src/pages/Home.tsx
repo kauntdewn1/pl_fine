@@ -4,9 +4,9 @@ import { Crown, Lock } from 'lucide-react';
 
 export default function Home() {
   return (
-    <div>
+    <div className="min-h-screen bg-background">
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center">
+      <section className="relative min-h-[60vh] flex items-center">
         <div className="absolute inset-0 z-0">
           <img
             src="https://res.cloudinary.com/dt9m3pkjv/image/upload/v1743376994/PAULA/s6otfqus8lez0uz1acmg.png"
@@ -18,22 +18,12 @@ export default function Home() {
         
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-2xl">
-            <h2 className="text-2xl md:text-3xl font-light mb-2 text-white/90">
-              Paula Azevedo
-            </h2>
             <h1 className="text-4xl md:text-6xl font-bold mb-6 text-white">
-              Conteúdo Adulto Exclusivo +18
+              Conteúdo Exclusivo
             </h1>
-            <p className="text-xl text-white/90 mb-8 font-light">
-              Descubra meu universo íntimo com elegância, mistério e qualidade profissional.
+            <p className="text-xl text-white/90 mb-8">
+              Acesso a fotos e vídeos exclusivos
             </p>
-            <Link
-              to="/planos"
-              className="bg-accent hover:bg-accent-light px-8 py-3 rounded-full flex items-center gap-2 text-lg font-medium transition-colors w-fit text-white shadow-lg shadow-accent/20"
-            >
-              <Crown size={20} />
-              <span>Quero meu acesso exclusivo</span>
-            </Link>
           </div>
         </div>
       </section>
@@ -78,7 +68,6 @@ export default function Home() {
       {/* Plans Section */}
       <section className="py-20">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-12">Escolha seu plano</h2>
           <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             {/* Basic Plan */}
             <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-xl">
@@ -105,12 +94,14 @@ export default function Home() {
                   1 vez por semana faço novas :)
                 </li>
               </ul>
-              <Link
-                to="/login"
-                className="block text-center bg-accent hover:bg-accent-light text-white px-6 py-3 rounded-full transition-colors shadow-lg shadow-accent/20"
+              <a
+                href="https://paulaazevedo.gumroad.com/l/basiquinha"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full inline-flex justify-center items-center px-6 py-3 border border-transparent text-base font-medium rounded-full text-white bg-accent hover:bg-accent-dark transition-colors shadow-lg shadow-accent/20"
               >
-                Assinar Básico
-              </Link>
+                Assinar Plano Básico
+              </a>
             </div>
 
             {/* VIP Plan */}
@@ -126,21 +117,26 @@ export default function Home() {
               </div>
               <ul className="space-y-3 mb-8">
                 <li className="flex items-center gap-2">
+                  <span className="text-accent">✓</span>
                   Assinatura mensal para acesso a conteúdo adulto artístico
                 </li>
                 <li className="flex items-center gap-2">
+                  <span className="text-accent">✓</span>
                   Acesso imediato às minhas fotos e vídeos
                 </li>
                 <li className="flex items-center gap-2">
+                  <span className="text-accent">✓</span>
                   1 vez por semana farei com carinho mais fotos e vídeos :)
                 </li>
               </ul>
-              <Link
-                to="/login"
-                className="block text-center bg-accent hover:bg-accent-light text-white px-6 py-3 rounded-full transition-colors shadow-lg shadow-accent/20"
+              <a
+                href="https://paulaazevedo.gumroad.com/l/vip"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full inline-flex justify-center items-center px-6 py-3 border border-transparent text-base font-medium rounded-full text-white bg-accent hover:bg-accent-dark transition-colors shadow-lg shadow-accent/20"
               >
-                Assinar VIP
-              </Link>
+                Assinar Plano VIP
+              </a>
             </div>
           </div>
         </div>

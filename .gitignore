@@ -1,42 +1,66 @@
+# Dependencies
+node_modules/
+.pnp/
+.pnp.js
+
+# Testing
+coverage/
+
+# Production
+build/
+dist/
+
+# Misc
+.DS_Store
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
 # Logs
-logs
-*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
-
-# Dependencies
-node_modules
-dist
-dist-ssr
-*.local
-
-# Environment variables
-.env
-.env.local
-.env.development
-.env.production
 
 # Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
-.DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
+.idea/
+.vscode/
+*.swp
+*.swo
 
-# Supabase
-supabase/.temp
-supabase/.wrangler
-supabase/functions/.env
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Torch
+torch/
+*.pyd
+*.lib
+*.dll
+*.exe
+
+# Logs
+logs
+*.log
+pnpm-debug.log*
+lerna-debug.log*
 
 # Build files
 *.buildinfo
 *.pid
 *.seed
 *.pid.lock
+
+# Supabase
+supabase/.temp
+supabase/.wrangler
+supabase/functions/.env

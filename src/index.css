@@ -1,3 +1,28 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  --background: #0f172a;
+  --card: #1e293b;
+  --text: #f8fafc;
+  --accent: #ec4899;
+  --accent-dark: #be185d;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--text);
+}
+
+.btn-pagamento {
+  background-color: var(--accent);
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.btn-pagamento:hover {
+  background-color: var(--accent-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}

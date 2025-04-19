@@ -1,113 +1,93 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Crown } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { GUMROAD_PRODUCTS } from '../lib/gumroad';
 
 export default function Plans() {
-  const navigate = useNavigate();
+  const [email, setEmail] = useState('');
+  const [showEmailInput, setShowEmailInput] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState<'basico' | 'vip' | null>(null);
 
-  const handlePlanSelection = (plan: 'basico' | 'vip') => {
-    navigate(`/pagamento-solana?plano=${plan}`);
+  const handlePlanClick = (plan: 'basico' | 'vip') => {
+    setSelectedPlan(plan);
+    setShowEmailInput(true);
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email || !selectedPlan) return;
+
+    const product = GUMROAD_PRODUCTS[selectedPlan];
+    const redirectUrl = `${window.location.origin}/confirmacao?email=${encodeURIComponent(email)}&plano=${selectedPlan}`;
+    const gumroadUrl = `${product.url}?wanted=true&email=${encodeURIComponent(email)}&redirect_url=${encodeURIComponent(redirectUrl)}`;
+    
+    window.location.href = gumroadUrl;
   };
 
   return (
-    <div>
-      {/* Hero Section */}
-      <section className="relative min-h-[40vh] flex items-center">
-        <div className="absolute inset-0 z-0">
-          <img
-            src="https://res.cloudinary.com/dt9m3pkjv/image/upload/v1743376994/PAULA/s6otfqus8lez0uz1acmg.png"
-            alt="Paula Azevedo"
-            className="w-full h-full object-cover object-center"
-          />
-          <div className="absolute inset-0 bg-black/40"></div>
+    <div className="min-h-screen bg-background py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto">
+        <div className="text-center">
+          <h1 className="text-4xl font-bold text-text mb-8">Planos Disponíveis</h1>
         </div>
-        
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-2xl">
-            <h2 className="text-2xl md:text-3xl font-light mb-2 text-white/90">
-              Planos Exclusivos
-            </h2>
-            <h1 className="text-4xl md:text-6xl font-bold mb-6 text-white">
-              Escolha seu Acesso VIP
-            </h1>
-            <p className="text-xl text-white/90 mb-8 font-light">
-              Conteúdo exclusivo e diferenciado para você.
-            </p>
-          </div>
-        </div>
-      </section>
 
-      <section className="py-20">
-        <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            {/* Basic Plan */}
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-xl">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 bg-accent/10 rounded-full flex items-center justify-center">
-                  <Crown className="text-accent" size={24} />
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold">Plano Básico</h3>
-                  <p className="text-accent">R$29,90/mês</p>
-                </div>
-              </div>
-              <ul className="space-y-3 mb-8">
-                <li className="flex items-center gap-2">
-                  <span className="text-accent">✓</span>
-                  Assinatura mensal para acesso a conteúdo adulto artístico
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="text-accent">✓</span>
-                  Acesso imediato às minhas fotos
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="text-accent">✓</span>
-                  1 vez por semana faço novas :)
-                </li>
-              </ul>
+        {showEmailInput ? (
+          <div className="max-w-md mx-auto">
+            <form onSubmit={handleSubmit} className="bg-card rounded-lg shadow-lg p-8">
+              <h2 className="text-2xl font-bold text-text mb-4">Quase lá!</h2>
+              <p className="text-text/80 mb-6">Digite seu email para continuar com a compra do plano {selectedPlan === 'vip' ? 'VIP' : 'Básico'}:</p>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Seu melhor email"
+                className="w-full px-4 py-2 rounded-md border border-gray-300 mb-4"
+                required
+              />
               <button
-                onClick={() => handlePlanSelection('basico')}
-                className="w-full bg-accent hover:bg-accent-light text-white px-6 py-3 rounded-full transition-colors shadow-lg shadow-accent/20"
+                type="submit"
+                className="w-full bg-accent text-white py-3 px-4 rounded-md hover:bg-accent/90 transition-colors"
               >
-                Pagar com Solana
+                Continuar para o pagamento
+              </button>
+              <button
+                type="button"
+                onClick={() => setShowEmailInput(false)}
+                className="w-full mt-2 text-text/60 hover:text-text"
+              >
+                Voltar
+              </button>
+            </form>
+          </div>
+        ) : (
+          <div className="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-2">
+            {/* Plano Básico */}
+            <div className="bg-card rounded-lg shadow-lg p-8">
+              <h2 className="text-2xl font-bold text-text mb-4">Plano Básico</h2>
+              <p className="text-text mb-6">Acesso ao conteúdo básico</p>
+              <div className="text-3xl font-bold text-accent mb-6">R${GUMROAD_PRODUCTS.basico.price}</div>
+              <button
+                onClick={() => handlePlanClick('basico')}
+                className="w-full bg-accent text-white py-3 px-4 rounded-md hover:bg-accent/90 transition-colors"
+              >
+                Assinar Plano Básico
               </button>
             </div>
 
-            {/* VIP Plan */}
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-xl border-2 border-accent">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 bg-accent/10 rounded-full flex items-center justify-center">
-                  <Crown className="text-accent" size={24} />
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold">Plano VIP</h3>
-                  <p className="text-accent">R$59,90/mês</p>
-                </div>
-              </div>
-              <ul className="space-y-3 mb-8">
-                <li className="flex items-center gap-2">
-                  <span className="text-accent">✓</span>
-                  Assinatura mensal para acesso a conteúdo adulto artístico
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="text-accent">✓</span>
-                  Acesso imediato às minhas fotos e vídeos
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="text-accent">✓</span>
-                  1 vez por semana farei com carinho mais fotos e vídeos :)
-                </li>
-              </ul>
+            {/* Plano VIP */}
+            <div className="bg-card rounded-lg shadow-lg p-8">
+              <h2 className="text-2xl font-bold text-text mb-4">Plano VIP</h2>
+              <p className="text-text mb-6">Acesso ao conteúdo exclusivo VIP</p>
+              <div className="text-3xl font-bold text-accent mb-6">R${GUMROAD_PRODUCTS.vip.price}</div>
               <button
-                onClick={() => handlePlanSelection('vip')}
-                className="w-full bg-accent hover:bg-accent-light text-white px-6 py-3 rounded-full transition-colors shadow-lg shadow-accent/20"
+                onClick={() => handlePlanClick('vip')}
+                className="w-full bg-accent text-white py-3 px-4 rounded-md hover:bg-accent/90 transition-colors"
               >
-                Pagar com Solana
+                Assinar Plano VIP
               </button>
             </div>
           </div>
-        </div>
-      </section>
+        )}
+      </div>
     </div>
   );
 }

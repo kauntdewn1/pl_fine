@@ -3,26 +3,26 @@ import { Shield } from 'lucide-react';
 
 export default function Privacy() {
   return (
-    <div className="container mx-auto px-4 py-12">
+    <div className="min-h-screen bg-background py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
         <div className="flex items-center gap-3 mb-8">
-          <Shield className="text-purple-400" size={32} />
-          <h1 className="text-4xl font-bold">Política de Privacidade</h1>
+          <Shield className="text-accent" size={32} />
+          <h1 className="text-4xl font-bold text-text">Política de Privacidade</h1>
         </div>
 
-        <div className="bg-white/5 backdrop-blur-lg rounded-2xl p-8">
-          <p className="text-lg text-purple-200 mb-6">
-            Acesse nossa política de privacidade completa no documento abaixo:
+        <div className="bg-card rounded-lg shadow-lg p-8">
+          <p className="text-lg text-text/80 mb-6">
+            Acesse nossa política de privacidade completa no link abaixo:
           </p>
           
           <a 
-            href="/privacy.pdf" 
+            href="https://paulaazevedo.site/privacidade" 
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 bg-purple-600 hover:bg-purple-700 px-6 py-3 rounded-full transition-colors"
+            className="inline-flex items-center gap-2 bg-accent hover:bg-accent/90 text-white px-6 py-3 rounded-md transition-colors"
           >
             <Shield size={20} />
-            <span>Baixar PDF da Política de Privacidade</span>
+            <span>Ver Política de Privacidade</span>
           </a>
         </div>
       </div>

@@ -8,14 +8,13 @@ import { useAuthStore } from './store/authStore';
 const Home = React.lazy(() => import('./pages/Home'));
 const About = React.lazy(() => import('./pages/About'));
 const Plans = React.lazy(() => import('./pages/Plans'));
-const Login = React.lazy(() => import('./pages/Login'));
 const VIP = React.lazy(() => import('./pages/VIP'));
 const Terms = React.lazy(() => import('./pages/Terms'));
 const Privacy = React.lazy(() => import('./pages/Privacy'));
-const PagamentoSolana = React.lazy(() => import('./pages/PagamentoSolana'));
+const PaymentConfirmation = React.lazy(() => import('./pages/PaymentConfirmation'));
 
 function App() {
-  const { ageVerified, isAuthenticated } = useAuthStore();
+  const { ageVerified } = useAuthStore();
 
   return (
     <BrowserRouter>
@@ -32,12 +31,8 @@ function App() {
               <Route index element={<Home />} />
               <Route path="sobre" element={<About />} />
               <Route path="planos" element={<Plans />} />
-              <Route path="pagamento-solana" element={<PagamentoSolana />} />
-              <Route path="login" element={<Login />} />
-              <Route 
-                path="vip" 
-                element={isAuthenticated ? <VIP /> : <Navigate to="/login" replace />} 
-              />
+              <Route path="confirmacao" element={<PaymentConfirmation />} />
+              <Route path="vip" element={<Navigate to="/planos" replace />} />
               <Route path="termos" element={<Terms />} />
               <Route path="privacidade" element={<Privacy />} />
             </Route>
