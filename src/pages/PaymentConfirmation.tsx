@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useLocation, Navigate } from 'react-router-dom';
-import { Mail, MessageSquare, Whatsapp } from 'lucide-react';
+import { Mail, MessageSquare, MessageSquareText } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { toast } from 'react-hot-toast';
 
@@ -73,7 +73,7 @@ export const PaymentConfirmation: React.FC = () => {
             className="flex items-center justify-center gap-4 p-6 bg-card rounded-lg shadow-lg hover:bg-card/80 transition-colors disabled:opacity-50"
             aria-label="Receber conteúdo por WhatsApp"
           >
-            <Whatsapp className="text-green-500" size={24} aria-hidden="true" />
+            <MessageSquare className="text-green-500" size={24} aria-hidden="true" />
             <span className="text-lg font-medium text-text">Receber por WhatsApp</span>
           </button>
 
