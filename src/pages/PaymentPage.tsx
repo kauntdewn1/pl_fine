@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { Crown, AlertCircle, Zap } from 'lucide-react';
 
 const PaymentPage: React.FC = () => {
   const { plan } = useParams<{ plan: string }>();
@@ -37,7 +38,11 @@ const PaymentPage: React.FC = () => {
         return {
           name: 'Plano Básico',
           price: 'R$ 29,90',
-          features: ['Acesso ao conteúdo básico', 'Atualizações semanais', 'Suporte por email'],
+          features: [
+            'Acesso ao conteúdo básico',
+            'Atualizações semanais',
+            'Suporte por email'
+          ],
           gumroadLink: 'https://paulaazevedo.gumroad.com/l/basiquinha'
         };
       case 'vip':
@@ -48,7 +53,7 @@ const PaymentPage: React.FC = () => {
             'Acesso ao conteúdo VIP',
             'Atualizações diárias',
             'Suporte prioritário',
-            'Conteúdo exclusivo',
+            'Conteúdo exclusivo'
           ],
           gumroadLink: 'https://paulaazevedo.gumroad.com/l/vip'
         };
@@ -61,12 +66,13 @@ const PaymentPage: React.FC = () => {
 
   if (!planDetails) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-text mb-4">Plano não encontrado</h1>
+      <div className="min-h-screen bg-black flex items-center justify-center p-4">
+        <div className="max-w-md w-full bg-black/40 backdrop-blur-sm rounded-2xl p-8 border border-[#E91E63]/20 text-center">
+          <AlertCircle className="w-12 h-12 text-[#E91E63] mx-auto mb-4" />
+          <h1 className="text-2xl font-bold text-white mb-4">Plano não encontrado</h1>
           <button
             onClick={() => navigate('/planos')}
-            className="bg-accent text-white px-4 py-2 rounded-lg hover:bg-accent/90 transition-colors"
+            className="inline-flex justify-center items-center px-6 py-3 text-base font-medium rounded-full text-white bg-[#E91E63] hover:bg-[#E91E63]/90 transition-all duration-300 shadow-lg hover:shadow-[#E91E63]/20 hover:shadow-2xl transform hover:-translate-y-0.5"
           >
             Voltar para Planos
           </button>
@@ -76,54 +82,78 @@ const PaymentPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-3xl mx-auto">
-        <div className="bg-card rounded-lg shadow-lg p-8">
-          <h1 className="text-3xl font-bold text-text mb-6">Confirme seu Pagamento</h1>
-          
-          <div className="mb-8">
-            <h2 className="text-xl font-semibold text-text mb-2">{planDetails.name}</h2>
-            <p className="text-2xl font-bold text-accent mb-4">{planDetails.price}/mês</p>
-            
-            <ul className="space-y-2 mb-6">
-              {planDetails.features.map((feature, index) => (
-                <li key={index} className="flex items-center text-text/80">
-                  <svg
-                    className="w-5 h-5 text-accent mr-2"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M5 13l4 4L19 7"
-                    />
-                  </svg>
-                  {feature}
-                </li>
-              ))}
-            </ul>
-          </div>
+    <div className="min-h-screen bg-black">
+      <div className="relative py-20 overflow-hidden">
+        <div className="absolute inset-0 bg-[#E91E63] blur-[120px] opacity-5"></div>
+        <div className="container mx-auto px-4">
+          <div className="max-w-2xl mx-auto">
+            <div className="bg-black/40 backdrop-blur-sm rounded-2xl p-8 border border-[#E91E63]/20 shadow-xl relative z-10">
+              <div className="text-center mb-8">
+                <div className="w-16 h-16 bg-[#E91E63]/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Crown className="text-[#E91E63]" size={32} />
+                </div>
+                <h1 className="text-3xl font-bold text-white mb-2">Confirme seu Pagamento</h1>
+                <p className="text-white/60">Você está prestes a adquirir o {planDetails.name}</p>
+              </div>
+              
+              <div className="mb-8">
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-xl font-semibold text-white">{planDetails.name}</h2>
+                  <p className="text-2xl font-bold text-[#E91E63]">{planDetails.price}/mês</p>
+                </div>
+                
+                <div className="space-y-3 mb-8">
+                  {planDetails.features.map((feature, index) => (
+                    <div key={index} className="flex items-center gap-2 text-white/80">
+                      <span className="text-[#E91E63]">✓</span>
+                      {feature}
+                    </div>
+                  ))}
+                </div>
+              </div>
 
-          {error && (
-            <div className="bg-red-500/10 border border-red-500 text-red-500 px-4 py-3 rounded-lg mb-6">
-              {error}
+              {error && (
+                <div className="bg-red-500/10 border border-red-500 text-red-500 px-4 py-3 rounded-xl mb-6 flex items-center gap-2">
+                  <AlertCircle size={20} />
+                  <span>{error}</span>
+                </div>
+              )}
+
+              <div className="space-y-4">
+                <button
+                  onClick={handlePayment}
+                  disabled={loading}
+                  className="w-full inline-flex justify-center items-center px-6 py-4 text-base font-medium rounded-full text-white bg-[#E91E63] hover:bg-[#E91E63]/90 transition-all duration-300 shadow-lg hover:shadow-[#E91E63]/20 hover:shadow-2xl transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed gap-2"
+                >
+                  {loading ? (
+                    <>
+                      <div className="animate-spin rounded-full h-5 w-5 border-2 border-white/20 border-t-white"></div>
+                      <span>Processando...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Crown size={20} />
+                      <span>Finalizar Pagamento</span>
+                    </>
+                  )}
+                </button>
+
+                <a
+                  href="https://pagamento.solalapay.com/paula-vip"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full inline-flex justify-center items-center px-6 py-4 text-base font-medium rounded-full text-white bg-black/40 hover:bg-black/60 transition-all duration-300 border border-[#E91E63]/20 hover:border-[#E91E63]/40 gap-2"
+                >
+                  <Zap size={20} className="text-[#E91E63]" />
+                  <span>Pagar com PIX</span>
+                </a>
+              </div>
+
+              <p className="mt-6 text-sm text-white/60 text-center">
+                Ao clicar em "Finalizar Pagamento", você será redirecionado para a plataforma de pagamento segura do Gumroad.
+              </p>
             </div>
-          )}
-
-          <button
-            onClick={handlePayment}
-            disabled={loading}
-            className="w-full bg-accent text-white px-6 py-3 rounded-lg hover:bg-accent/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {loading ? 'Processando...' : 'Finalizar Pagamento'}
-          </button>
-
-          <p className="mt-4 text-sm text-text/60 text-center">
-            Ao clicar em "Finalizar Pagamento", você será redirecionado para a plataforma de pagamento segura do Gumroad.
-          </p>
+          </div>
         </div>
       </div>
     </div>
