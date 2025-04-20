@@ -19,7 +19,7 @@ export function Layout() {
           <div className="flex justify-between items-center">
             <Link to="/" className="block">
               <ImageWithFallback 
-                src="https://res.cloudinary.com/dt9m3pkjv/image/upload/v1743392268/logo_hrz_su2n5f.png"
+                src="https://res.cloudinary.com/dt9m3pkjv/image/upload/v1743393385/PAULA_AZEVEDO_500_x_200_px_gd5l0v.png"
                 alt="Paula Azevedo"
                 className="h-7"
                 fallbackSrc="/logo-fallback.png"
