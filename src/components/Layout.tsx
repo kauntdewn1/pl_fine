@@ -90,7 +90,7 @@ export function Layout() {
         <div className="container mx-auto">
           <div className="flex justify-center gap-6 mb-8">
             <a 
-              href="https://instagram.com" 
+              href="https://www.instagram.com/studiopaulinhaazevedo/" 
               target="_blank" 
               rel="noopener noreferrer"
               className="flex items-center justify-center gap-2 bg-accent hover:bg-accent/90 text-white px-6 py-3 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"

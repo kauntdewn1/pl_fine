@@ -3,13 +3,14 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Layout } from './components/Layout';
 import { AgeVerification } from './components/AgeVerification';
 import { useAuthStore } from './store/authStore';
+import Home from './pages/Home';
+import Plans from './pages/Plans';
+import Terms from './pages/Terms';
+import PaymentPage from './pages/PaymentPage';
 
 // Lazy load pages
-const Home = React.lazy(() => import('./pages/Home'));
 const About = React.lazy(() => import('./pages/About'));
-const Plans = React.lazy(() => import('./pages/Plans'));
 const VIP = React.lazy(() => import('./pages/VIP'));
-const Terms = React.lazy(() => import('./pages/Terms'));
 const Privacy = React.lazy(() => import('./pages/Privacy'));
 const PaymentConfirmation = React.lazy(() => import('./pages/PaymentConfirmation'));
 const Autenticar = React.lazy(() => import('./pages/Autenticar'));
@@ -37,6 +38,7 @@ function App() {
               <Route path="vip" element={<Navigate to="/planos" replace />} />
               <Route path="termos" element={<Terms />} />
               <Route path="privacidade" element={<Privacy />} />
+              <Route path="pagamento/:plan" element={<PaymentPage />} />
             </Route>
           </Routes>
         </React.Suspense>

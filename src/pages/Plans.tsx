@@ -1,108 +1,91 @@
 import React from 'react';
-import { Crown } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 export default function Plans() {
+  const navigate = useNavigate();
+
+  const handlePlanSelect = (plan: string) => {
+    navigate(`/pagamento/${plan}`);
+  };
+
   return (
-    <div className="min-h-screen bg-background">
-      {/* Hero Section */}
-      <section className="relative min-h-[40vh] flex items-center">
-        <div className="absolute inset-0 z-0">
-          <img
-            src="https://res.cloudinary.com/dt9m3pkjv/image/upload/v1743376994/PAULA/s6otfqus8lez0uz1acmg.png"
-            alt="Paula Azevedo"
-            className="w-full h-full object-cover object-center"
-          />
-          <div className="absolute inset-0 bg-black/40"></div>
+    <div className="min-h-screen bg-background py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto">
+        <div className="text-center mb-12">
+          <h1 className="text-4xl font-bold mb-4">Escolha seu Plano</h1>
+          <p className="text-text/80 max-w-2xl mx-auto">
+            Selecione o plano que melhor atende às suas necessidades e comece sua jornada conosco hoje mesmo.
+          </p>
         </div>
-        
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-2xl">
-            <h1 className="text-4xl md:text-6xl font-bold mb-6 text-white">
-              Escolha seu Plano
-            </h1>
-            <p className="text-xl text-white/90 mb-8">
-              Acesso exclusivo ao melhor conteúdo
-            </p>
-          </div>
-        </div>
-      </section>
 
-      {/* Plans Section */}
-      <section className="py-20">
-        <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            {/* Basic Plan */}
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-xl">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 bg-accent/10 rounded-full flex items-center justify-center">
-                  <Crown className="text-accent" size={24} />
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold">Plano Básico</h3>
-                  <p className="text-accent">R$29,90/mês</p>
-                </div>
-              </div>
-              <ul className="space-y-3 mb-8">
-                <li className="flex items-center gap-2">
-                  <span className="text-accent">✓</span>
-                  Assinatura mensal para acesso a conteúdo adulto artístico
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="text-accent">✓</span>
-                  Acesso imediato às minhas fotos
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="text-accent">✓</span>
-                  1 vez por semana faço novas :)
-                </li>
-              </ul>
-              <a
-                href="https://paulaazevedo.gumroad.com/l/basiquinha"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full inline-flex justify-center items-center px-6 py-3 border border-transparent text-base font-medium rounded-full text-white bg-accent hover:bg-accent-dark transition-colors shadow-lg shadow-accent/20"
-              >
-                Assinar Plano Básico
-              </a>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+          {/* Plano Básico */}
+          <div className="bg-card rounded-lg shadow-lg p-8">
+            <div className="text-center mb-6">
+              <h2 className="text-2xl font-bold mb-2">Plano Básico</h2>
+              <p className="text-4xl font-bold text-accent mb-2">R$29,90/mês</p>
+              <p className="text-text/80">Acesso ao conteúdo básico</p>
             </div>
 
-            {/* VIP Plan */}
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-xl border-2 border-accent">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 bg-accent/10 rounded-full flex items-center justify-center">
-                  <Crown className="text-accent" size={24} />
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold">Plano VIP</h3>
-                  <p className="text-accent">R$59,90/mês</p>
-                </div>
+            <div className="space-y-4 mb-8">
+              <div className="flex items-center gap-3">
+                <span className="text-accent">✓</span>
+                <span>Acesso ao conteúdo básico</span>
               </div>
-              <ul className="space-y-3 mb-8">
-                <li className="flex items-center gap-2">
-                  <span className="text-accent">✓</span>
-                  Assinatura mensal para acesso a conteúdo adulto artístico
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="text-accent">✓</span>
-                  Acesso imediato às minhas fotos e vídeos
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="text-accent">✓</span>
-                  1 vez por semana farei com carinho mais fotos e vídeos :)
-                </li>
-              </ul>
-              <a
-                href="https://paulaazevedo.gumroad.com/l/vip"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full inline-flex justify-center items-center px-6 py-3 border border-transparent text-base font-medium rounded-full text-white bg-accent hover:bg-accent-dark transition-colors shadow-lg shadow-accent/20"
-              >
-                Assinar Plano VIP
-              </a>
+              <div className="flex items-center gap-3">
+                <span className="text-accent">✓</span>
+                <span>Atualizações semanais</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <span className="text-accent">✓</span>
+                <span>Suporte por email</span>
+              </div>
             </div>
+
+            <button
+              onClick={() => handlePlanSelect('basico')}
+              className="w-full bg-accent hover:bg-accent-dark text-white font-medium py-3 px-6 rounded-full transition-colors shadow-lg shadow-accent/20"
+            >
+              Selecionar Plano
+            </button>
+          </div>
+
+          {/* Plano VIP */}
+          <div className="bg-card rounded-lg shadow-lg p-8">
+            <div className="text-center mb-6">
+              <h2 className="text-2xl font-bold mb-2">Plano VIP</h2>
+              <p className="text-4xl font-bold text-accent mb-2">R$59,90/mês</p>
+              <p className="text-text/80">Acesso ao conteúdo VIP</p>
+            </div>
+
+            <div className="space-y-4 mb-8">
+              <div className="flex items-center gap-3">
+                <span className="text-accent">✓</span>
+                <span>Acesso ao conteúdo VIP</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <span className="text-accent">✓</span>
+                <span>Atualizações diárias</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <span className="text-accent">✓</span>
+                <span>Suporte prioritário</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <span className="text-accent">✓</span>
+                <span>Conteúdo exclusivo</span>
+              </div>
+            </div>
+
+            <button
+              onClick={() => handlePlanSelect('vip')}
+              className="w-full bg-accent hover:bg-accent-dark text-white font-medium py-3 px-6 rounded-full transition-colors shadow-lg shadow-accent/20"
+            >
+              Selecionar Plano
+            </button>
           </div>
         </div>
-      </section>
+      </div>
     </div>
   );
 }

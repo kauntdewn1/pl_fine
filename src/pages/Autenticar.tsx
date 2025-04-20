@@ -10,8 +10,8 @@ export default function Autenticar() {
     const email = urlParams.get('email') || '';
     const plano = urlParams.get('plano') || '';
 
-    const emailInput = document.getElementById('email');
-    const planoInput = document.getElementById('plano');
+    const emailInput = document.getElementById('email') as HTMLInputElement;
+    const planoInput = document.getElementById('plano') as HTMLInputElement;
     if (emailInput) emailInput.value = email;
     if (planoInput) planoInput.value = plano;
   }, []);
