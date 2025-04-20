@@ -74,11 +74,11 @@ export default function Home() {
       </section>
 
       {/* Plans Section */}
-      <section className="py-20">
+      <section className="py-20 bg-white/5 backdrop-blur-lg">
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             {/* Basic Plan */}
-            <div className="bg-black/40 backdrop-blur-sm rounded-2xl p-8 shadow-xl border border-[#E91E63]/20">
+            <div className="bg-black/40 backdrop-blur-sm rounded-2xl p-8 shadow-xl border border-[#E91E63]/20 hover:border-[#E91E63]/40 transition-colors">
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-12 h-12 bg-[#E91E63]/10 rounded-full flex items-center justify-center">
                   <Crown className="text-[#E91E63]" size={24} />
@@ -113,7 +113,7 @@ export default function Home() {
             </div>
 
             {/* VIP Plan */}
-            <div className="bg-black/40 backdrop-blur-sm rounded-2xl p-8 shadow-xl border-2 border-[#E91E63]">
+            <div className="bg-black/40 backdrop-blur-sm rounded-2xl p-8 shadow-xl border-2 border-[#E91E63] hover:border-[#E91E63]/80 transition-colors">
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-12 h-12 bg-[#E91E63]/10 rounded-full flex items-center justify-center">
                   <Crown className="text-[#E91E63]" size={24} />
