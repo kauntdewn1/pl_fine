@@ -12,6 +12,7 @@ const VIP = React.lazy(() => import('./pages/VIP'));
 const Terms = React.lazy(() => import('./pages/Terms'));
 const Privacy = React.lazy(() => import('./pages/Privacy'));
 const PaymentConfirmation = React.lazy(() => import('./pages/PaymentConfirmation'));
+const Autenticar = React.lazy(() => import('./pages/Autenticar'));
 
 function App() {
   const { ageVerified } = useAuthStore();
@@ -32,6 +33,7 @@ function App() {
               <Route path="sobre" element={<About />} />
               <Route path="planos" element={<Plans />} />
               <Route path="confirmacao" element={<PaymentConfirmation />} />
+              <Route path="autenticar" element={<Autenticar />} />
               <Route path="vip" element={<Navigate to="/planos" replace />} />
               <Route path="termos" element={<Terms />} />
               <Route path="privacidade" element={<Privacy />} />

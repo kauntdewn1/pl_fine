@@ -1,6 +1,5 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
 import { Crown, Lock } from 'lucide-react';
+import { ImageWithFallback } from '../components/ImageWithFallback';
 
 export default function Home() {
   return (
@@ -8,10 +7,11 @@ export default function Home() {
       {/* Hero Section */}
       <section className="relative min-h-[60vh] flex items-center">
         <div className="absolute inset-0 z-0">
-          <img
+          <ImageWithFallback
             src="https://res.cloudinary.com/dt9m3pkjv/image/upload/v1743376994/PAULA/s6otfqus8lez0uz1acmg.png"
             alt="Paula Azevedo"
             className="w-full h-full object-cover object-center"
+            fallbackSrc="/hero-fallback.jpg"
           />
           <div className="absolute inset-0 bg-black/40"></div>
         </div>
@@ -24,6 +24,12 @@ export default function Home() {
             <p className="text-xl text-white/90 mb-8">
               Acesso a fotos e vídeos exclusivos
             </p>
+            <a
+              href="/planos"
+              className="inline-flex items-center justify-center gap-2 bg-accent hover:bg-accent/90 text-white px-8 py-4 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 text-lg font-medium"
+            >
+              Ver Planos
+            </a>
           </div>
         </div>
       </section>
@@ -48,10 +54,11 @@ export default function Home() {
             ].map((item, index) => (
               <div key={index} className="relative group cursor-pointer">
                 <div className="aspect-[3/4] rounded-2xl overflow-hidden">
-                  <img 
+                  <ImageWithFallback 
                     src={item.image} 
                     alt={item.title}
                     className="w-full h-full object-cover filter blur-sm group-hover:blur-0 transition-all duration-300"
+                    fallbackSrc="/preview-fallback.jpg"
                   />
                   <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center gap-4">
                     <Lock size={32} className="text-white" />
@@ -98,7 +105,7 @@ export default function Home() {
                 href="https://paulaazevedo.gumroad.com/l/basiquinha"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full inline-flex justify-center items-center px-6 py-3 border border-transparent text-base font-medium rounded-full text-white bg-accent hover:bg-accent-dark transition-colors shadow-lg shadow-accent/20"
+                className="w-full inline-flex justify-center items-center px-6 py-4 border border-transparent text-base font-medium rounded-full text-white bg-accent hover:bg-accent/90 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
               >
                 Assinar Plano Básico
               </a>
@@ -133,7 +140,7 @@ export default function Home() {
                 href="https://paulaazevedo.gumroad.com/l/vip"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full inline-flex justify-center items-center px-6 py-3 border border-transparent text-base font-medium rounded-full text-white bg-accent hover:bg-accent-dark transition-colors shadow-lg shadow-accent/20"
+                className="w-full inline-flex justify-center items-center px-6 py-4 border border-transparent text-base font-medium rounded-full text-white bg-accent hover:bg-accent/90 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
               >
                 Assinar Plano VIP
               </a>
@@ -143,24 +150,21 @@ export default function Home() {
       </section>
 
       {/* About Section */}
-      <section className="py-20 bg-white/50">
+      <section className="py-20 bg-white/5">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row gap-12 items-center max-w-4xl mx-auto">
             <div className="w-full md:w-1/2">
-              <img
+              <ImageWithFallback
                 src="https://res.cloudinary.com/dt9m3pkjv/image/upload/v1743376993/PAULA/geznhhqtqhe7fj0obmj3.png"
                 alt="Paula Azevedo"
                 className="rounded-2xl shadow-2xl"
+                fallbackSrc="/about-fallback.jpg"
               />
             </div>
-            <div className="w-full md:w-1/2">
-              <h2 className="text-3xl font-bold mb-6">Sobre a Paula</h2>
-              <p className="text-lg mb-4">
-                "Sou Paula, uma mulher que ama provocar com arte, elegância e liberdade."
-              </p>
-              <p className="text-lg text-gray-600">
-                "Meus conteúdos são feitos com carinho e sempre pensando no que te faz desejar mais."
-              </p>
+            <div className="w-full md:w-1/2 text-white">
+              <h2 className="text-4xl font-bold text-pink-500 mb-6">Sobre a Paula</h2>
+              <p className="text-lg mb-4">"Sou Paula, uma mulher que ama provocar com arte, elegância e liberdade."</p>
+              <p className="text-lg text-gray-300">"Meus conteúdos são feitos com carinho e sempre pensando no que te faz desejar mais."</p>
             </div>
           </div>
         </div>

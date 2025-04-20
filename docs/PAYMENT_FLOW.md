@@ -2,29 +2,26 @@
 
 ## Visão Geral
 
-O sistema de pagamento integra Stripe e Gumroad para processar assinaturas. O fluxo é o seguinte:
+O sistema de pagamento utiliza o Gumroad para processar assinaturas. O fluxo é o seguinte:
 
 1. Usuário seleciona um plano na página `/planos`
-2. É redirecionado para a página de pagamento
+2. É redirecionado para a página de pagamento do Gumroad
 3. Após o pagamento, é redirecionado para a página de confirmação
 4. Escolhe o canal de entrega (Telegram, WhatsApp ou Email)
 5. O webhook registra a venda no Supabase
 
 ## Endpoints
 
-### `/api/create-checkout-session`
-- Cria uma sessão de checkout no Stripe
-- Parâmetros: `plan`, `email`, `userId`
-- Retorna: `sessionId`
-
 ### `/api/webhook`
-- Processa eventos do Stripe/Gumroad
+
+- Processa eventos do Gumroad
 - Registra vendas no Supabase
 - Atualiza status de assinaturas
 
 ## Tabelas do Supabase
 
 ### `clientes_vip`
+
 - `email`: Email do cliente
 - `plano`: 'basico' ou 'vip'
 - `status`: 'pago' ou 'pendente'
@@ -52,4 +49,4 @@ O sistema de pagamento integra Stripe e Gumroad para processar assinaturas. O fl
 2. Tratamento de erros
 3. Validação de dados
 4. Webhooks
-5. Integração com canais de entrega 
+5. Integração com canais de entrega

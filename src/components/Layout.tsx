@@ -1,23 +1,28 @@
 import React from 'react';
-import { Link, Outlet, useLocation } from 'react-router-dom';
-import { Lock, Menu, X, Instagram, Send } from 'lucide-react';
-import { useAuthStore } from '../store/authStore';
+import { Link, Outlet } from 'react-router-dom';
+import { Menu, X, Instagram, Send, Home } from 'lucide-react';
+import { ImageWithFallback } from './ImageWithFallback';
 
 export function Layout() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
-  const location = useLocation();
-  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
 
   return (
     <div className="min-h-screen bg-background text-black font-sans">
+      <noscript>
+        <div className="fixed top-0 left-0 right-0 bg-red-500 text-white text-center p-2 z-50">
+          JavaScript está desabilitado. Algumas funcionalidades podem não funcionar corretamente.
+        </div>
+      </noscript>
+
       <header className="bg-white/80 backdrop-blur-sm fixed w-full z-10 border-b border-accent/10">
         <div className="container mx-auto px-4 py-3">
           <div className="flex justify-between items-center">
             <Link to="/" className="block">
-              <img 
+              <ImageWithFallback 
                 src="https://res.cloudinary.com/dt9m3pkjv/image/upload/v1743392268/logo_hrz_su2n5f.png"
                 alt="Paula Azevedo"
                 className="h-7"
+                fallbackSrc="/logo-fallback.png"
               />
             </Link>
 
@@ -25,35 +30,23 @@ export function Layout() {
             <button 
               className="md:hidden"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
+              aria-label="Toggle menu"
             >
               {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
 
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center gap-8">
+              <Link to="/" className="text-sm hover:text-accent transition-colors flex items-center gap-1">
+                <Home size={16} />
+                <span>Home</span>
+              </Link>
               <Link to="/sobre" className="text-sm hover:text-accent transition-colors">
                 Sobre
               </Link>
               <Link to="/planos" className="text-sm hover:text-accent transition-colors">
                 Planos
               </Link>
-              {isAuthenticated ? (
-                <Link 
-                  to="/vip" 
-                  className="bg-accent hover:bg-accent-light px-5 py-2 rounded-full flex items-center gap-2 transition-colors text-white text-sm shadow-lg shadow-accent/20"
-                >
-                  <Lock size={16} />
-                  <span>VIP</span>
-                </Link>
-              ) : (
-                <Link 
-                  to="/login" 
-                  className="bg-accent hover:bg-accent-light px-5 py-2 rounded-full flex items-center gap-2 transition-colors text-white text-sm shadow-lg shadow-accent/20"
-                >
-                  <Lock size={16} />
-                  <span>Acesso VIP</span>
-                </Link>
-              )}
             </nav>
           </div>
         </div>
@@ -62,6 +55,14 @@ export function Layout() {
         {isMenuOpen && (
           <nav className="md:hidden bg-white/95 absolute w-full py-4 border-b border-accent/10">
             <div className="flex flex-col items-center gap-4">
+              <Link 
+                to="/" 
+                className="hover:text-accent transition-colors flex items-center gap-1" 
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <Home size={16} />
+                <span>Home</span>
+              </Link>
               <Link 
                 to="/sobre" 
                 className="hover:text-accent transition-colors" 
@@ -76,25 +77,6 @@ export function Layout() {
               >
                 Planos
               </Link>
-              {isAuthenticated ? (
-                <Link 
-                  to="/vip" 
-                  className="bg-accent hover:bg-accent-light px-6 py-2 rounded-full flex items-center gap-2 transition-colors text-white shadow-lg shadow-accent/20" 
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  <Lock size={16} />
-                  <span>VIP</span>
-                </Link>
-              ) : (
-                <Link 
-                  to="/login" 
-                  className="bg-accent hover:bg-accent-light px-6 py-2 rounded-full flex items-center gap-2 transition-colors text-white shadow-lg shadow-accent/20" 
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  <Lock size={16} />
-                  <span>Acesso VIP</span>
-                </Link>
-              )}
             </div>
           </nav>
         )}
@@ -111,7 +93,7 @@ export function Layout() {
               href="https://instagram.com" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="text-accent hover:text-accent-light transition-colors flex items-center gap-2"
+              className="flex items-center justify-center gap-2 bg-accent hover:bg-accent/90 text-white px-6 py-3 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
             >
               <Instagram size={20} />
               <span className="text-sm">Instagram</span>
@@ -120,7 +102,7 @@ export function Layout() {
               href="https://t.me/+-EgW-2xM71lmMzIx" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="text-accent hover:text-accent-light transition-colors flex items-center gap-2"
+              className="flex items-center justify-center gap-2 bg-accent hover:bg-accent/90 text-white px-6 py-3 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
             >
               <Send size={20} />
               <span className="text-sm">Telegram</span>

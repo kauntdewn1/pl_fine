@@ -8,7 +8,7 @@ Plataforma de conteúdo exclusivo com sistema de assinatura e pagamentos.
 - Vite
 - TailwindCSS
 - Supabase (Banco de dados)
-- CCBill (Processamento de pagamentos)
+- GumRoad (Processamento de pagamentos)
 - Netlify (Hospedagem)
 
 ## Funcionalidades
@@ -23,26 +23,28 @@ Plataforma de conteúdo exclusivo com sistema de assinatura e pagamentos.
 ## Configuração do Ambiente
 
 1. Clone o repositório:
+
 ```bash
 git clone https://github.com/kauntdewn1/pl_fine.git
 ```
 
-2. Instale as dependências:
+2.Instale as dependências:
+
 ```bash
 npm install
 ```
 
-3. Crie um arquivo .env com as seguintes variáveis:
-```
+Crie um arquivo .env com as seguintes variáveis:
+
+```env
 VITE_SUPABASE_URL=sua_url_do_supabase
 VITE_SUPABASE_ANON_KEY=sua_chave_anonima
-VITE_CCBILL_ACCNUM=seu_numero_de_conta
-VITE_CCBILL_SUBACC=seu_subaccount
-VITE_CCBILL_FORMNAME=nome_do_formulario
-VITE_CCBILL_SALT=seu_salt_secreto
+VITE_GUMROAD_PRODUCT_ID=seu_product_id
+VITE_GUMROAD_ACCESS_TOKEN=seu_access_token
 ```
 
-4. Inicie o servidor de desenvolvimento:
+4.Inicie o servidor de desenvolvimento:
+
 ```bash
 npm run dev
 ```
@@ -53,7 +55,7 @@ O site está configurado para deploy automático no Netlify. Qualquer push para 
 
 ## Estrutura do Projeto
 
-```
+```plaintext
 src/
   ├── components/     # Componentes reutilizáveis
   ├── pages/         # Páginas da aplicação
@@ -80,4 +82,4 @@ Para contribuir com o projeto:
 2. Crie uma branch para sua feature (`git checkout -b feature/nova-feature`)
 3. Commit suas mudanças (`git commit -m 'Adiciona nova feature'`)
 4. Push para a branch (`git push origin feature/nova-feature`)
-5. Abra um Pull Request 
+5. Abra um Pull Request
