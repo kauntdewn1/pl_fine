@@ -1,4 +1,4 @@
-import { Crown, Lock } from 'lucide-react';
+import { Crown, Lock, ArrowRight } from 'lucide-react';
 import { ImageWithFallback } from '../components/ImageWithFallback';
 import { Link } from 'react-router-dom';
 
@@ -102,14 +102,17 @@ export default function Home() {
                   1 vez por semana faço novas :)
                 </li>
               </ul>
-              <a
-                href="https://paulaazevedo.gumroad.com/l/basiquinha"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full inline-flex justify-center items-center px-6 py-4 text-base font-medium rounded-full text-white bg-[#E91E63] hover:bg-[#E91E63]/90 transition-all duration-300 shadow-lg hover:shadow-[#E91E63]/20 hover:shadow-2xl transform hover:-translate-y-0.5"
-              >
-                Assinar Plano Básico
-              </a>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <a
+                  href="https://paulaazevedo.gumroad.com/l/basiquinha?wanted=true"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center px-8 py-4 text-base font-medium rounded-full text-white bg-[#E91E63] hover:bg-[#E91E63]/90 transition-all duration-300 shadow-lg hover:shadow-[#E91E63]/20 hover:shadow-2xl transform hover:-translate-y-0.5"
+                >
+                  <span>Plano Básico</span>
+                  <ArrowRight className="w-5 h-5 ml-2" />
+                </a>
+              </div>
             </div>
 
             {/* VIP Plan */}
@@ -137,14 +140,17 @@ export default function Home() {
                   1 vez por semana farei com carinho mais fotos e vídeos :)
                 </li>
               </ul>
-              <a
-                href="https://paulaazevedo.gumroad.com/l/vip"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full inline-flex justify-center items-center px-6 py-4 text-base font-medium rounded-full text-white bg-[#E91E63] hover:bg-[#E91E63]/90 transition-all duration-300 shadow-lg hover:shadow-[#E91E63]/20 hover:shadow-2xl transform hover:-translate-y-0.5"
-              >
-                Assinar Plano VIP
-              </a>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <a
+                  href="https://paulaazevedo.gumroad.com/l/vip?wanted=true"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center px-8 py-4 text-base font-medium rounded-full text-white bg-[#E91E63] hover:bg-[#E91E63]/90 transition-all duration-300 shadow-lg hover:shadow-[#E91E63]/20 hover:shadow-2xl transform hover:-translate-y-0.5"
+                >
+                  <span>Plano VIP</span>
+                  <ArrowRight className="w-5 h-5 ml-2" />
+                </a>
+              </div>
             </div>
           </div>
         </div>

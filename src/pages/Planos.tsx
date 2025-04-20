@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import { Lock, Send, MessageSquare, Mail, Zap, Crown, AlertCircle, ArrowRight } from 'lucide-react';
 import { toast } from 'react-hot-toast';
@@ -6,7 +6,6 @@ import { useNavigate } from 'react-router-dom';
 
 export default function Plans() {
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -21,7 +20,6 @@ export default function Plans() {
 
   async function enviarCanal(canal: 'telegram' | 'whatsapp' | 'email') {
     try {
-      setLoading(true);
       const form = document.getElementById('canalForm') as HTMLFormElement;
       if (!form) return;
 
@@ -47,14 +45,8 @@ export default function Plans() {
     } catch (error) {
       console.error('Erro ao registrar canal:', error);
       toast.error('Erro ao registrar sua escolha. Tente novamente.');
-    } finally {
-      setLoading(false);
     }
   }
-
-  const handlePlanSelect = (plan: string) => {
-    navigate(`/pagamento/${plan}`);
-  };
 
   const urlParams = new URLSearchParams(window.location.search);
   const isConfirmation = urlParams.get('email') && urlParams.get('plano');
@@ -89,56 +81,26 @@ export default function Plans() {
                 <div className="space-y-4">
                   <button
                     onClick={() => enviarCanal('telegram')}
-                    disabled={loading}
-                    className="w-full inline-flex justify-center items-center px-6 py-4 text-base font-medium rounded-full text-white bg-[#E91E63] hover:bg-[#E91E63]/90 transition-all duration-300 shadow-lg hover:shadow-[#E91E63]/20 hover:shadow-2xl transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed gap-2"
+                    className="w-full inline-flex justify-center items-center px-6 py-4 text-base font-medium rounded-full text-white bg-[#E91E63] hover:bg-[#E91E63]/90 transition-all duration-300 shadow-lg hover:shadow-[#E91E63]/20 hover:shadow-2xl transform hover:-translate-y-0.5"
                   >
-                    {loading ? (
-                      <>
-                        <div className="animate-spin rounded-full h-5 w-5 border-2 border-white/20 border-t-white"></div>
-                        <span>Processando...</span>
-                      </>
-                    ) : (
-                      <>
-                        <Send className="w-5 h-5" />
-                        <span>Receber no Telegram</span>
-                      </>
-                    )}
+                    <Send className="w-5 h-5 mr-2" />
+                    Receber no Telegram
                   </button>
 
                   <button
                     onClick={() => enviarCanal('whatsapp')}
-                    disabled={loading}
-                    className="w-full inline-flex justify-center items-center px-6 py-4 text-base font-medium rounded-full text-white bg-[#E91E63] hover:bg-[#E91E63]/90 transition-all duration-300 shadow-lg hover:shadow-[#E91E63]/20 hover:shadow-2xl transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed gap-2"
+                    className="w-full inline-flex justify-center items-center px-6 py-4 text-base font-medium rounded-full text-white bg-[#E91E63] hover:bg-[#E91E63]/90 transition-all duration-300 shadow-lg hover:shadow-[#E91E63]/20 hover:shadow-2xl transform hover:-translate-y-0.5"
                   >
-                    {loading ? (
-                      <>
-                        <div className="animate-spin rounded-full h-5 w-5 border-2 border-white/20 border-t-white"></div>
-                        <span>Processando...</span>
-                      </>
-                    ) : (
-                      <>
-                        <MessageSquare className="w-5 h-5" />
-                        <span>Receber no WhatsApp</span>
-                      </>
-                    )}
+                    <MessageSquare className="w-5 h-5 mr-2" />
+                    Receber no WhatsApp
                   </button>
 
                   <button
                     onClick={() => enviarCanal('email')}
-                    disabled={loading}
-                    className="w-full inline-flex justify-center items-center px-6 py-4 text-base font-medium rounded-full text-white bg-[#E91E63] hover:bg-[#E91E63]/90 transition-all duration-300 shadow-lg hover:shadow-[#E91E63]/20 hover:shadow-2xl transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed gap-2"
+                    className="w-full inline-flex justify-center items-center px-6 py-4 text-base font-medium rounded-full text-white bg-[#E91E63] hover:bg-[#E91E63]/90 transition-all duration-300 shadow-lg hover:shadow-[#E91E63]/20 hover:shadow-2xl transform hover:-translate-y-0.5"
                   >
-                    {loading ? (
-                      <>
-                        <div className="animate-spin rounded-full h-5 w-5 border-2 border-white/20 border-t-white"></div>
-                        <span>Processando...</span>
-                      </>
-                    ) : (
-                      <>
-                        <Mail className="w-5 h-5" />
-                        <span>Receber por Email</span>
-                      </>
-                    )}
+                    <Mail className="w-5 h-5 mr-2" />
+                    Receber por Email
                   </button>
                 </div>
               </div>
@@ -192,13 +154,15 @@ export default function Plans() {
                   <span className="text-white/60">/mês</span>
                 </div>
 
-                <button
-                  onClick={() => handlePlanSelect('basico')}
+                <a
+                  href="https://paulaazevedo.gumroad.com/l/basiquinha?wanted=true"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="w-full inline-flex justify-center items-center px-6 py-4 text-base font-medium rounded-full text-white bg-[#E91E63] hover:bg-[#E91E63]/90 transition-all duration-300 shadow-lg hover:shadow-[#E91E63]/20 hover:shadow-2xl transform hover:-translate-y-0.5"
                 >
                   <span>Selecionar Plano</span>
                   <ArrowRight className="w-5 h-5 ml-2" />
-                </button>
+                </a>
               </div>
 
               <div className="bg-black/40 backdrop-blur-sm rounded-2xl p-8 border border-[#E91E63]/20 shadow-xl relative z-10">
@@ -234,13 +198,15 @@ export default function Plans() {
                   <span className="text-white/60">/mês</span>
                 </div>
 
-                <button
-                  onClick={() => handlePlanSelect('vip')}
+                <a
+                  href="https://paulaazevedo.gumroad.com/l/vip?wanted=true"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="w-full inline-flex justify-center items-center px-6 py-4 text-base font-medium rounded-full text-white bg-[#E91E63] hover:bg-[#E91E63]/90 transition-all duration-300 shadow-lg hover:shadow-[#E91E63]/20 hover:shadow-2xl transform hover:-translate-y-0.5"
                 >
                   <span>Selecionar Plano</span>
                   <ArrowRight className="w-5 h-5 ml-2" />
-                </button>
+                </a>
               </div>
             </div>
           </div>
