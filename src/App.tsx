@@ -4,7 +4,7 @@ import { Layout } from './components/Layout';
 import { AgeVerification } from './components/AgeVerification';
 import { useAuthStore } from './store/authStore';
 import Home from './pages/Home';
-import Plans from './pages/Plans';
+import Plans from './pages/Planos';
 import Terms from './pages/Terms';
 import PaymentPage from './pages/PaymentPage';
 
