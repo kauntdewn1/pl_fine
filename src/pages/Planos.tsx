@@ -158,10 +158,9 @@ export default function Plans() {
                   href="https://paulaazevedo.gumroad.com/l/basiquinha?wanted=true"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full inline-flex justify-center items-center px-6 py-4 text-base font-medium rounded-full text-white bg-[#E91E63] hover:bg-[#E91E63]/90 transition-all duration-300 shadow-lg hover:shadow-[#E91E63]/20 hover:shadow-2xl transform hover:-translate-y-0.5"
+                  className="btn w-full bg-pink-600 hover:bg-pink-700 text-white font-semibold py-3 px-6 rounded-xl shadow-lg text-center"
                 >
-                  <span>Selecionar Plano</span>
-                  <ArrowRight className="w-5 h-5 ml-2" />
+                  💳 Assinar com Cartão, PayPal ou Apple Pay
                 </a>
               </div>
 
@@ -202,10 +201,9 @@ export default function Plans() {
                   href="https://paulaazevedo.gumroad.com/l/vip?wanted=true"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full inline-flex justify-center items-center px-6 py-4 text-base font-medium rounded-full text-white bg-[#E91E63] hover:bg-[#E91E63]/90 transition-all duration-300 shadow-lg hover:shadow-[#E91E63]/20 hover:shadow-2xl transform hover:-translate-y-0.5"
+                  className="btn w-full bg-pink-600 hover:bg-pink-700 text-white font-semibold py-3 px-6 rounded-xl shadow-lg text-center"
                 >
-                  <span>Selecionar Plano</span>
-                  <ArrowRight className="w-5 h-5 ml-2" />
+                  💳 Assinar com Cartão, PayPal ou Apple Pay
                 </a>
               </div>
             </div>
