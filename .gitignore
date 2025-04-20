@@ -64,3 +64,6 @@ lerna-debug.log*
 supabase/.temp
 supabase/.wrangler
 supabase/functions/.env
+
+# Local Netlify folder
+.netlify
