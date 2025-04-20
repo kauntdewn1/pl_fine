@@ -34,7 +34,7 @@ const PaymentPage: React.FC = () => {
 
   const getPlanDetails = () => {
     switch (plan) {
-      case 'basic':
+      case 'basico':
         return {
           name: 'Plano Básico',
           price: 'R$ 29,90',
