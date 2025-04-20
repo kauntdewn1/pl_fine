@@ -41,9 +41,6 @@ export function Layout() {
                 <Home size={16} />
                 <span>Home</span>
               </Link>
-              <Link to="/sobre" className="text-sm hover:text-[#E91E63] transition-colors">
-                Sobre
-              </Link>
               <Link to="/planos" className="text-sm hover:text-[#E91E63] transition-colors">
                 Planos
               </Link>
@@ -62,13 +59,6 @@ export function Layout() {
               >
                 <Home size={16} />
                 <span>Home</span>
-              </Link>
-              <Link 
-                to="/sobre" 
-                className="hover:text-[#E91E63] transition-colors" 
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Sobre
               </Link>
               <Link 
                 to="/planos" 

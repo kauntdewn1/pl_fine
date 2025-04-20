@@ -9,7 +9,6 @@ import Terms from './pages/Terms';
 import PaymentPage from './pages/PaymentPage';
 
 // Lazy load pages
-const About = React.lazy(() => import('./pages/About'));
 const VIP = React.lazy(() => import('./pages/VIP'));
 const Privacy = React.lazy(() => import('./pages/Privacy'));
 const PaymentConfirmation = React.lazy(() => import('./pages/PaymentConfirmation'));
@@ -31,7 +30,6 @@ function App() {
           <Routes>
             <Route path="/" element={<Layout />}>
               <Route index element={<Home />} />
-              <Route path="sobre" element={<About />} />
               <Route path="planos" element={<Plans />} />
               <Route path="confirmacao" element={<PaymentConfirmation />} />
               <Route path="autenticar" element={<Autenticar />} />
