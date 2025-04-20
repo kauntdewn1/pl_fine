@@ -154,11 +154,12 @@ export default function Home() {
       <section className="py-20 bg-black/40 backdrop-blur-lg">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row gap-12 items-center max-w-4xl mx-auto">
-            <div className="w-full md:w-1/2">
+            <div className="w-full md:w-1/2 relative">
+              <div className="absolute inset-0 bg-[#E91E63] blur-3xl opacity-20 rounded-full transform -translate-y-4"></div>
               <ImageWithFallback
                 src="https://res.cloudinary.com/dt9m3pkjv/image/upload/w_1000,ar_1:1,c_fill,g_auto,e_art:hokusai/v1743376996/PAULA/fshl7aofaf0kulzpjxvk.png"
                 alt="Paula Azevedo"
-                className="rounded-2xl shadow-2xl border border-[#E91E63]/20"
+                className="rounded-2xl shadow-2xl border border-[#E91E63]/20 relative z-10"
                 fallbackSrc="/about-fallback.jpg"
               />
             </div>
