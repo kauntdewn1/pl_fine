@@ -43,7 +43,7 @@ const PaymentPage: React.FC = () => {
             'Atualizações semanais',
             'Suporte por email'
           ],
-          gumroadLink: 'https://paulaazevedo.gumroad.com/l/basiquinha'
+          gumroadLink: 'https://paulaazevedo.gumroad.com/l/basiquinha?wanted=true'
         };
       case 'vip':
         return {
@@ -55,7 +55,7 @@ const PaymentPage: React.FC = () => {
             'Suporte prioritário',
             'Conteúdo exclusivo'
           ],
-          gumroadLink: 'https://paulaazevedo.gumroad.com/l/vip'
+          gumroadLink: 'https://paulaazevedo.gumroad.com/l/vip?wanted=true'
         };
       default:
         return null;
