@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, Outlet } from 'react-router-dom';
-import { Menu, X, Instagram, Send, Home } from 'lucide-react';
+import { Menu, X, Instagram, Send, Home, LogIn } from 'lucide-react';
 import { ImageWithFallback } from './ImageWithFallback';
 import VipFeed from '../pages/VipFeed';
 
@@ -98,13 +98,19 @@ export function Layout() {
               <Send size={20} />
               <span className="text-sm">Telegram</span>
             </a>
+            <Link 
+              to="/admin/login"
+              className="flex items-center justify-center gap-2 bg-black/40 hover:bg-[#E91E63]/90 text-white px-6 py-3 rounded-full transition-all duration-300 border border-[#E91E63]/20 hover:border-transparent shadow-lg hover:shadow-[#E91E63]/20 hover:shadow-2xl transform hover:-translate-y-0.5"
+            >
+              <LogIn size={20} />
+              <span className="text-sm">Login</span>
+            </Link>
           </div>
           <div className="text-center text-white/60">
             <div className="flex justify-center gap-8 mb-6 text-sm">
               <Link to="/termos" className="hover:text-[#E91E63] transition-colors">Termos de Uso</Link>
               <Link to="/privacidade" className="hover:text-[#E91E63] transition-colors">Política de Privacidade</Link>
               <a href="mailto:contato@paulaazevedo.com" className="hover:text-[#E91E63] transition-colors">Contato</a>
-              <Link to="/admin/login" className="hover:text-[#E91E63] transition-colors">Login</Link>
             </div>
             <p className="text-sm">© 2025 Paula Azevedo | Conteúdo Exclusivo +18</p>
             <p className="text-xs mt-2">Todos os direitos reservados</p>
