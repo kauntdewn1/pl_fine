@@ -104,6 +104,7 @@ export function Layout() {
               <Link to="/termos" className="hover:text-[#E91E63] transition-colors">Termos de Uso</Link>
               <Link to="/privacidade" className="hover:text-[#E91E63] transition-colors">Política de Privacidade</Link>
               <a href="mailto:contato@paulaazevedo.com" className="hover:text-[#E91E63] transition-colors">Contato</a>
+              <Link to="/admin/login" className="hover:text-[#E91E63] transition-colors">Login</Link>
             </div>
             <p className="text-sm">© 2025 Paula Azevedo | Conteúdo Exclusivo +18</p>
             <p className="text-xs mt-2">Todos os direitos reservados</p>
