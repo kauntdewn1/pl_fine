@@ -1,6 +1,7 @@
 import React from 'react';
 import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Layout } from './components/Layout';
+import { AdminLayout } from './components/AdminLayout';
 import { AgeVerification } from './components/AgeVerification';
 import { useAuthStore } from './store/authStore';
 import Home from './pages/Home';
@@ -23,18 +24,23 @@ function App() {
   return (
     <HashRouter>
       <Routes>
-        <Route path="/admin/register" element={<AdminRegister />} />
-        <Route path="/admin/login" element={<AdminLogin />} />
-        <Route 
-          path="/admin" 
-          element={
-            localStorage.getItem('userEmail') ? (
-              <Admin />
-            ) : (
-              <Navigate to="/admin/login" replace />
-            )
-          } 
-        />
+        {/* Rotas de Admin sem verificação de idade */}
+        <Route element={<AdminLayout />}>
+          <Route path="/admin/register" element={<AdminRegister />} />
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route 
+            path="/admin" 
+            element={
+              localStorage.getItem('userEmail') ? (
+                <Admin />
+              ) : (
+                <Navigate to="/admin/login" replace />
+              )
+            } 
+          />
+        </Route>
+
+        {/* Rotas normais com verificação de idade */}
         <Route path="/" element={!ageVerified ? <AgeVerification /> : <Layout />}>
           <Route index element={<Home />} />
           <Route path="planos" element={<Plans />} />
