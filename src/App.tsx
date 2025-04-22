@@ -14,6 +14,7 @@ const Privacy = React.lazy(() => import('./pages/Privacy'));
 const PaymentConfirmation = React.lazy(() => import('./pages/PaymentConfirmation'));
 const Autenticar = React.lazy(() => import('./pages/Autenticar'));
 const Admin = React.lazy(() => import('./pages/Admin'));
+const AdminLogin = React.lazy(() => import('./pages/AdminLogin'));
 
 function App() {
   const { ageVerified } = useAuthStore();
@@ -21,7 +22,17 @@ function App() {
   return (
     <HashRouter>
       <Routes>
-        <Route path="/admin" element={<Admin />} />
+        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route 
+          path="/admin" 
+          element={
+            localStorage.getItem('userEmail') ? (
+              <Admin />
+            ) : (
+              <Navigate to="/admin/login" replace />
+            )
+          } 
+        />
         <Route path="/" element={!ageVerified ? <AgeVerification /> : <Layout />}>
           <Route index element={<Home />} />
           <Route path="planos" element={<Plans />} />
