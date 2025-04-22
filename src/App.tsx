@@ -1,8 +1,6 @@
 import React from 'react';
 import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Layout } from './components/Layout';
-import { AgeVerification } from './components/AgeVerification';
-import { useAuthStore } from './store/authStore';
 import Home from './pages/Home';
 import Plans from './pages/Planos';
 import Terms from './pages/Terms';
@@ -17,8 +15,6 @@ const AdminLogin = React.lazy(() => import('./pages/AdminLogin'));
 const AdminRegister = React.lazy(() => import('./pages/AdminRegister'));
 
 function App() {
-  const { ageVerified } = useAuthStore();
-
   return (
     <HashRouter>
       <Routes>
@@ -38,8 +34,8 @@ function App() {
           />
         </Route>
 
-        {/* Rotas públicas - Com verificação de idade */}
-        <Route element={!ageVerified ? <AgeVerification /> : <Layout />}>
+        {/* Rotas públicas - Temporariamente sem verificação de idade */}
+        <Route element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="planos" element={<Plans />} />
           <Route path="confirmacao" element={<PaymentConfirmation />} />
