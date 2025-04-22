@@ -7,6 +7,7 @@ import { supabase } from '../lib/supabase';
 export default function AdminRegister() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
   const [credentials, setCredentials] = useState({
     email: '',
     password: '',
@@ -16,10 +17,12 @@ export default function AdminRegister() {
   async function handleRegister(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
+    setError('');
     console.log('Iniciando processo de registro para:', credentials.email);
 
     if (credentials.password !== credentials.confirmPassword) {
       console.log('Erro: Senhas não coincidem');
+      setError('As senhas não coincidem');
       toast.error('As senhas não coincidem');
       setLoading(false);
       return;
@@ -52,6 +55,11 @@ export default function AdminRegister() {
         console.error('Erro ao criar usuário:', authError);
         throw authError;
       }
+      
+      if (!authData.user) {
+        throw new Error('Erro ao criar usuário: dados do usuário não disponíveis');
+      }
+
       console.log('Usuário criado com sucesso:', authData);
 
       // Criar registro na tabela clientes_vip
@@ -63,7 +71,8 @@ export default function AdminRegister() {
             email: credentials.email,
             is_admin: true,
             status: 'ativo',
-            plano: 'admin'
+            plano: 'admin',
+            user_id: authData.user.id
           }
         ])
         .select()
@@ -75,11 +84,13 @@ export default function AdminRegister() {
       }
       console.log('Registro de admin criado com sucesso:', adminData);
 
-      toast.success('Administrador registrado com sucesso!');
+      toast.success('Administrador registrado com sucesso! Por favor, confirme seu email antes de fazer login.');
       navigate('/admin/login');
     } catch (error: any) {
       console.error('Erro detalhado no registro:', error);
-      toast.error(error.message || 'Erro ao registrar administrador. Tente novamente.');
+      const errorMessage = error.message || 'Erro ao registrar administrador. Tente novamente.';
+      setError(errorMessage);
+      toast.error(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -95,6 +106,12 @@ export default function AdminRegister() {
           <h1 className="text-3xl font-bold text-white mb-2">Registro de Administrador</h1>
           <p className="text-white/60">Crie sua conta de administrador</p>
         </div>
+
+        {error && (
+          <div className="mb-4 p-3 bg-red-500/10 border border-red-500/20 rounded-lg text-red-500 text-sm">
+            {error}
+          </div>
+        )}
 
         <form onSubmit={handleRegister} className="space-y-4">
           <div>
