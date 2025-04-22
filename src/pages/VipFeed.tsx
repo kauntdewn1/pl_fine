@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { supabase } from '../lib/supabase';
+import { useNavigate } from 'react-router-dom';
 import { Heart, MessageCircle, Share2, Bookmark, Loader2 } from 'lucide-react';
 import { toast } from 'react-hot-toast';
+import { getVipPosts, toggleLike, checkUserVip } from '../lib/supabaseFunctions';
 
 interface Post {
   id: string;
@@ -10,30 +11,76 @@ interface Post {
   created_at: string;
   likes: number;
   comments: number;
+  user_liked: boolean;
 }
 
 export default function VipFeed() {
+  const navigate = useNavigate();
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isVip, setIsVip] = useState(false);
 
   useEffect(() => {
-    fetchPosts();
-  }, []);
+    const userEmail = localStorage.getItem('userEmail');
+    if (!userEmail) {
+      toast.error('Você precisa estar logado para acessar este conteúdo');
+      navigate('/planos');
+      return;
+    }
 
-  async function fetchPosts() {
+    checkVipStatus(userEmail);
+    loadPosts(userEmail);
+  }, [navigate]);
+
+  async function checkVipStatus(userEmail: string) {
     try {
-      const { data, error } = await supabase
-        .from('vip_posts')
-        .select('*')
-        .order('created_at', { ascending: false });
+      const isVipUser = await checkUserVip(userEmail);
+      setIsVip(isVipUser);
+      
+      if (!isVipUser) {
+        toast.error('Você precisa ser um usuário VIP para acessar este conteúdo');
+        navigate('/planos');
+      }
+    } catch (error) {
+      console.error('Erro ao verificar status VIP:', error);
+      toast.error('Erro ao verificar seu status. Tente novamente.');
+    }
+  }
 
-      if (error) throw error;
-      setPosts(data || []);
+  async function loadPosts(userEmail: string) {
+    try {
+      const data = await getVipPosts(userEmail);
+      setPosts(data);
     } catch (error) {
       console.error('Erro ao carregar posts:', error);
       toast.error('Erro ao carregar o feed. Tente novamente.');
     } finally {
       setLoading(false);
+    }
+  }
+
+  async function handleLike(postId: string) {
+    const userEmail = localStorage.getItem('userEmail');
+    if (!userEmail) return;
+
+    try {
+      const liked = await toggleLike(postId, userEmail);
+      
+      setPosts(posts.map(post => {
+        if (post.id === postId) {
+          return {
+            ...post,
+            likes: liked ? post.likes + 1 : post.likes - 1,
+            user_liked: liked
+          };
+        }
+        return post;
+      }));
+
+      toast.success(liked ? 'Curtido!' : 'Curtida removida');
+    } catch (error) {
+      console.error('Erro ao dar like:', error);
+      toast.error('Erro ao processar sua curtida. Tente novamente.');
     }
   }
 
@@ -48,6 +95,10 @@ export default function VipFeed() {
         </div>
       </div>
     );
+  }
+
+  if (!isVip) {
+    return null;
   }
 
   return (
@@ -76,7 +127,12 @@ export default function VipFeed() {
 
               <div className="p-4">
                 <div className="flex items-center space-x-4 mb-4">
-                  <button className="flex items-center space-x-2 text-white/80 hover:text-[#E91E63] transition-colors">
+                  <button 
+                    onClick={() => handleLike(post.id)}
+                    className={`flex items-center space-x-2 transition-colors ${
+                      post.user_liked ? 'text-[#E91E63]' : 'text-white/80 hover:text-[#E91E63]'
+                    }`}
+                  >
                     <Heart className="w-6 h-6" />
                     <span>{post.likes}</span>
                   </button>
