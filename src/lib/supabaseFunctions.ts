@@ -89,4 +89,40 @@ export async function checkTableStructure() {
       error: error.message
     };
   }
+}
+
+export async function debugAdminCheck(email: string) {
+  try {
+    console.log('=== Iniciando debug de verificação de admin ===');
+    
+    // 1. Verificar se o usuário está autenticado
+    const { data: session } = await supabase.auth.getSession();
+    console.log('Sessão atual:', session);
+
+    // 2. Tentar buscar o registro direto
+    const { data: adminData, error: adminError } = await supabase
+      .from('clientes_vip')
+      .select('*')
+      .eq('email', email)
+      .single();
+
+    console.log('Resultado da busca:', { adminData, adminError });
+
+    // 3. Verificar políticas
+    const { data: policies, error: policiesError } = await supabaseAdmin
+      .rpc('get_policies', { table_name: 'clientes_vip' });
+
+    console.log('Políticas da tabela:', { policies, policiesError });
+
+    return {
+      session,
+      adminData,
+      adminError,
+      policies,
+      policiesError
+    };
+  } catch (error) {
+    console.error('Erro no debug:', error);
+    return { error };
+  }
 } 

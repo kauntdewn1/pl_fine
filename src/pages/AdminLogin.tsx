@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import { supabase } from '../lib/supabase';
+import { debugAdminCheck } from '../lib/supabaseFunctions';
 
 export default function AdminLogin() {
   const navigate = useNavigate();
@@ -41,6 +42,10 @@ export default function AdminLogin() {
 
       console.log('Autenticação bem-sucedida:', authData);
 
+      // Debug da verificação de admin
+      const debugResult = await debugAdminCheck(credentials.email);
+      console.log('Debug da verificação de admin:', debugResult);
+
       // Verificar se o usuário é admin
       console.log('Verificando status de admin na tabela clientes_vip...');
       const { data: adminData, error: adminError } = await supabase
@@ -53,7 +58,7 @@ export default function AdminLogin() {
 
       if (adminError) {
         console.error('Erro ao verificar status de admin:', adminError);
-        const errorMessage = 'Erro ao verificar permissões de administrador';
+        const errorMessage = 'Erro ao verificar permissões de administrador. Detalhes: ' + adminError.message;
         setError(errorMessage);
         toast.error(errorMessage);
         throw new Error(errorMessage);
