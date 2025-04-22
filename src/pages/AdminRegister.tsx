@@ -1,48 +1,56 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Lock, Loader2 } from 'lucide-react';
+import { UserPlus, Loader2 } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 import { supabase } from '../lib/supabase';
 
-export default function AdminLogin() {
+export default function AdminRegister() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [credentials, setCredentials] = useState({
     email: '',
-    password: ''
+    password: '',
+    confirmPassword: ''
   });
 
-  async function handleLogin(e: React.FormEvent) {
+  async function handleRegister(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
 
+    if (credentials.password !== credentials.confirmPassword) {
+      toast.error('As senhas não coincidem');
+      setLoading(false);
+      return;
+    }
+
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({
+      // Criar usuário no Supabase Auth
+      const { data: authData, error: authError } = await supabase.auth.signUp({
         email: credentials.email,
         password: credentials.password
       });
 
-      if (error) throw error;
+      if (authError) throw authError;
 
-      // Verificar se o usuário é admin
-      const { data: adminData, error: adminError } = await supabase
+      // Criar registro na tabela clientes_vip
+      const { error: dbError } = await supabase
         .from('clientes_vip')
-        .select('is_admin')
-        .eq('email', credentials.email)
-        .single();
+        .insert([
+          {
+            email: credentials.email,
+            is_admin: true,
+            status: 'ativo',
+            plano: 'admin'
+          }
+        ]);
 
-      if (adminError || !adminData?.is_admin) {
-        throw new Error('Acesso restrito a administradores');
-      }
+      if (dbError) throw dbError;
 
-      // Salvar email para uso posterior
-      localStorage.setItem('userEmail', credentials.email);
-      
-      toast.success('Login realizado com sucesso!');
-      navigate('/admin');
+      toast.success('Administrador registrado com sucesso!');
+      navigate('/admin/login');
     } catch (error: any) {
-      console.error('Erro no login:', error);
-      toast.error(error.message || 'Erro ao fazer login. Tente novamente.');
+      console.error('Erro no registro:', error);
+      toast.error(error.message || 'Erro ao registrar administrador. Tente novamente.');
     } finally {
       setLoading(false);
     }
@@ -53,13 +61,13 @@ export default function AdminLogin() {
       <div className="w-full max-w-md p-8">
         <div className="text-center mb-8">
           <div className="w-16 h-16 bg-[#E91E63]/10 rounded-full flex items-center justify-center mx-auto mb-4">
-            <Lock className="text-[#E91E63]" size={32} />
+            <UserPlus className="text-[#E91E63]" size={32} />
           </div>
-          <h1 className="text-3xl font-bold text-white mb-2">Login Administrativo</h1>
-          <p className="text-white/60">Acesso restrito a administradores</p>
+          <h1 className="text-3xl font-bold text-white mb-2">Registro de Administrador</h1>
+          <p className="text-white/60">Crie sua conta de administrador</p>
         </div>
 
-        <form onSubmit={handleLogin} className="space-y-4">
+        <form onSubmit={handleRegister} className="space-y-4">
           <div>
             <label className="block text-white/80 mb-2">Email</label>
             <input
@@ -78,6 +86,18 @@ export default function AdminLogin() {
               onChange={(e) => setCredentials({ ...credentials, password: e.target.value })}
               className="w-full bg-black/50 border border-[#E91E63]/20 rounded-lg px-4 py-2 text-white"
               required
+              minLength={6}
+            />
+          </div>
+          <div>
+            <label className="block text-white/80 mb-2">Confirmar Senha</label>
+            <input
+              type="password"
+              value={credentials.confirmPassword}
+              onChange={(e) => setCredentials({ ...credentials, confirmPassword: e.target.value })}
+              className="w-full bg-black/50 border border-[#E91E63]/20 rounded-lg px-4 py-2 text-white"
+              required
+              minLength={6}
             />
           </div>
           <button
@@ -88,20 +108,20 @@ export default function AdminLogin() {
             {loading ? (
               <>
                 <Loader2 className="w-5 h-5 inline-block mr-2 animate-spin" />
-                Entrando...
+                Registrando...
               </>
             ) : (
-              'Entrar'
+              'Registrar'
             )}
           </button>
         </form>
 
         <div className="text-center mt-4">
           <button
-            onClick={() => navigate('/admin/register')}
+            onClick={() => navigate('/admin/login')}
             className="text-white/60 hover:text-white transition-colors"
           >
-            Não tem uma conta? Registre-se
+            Já tem uma conta? Faça login
           </button>
         </div>
       </div>
