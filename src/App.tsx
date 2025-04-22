@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Layout } from './components/Layout';
 import Home from './pages/Home';
 import Plans from './pages/Planos';
 import Terms from './pages/Terms';
 import PaymentPage from './pages/PaymentPage';
+import { checkTableStructure } from './lib/supabaseFunctions';
 
 // Lazy load pages
 const Privacy = React.lazy(() => import('./pages/Privacy'));
@@ -15,6 +16,14 @@ const AdminLogin = React.lazy(() => import('./pages/AdminLogin'));
 const AdminRegister = React.lazy(() => import('./pages/AdminRegister'));
 
 function App() {
+  useEffect(() => {
+    async function checkDatabase() {
+      const result = await checkTableStructure();
+      console.log('Resultado da verificação do banco:', result);
+    }
+    checkDatabase();
+  }, []);
+
   return (
     <HashRouter>
       <Routes>

@@ -16,24 +16,47 @@ export default function AdminRegister() {
   async function handleRegister(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
+    console.log('Iniciando processo de registro para:', credentials.email);
 
     if (credentials.password !== credentials.confirmPassword) {
+      console.log('Erro: Senhas não coincidem');
       toast.error('As senhas não coincidem');
       setLoading(false);
       return;
     }
 
     try {
+      // Verificar se já existe um admin com este email
+      console.log('Verificando se já existe um admin...');
+      const { data: existingAdmin, error: checkError } = await supabase
+        .from('clientes_vip')
+        .select('*')
+        .eq('email', credentials.email)
+        .single();
+
+      console.log('Resultado da verificação de admin existente:', { existingAdmin, checkError });
+
+      if (existingAdmin) {
+        console.error('Admin já existe:', existingAdmin);
+        throw new Error('Este email já está registrado como administrador');
+      }
+
       // Criar usuário no Supabase Auth
+      console.log('Criando usuário no Supabase Auth...');
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email: credentials.email,
         password: credentials.password
       });
 
-      if (authError) throw authError;
+      if (authError) {
+        console.error('Erro ao criar usuário:', authError);
+        throw authError;
+      }
+      console.log('Usuário criado com sucesso:', authData);
 
       // Criar registro na tabela clientes_vip
-      const { error: dbError } = await supabase
+      console.log('Criando registro na tabela clientes_vip...');
+      const { data: adminData, error: dbError } = await supabase
         .from('clientes_vip')
         .insert([
           {
@@ -42,14 +65,20 @@ export default function AdminRegister() {
             status: 'ativo',
             plano: 'admin'
           }
-        ]);
+        ])
+        .select()
+        .single();
 
-      if (dbError) throw dbError;
+      if (dbError) {
+        console.error('Erro ao criar registro de admin:', dbError);
+        throw dbError;
+      }
+      console.log('Registro de admin criado com sucesso:', adminData);
 
       toast.success('Administrador registrado com sucesso!');
       navigate('/admin/login');
     } catch (error: any) {
-      console.error('Erro no registro:', error);
+      console.error('Erro detalhado no registro:', error);
       toast.error(error.message || 'Erro ao registrar administrador. Tente novamente.');
     } finally {
       setLoading(false);

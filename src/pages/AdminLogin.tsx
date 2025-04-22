@@ -14,31 +14,47 @@ export default function AdminLogin() {
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
+    console.log('Iniciando processo de login para:', credentials.email);
 
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({
+      console.log('Tentando autenticar com Supabase Auth...');
+      const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
         email: credentials.email,
         password: credentials.password
       });
 
-      if (error) throw error;
+      if (authError) {
+        console.error('Erro na autenticação:', authError);
+        throw authError;
+      }
+      console.log('Autenticação bem-sucedida:', authData);
 
       // Verificar se o usuário é admin
+      console.log('Verificando status de admin na tabela clientes_vip...');
       const { data: adminData, error: adminError } = await supabase
         .from('clientes_vip')
-        .select('is_admin')
+        .select('*')
         .eq('email', credentials.email)
         .single();
 
-      if (adminError || !adminData?.is_admin) {
+      console.log('Resultado da consulta admin:', { adminData, adminError });
+
+      if (adminError) {
+        console.error('Erro ao verificar status de admin:', adminError);
+        throw new Error('Erro ao verificar permissões de administrador');
+      }
+
+      if (!adminData?.is_admin) {
+        console.error('Usuário não é admin:', adminData);
         throw new Error('Acesso restrito a administradores');
       }
 
+      console.log('Usuário confirmado como admin:', adminData);
       localStorage.setItem('userEmail', credentials.email);
       toast.success('Login realizado com sucesso!');
       navigate('/admin');
     } catch (error: any) {
-      console.error('Erro no login:', error);
+      console.error('Erro detalhado no login:', error);
       toast.error(error.message || 'Erro ao fazer login. Tente novamente.');
     } finally {
       setLoading(false);

@@ -1,4 +1,4 @@
-import { supabase } from './supabase';
+import { supabase, supabaseAdmin } from './supabase';
 
 export async function checkUserVip(email: string) {
   const { data, error } = await supabase
@@ -45,4 +45,48 @@ export async function getVipPosts(userEmail: string, limit = 10, offset = 0) {
   
   if (error) throw error;
   return data;
+}
+
+export async function checkTableStructure() {
+  try {
+    console.log('Verificando estrutura da tabela clientes_vip...');
+    
+    // Verificar se a tabela existe
+    const { data: tableExists, error: tableError } = await supabaseAdmin
+      .from('clientes_vip')
+      .select('*')
+      .limit(1);
+
+    if (tableError) {
+      console.error('Erro ao verificar tabela:', tableError);
+      return {
+        exists: false,
+        error: tableError.message
+      };
+    }
+
+    // Verificar estrutura da tabela
+    const { data: columns, error: columnsError } = await supabaseAdmin
+      .rpc('get_table_info', { table_name: 'clientes_vip' });
+
+    if (columnsError) {
+      console.error('Erro ao verificar colunas:', columnsError);
+      return {
+        exists: true,
+        error: columnsError.message
+      };
+    }
+
+    console.log('Estrutura da tabela:', columns);
+    return {
+      exists: true,
+      columns: columns
+    };
+  } catch (error) {
+    console.error('Erro ao verificar estrutura:', error);
+    return {
+      exists: false,
+      error: error.message
+    };
+  }
 } 
