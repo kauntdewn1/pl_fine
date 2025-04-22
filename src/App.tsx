@@ -24,12 +24,12 @@ function App() {
   return (
     <HashRouter>
       <Routes>
-        {/* Rotas de Admin sem verificação de idade */}
-        <Route element={<AdminLayout />}>
-          <Route path="/admin/register" element={<AdminRegister />} />
-          <Route path="/admin/login" element={<AdminLogin />} />
+        {/* Rotas de Admin - Sem verificação de idade */}
+        <Route path="/admin">
+          <Route path="register" element={<AdminRegister />} />
+          <Route path="login" element={<AdminLogin />} />
           <Route 
-            path="/admin" 
+            index 
             element={
               localStorage.getItem('userEmail') ? (
                 <Admin />
@@ -40,7 +40,7 @@ function App() {
           />
         </Route>
 
-        {/* Rotas normais com verificação de idade */}
+        {/* Rotas normais - Com verificação de idade */}
         <Route path="/" element={!ageVerified ? <AgeVerification /> : <Layout />}>
           <Route index element={<Home />} />
           <Route path="planos" element={<Plans />} />
