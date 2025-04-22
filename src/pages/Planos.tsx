@@ -1,11 +1,12 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { supabase } from '../lib/supabase';
-import { Lock, Send, MessageSquare, Mail, Zap, Crown, AlertCircle, ArrowRight } from 'lucide-react';
+import { Lock, Send, MessageSquare, Mail, Zap, Crown, AlertCircle, ArrowRight, Loader2 } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 
 export default function Plans() {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -16,6 +17,15 @@ export default function Plans() {
     const planoInput = document.getElementById('plano') as HTMLInputElement;
     if (emailInput) emailInput.value = email;
     if (planoInput) planoInput.value = plano;
+
+    // Simular carregamento para melhor UX
+    if (email && plano) {
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 2000);
+    } else {
+      setIsLoading(false);
+    }
   }, []);
 
   async function enviarCanal(canal: 'telegram' | 'whatsapp' | 'email') {
@@ -50,6 +60,20 @@ export default function Plans() {
 
   const urlParams = new URLSearchParams(window.location.search);
   const isConfirmation = urlParams.get('email') && urlParams.get('plano');
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin mb-4">
+            <Loader2 className="w-12 h-12 text-[#E91E63]" />
+          </div>
+          <h2 className="text-2xl font-bold text-white mb-2">Confirmando seu acesso...</h2>
+          <p className="text-white/60">Por favor, aguarde enquanto processamos sua compra.</p>
+        </div>
+      </div>
+    );
+  }
 
   if (isConfirmation) {
     return (
@@ -193,7 +217,7 @@ export default function Plans() {
                 </ul>
 
                 <div className="text-center mb-6">
-                  <span className="text-4xl font-bold text-white">R$ 99,90</span>
+                  <span className="text-4xl font-bold text-white">R$ 59,90</span>
                   <span className="text-white/60">/mês</span>
                 </div>
 

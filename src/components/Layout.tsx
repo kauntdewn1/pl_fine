@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, Outlet } from 'react-router-dom';
 import { Menu, X, Instagram, Send, Home } from 'lucide-react';
 import { ImageWithFallback } from './ImageWithFallback';
+import VipFeed from '../pages/VipFeed';
 
 export function Layout() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
