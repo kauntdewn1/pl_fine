@@ -142,6 +142,9 @@ export default function Plans() {
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-12">
+              <div className="bg-[#E91E63] text-white text-sm px-4 py-2 rounded-full inline-block mb-4">
+                Versão de Teste
+              </div>
               <h1 className="text-4xl font-bold text-white mb-4">Escolha seu Plano</h1>
               <p className="text-white/60 text-lg">
                 Selecione o plano que melhor atende às suas necessidades
