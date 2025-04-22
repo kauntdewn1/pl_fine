@@ -1,5 +1,7 @@
 # Site VIP - Plataforma de Conteúdo Exclusivo
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/0ec76364-c381-4ffb-93ff-f65730231cb3/deploy-status)](https://app.netlify.com/sites/paulinhaazv/deploys)
+
 Plataforma de conteúdo exclusivo com sistema de assinatura e pagamentos.
 
 ## Tecnologias Utilizadas
