@@ -7,9 +7,18 @@ interface AuthState {
   setAgeVerified: (value: boolean) => void;
 }
 
+// Inicializar o estado com o valor do localStorage
+const getInitialAgeVerified = () => {
+  const stored = localStorage.getItem('ageVerified');
+  return stored ? JSON.parse(stored) : false;
+};
+
 export const useAuthStore = create<AuthState>((set) => ({
   isAuthenticated: false,
-  ageVerified: false,
+  ageVerified: getInitialAgeVerified(),
   setAuthenticated: (value) => set({ isAuthenticated: value }),
-  setAgeVerified: (value) => set({ ageVerified: value }),
+  setAgeVerified: (value) => {
+    localStorage.setItem('ageVerified', JSON.stringify(value));
+    set({ ageVerified: value });
+  },
 }));
