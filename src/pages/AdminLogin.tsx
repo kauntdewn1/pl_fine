@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Lock, Loader2 } from 'lucide-react';
+import { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import { supabase } from '../lib/supabase';
 
@@ -35,9 +34,7 @@ export default function AdminLogin() {
         throw new Error('Acesso restrito a administradores');
       }
 
-      // Salvar email para uso posterior
       localStorage.setItem('userEmail', credentials.email);
-      
       toast.success('Login realizado com sucesso!');
       navigate('/admin');
     } catch (error: any) {
@@ -49,61 +46,74 @@ export default function AdminLogin() {
   }
 
   return (
-    <div className="min-h-screen bg-black flex items-center justify-center">
-      <div className="w-full max-w-md p-8">
+    <div className="min-h-screen bg-black flex items-center justify-center p-4">
+      <div className="max-w-md w-full bg-black/40 backdrop-blur-lg p-8 rounded-2xl border border-[#E91E63]/20 shadow-lg">
         <div className="text-center mb-8">
           <div className="w-16 h-16 bg-[#E91E63]/10 rounded-full flex items-center justify-center mx-auto mb-4">
-            <Lock className="text-[#E91E63]" size={32} />
+            <i className='bx bxs-user text-[#E91E63] text-3xl'></i>
           </div>
-          <h1 className="text-3xl font-bold text-white mb-2">Login Administrativo</h1>
-          <p className="text-white/60">Acesso restrito a administradores</p>
+          <h2 className="text-2xl font-bold text-white mb-2">Login Administrativo</h2>
+          <p className="text-white/60">
+            Acesse sua conta de administrador
+          </p>
         </div>
 
-        <form onSubmit={handleLogin} className="space-y-4">
-          <div>
-            <label className="block text-white/80 mb-2">Email</label>
+        <form onSubmit={handleLogin} className="space-y-6">
+          <div className="relative">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <i className='bx bx-envelope text-[#E91E63] text-xl'></i>
+            </div>
             <input
               type="email"
               value={credentials.email}
               onChange={(e) => setCredentials({ ...credentials, email: e.target.value })}
-              className="w-full bg-black/50 border border-[#E91E63]/20 rounded-lg px-4 py-2 text-white"
+              className="w-full bg-black/50 border border-[#E91E63]/20 rounded-lg pl-10 pr-4 py-3 text-white placeholder-white/60"
+              placeholder="Email"
               required
             />
           </div>
-          <div>
-            <label className="block text-white/80 mb-2">Senha</label>
+
+          <div className="relative">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <i className='bx bx-lock-alt text-[#E91E63] text-xl'></i>
+            </div>
             <input
               type="password"
               value={credentials.password}
               onChange={(e) => setCredentials({ ...credentials, password: e.target.value })}
-              className="w-full bg-black/50 border border-[#E91E63]/20 rounded-lg px-4 py-2 text-white"
+              className="w-full bg-black/50 border border-[#E91E63]/20 rounded-lg pl-10 pr-4 py-3 text-white placeholder-white/60"
+              placeholder="Senha"
               required
             />
           </div>
+
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-[#E91E63] hover:bg-[#E91E63]/90 text-white font-semibold py-3 px-4 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full bg-[#E91E63] hover:bg-[#E91E63]/90 text-white py-3 px-4 rounded-lg transition-all duration-300 shadow-lg hover:shadow-[#E91E63]/20 hover:shadow-2xl transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
             {loading ? (
               <>
-                <Loader2 className="w-5 h-5 inline-block mr-2 animate-spin" />
-                Entrando...
+                <i className='bx bx-loader-alt animate-spin text-xl'></i>
+                <span>Entrando...</span>
               </>
             ) : (
-              'Entrar'
+              <>
+                <i className='bx bx-log-in text-xl'></i>
+                <span>Entrar</span>
+              </>
             )}
           </button>
-        </form>
 
-        <div className="text-center mt-4">
-          <button
-            onClick={() => navigate('/admin/register')}
-            className="text-white/60 hover:text-white transition-colors"
-          >
-            Não tem uma conta? Registre-se
-          </button>
-        </div>
+          <div className="text-center">
+            <Link 
+              to="/admin/register" 
+              className="text-[#E91E63] hover:text-[#E91E63]/90 transition-colors text-sm"
+            >
+              Criar conta de administrador
+            </Link>
+          </div>
+        </form>
       </div>
     </div>
   );
