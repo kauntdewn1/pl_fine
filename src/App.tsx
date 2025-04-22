@@ -20,29 +20,19 @@ function App() {
 
   return (
     <HashRouter>
-      {!ageVerified ? (
-        <AgeVerification />
-      ) : (
-        <React.Suspense fallback={
-          <div className="min-h-screen bg-background flex items-center justify-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-accent"></div>
-          </div>
-        }>
-          <Routes>
-            <Route path="/" element={<Layout />}>
-              <Route index element={<Home />} />
-              <Route path="planos" element={<Plans />} />
-              <Route path="confirmacao" element={<PaymentConfirmation />} />
-              <Route path="autenticar" element={<Autenticar />} />
-              <Route path="vip" element={<Navigate to="/planos" replace />} />
-              <Route path="termos" element={<Terms />} />
-              <Route path="privacidade" element={<Privacy />} />
-              <Route path="pagamento/:plan" element={<PaymentPage />} />
-              <Route path="admin" element={<Admin />} />
-            </Route>
-          </Routes>
-        </React.Suspense>
-      )}
+      <Routes>
+        <Route path="/admin" element={<Admin />} />
+        <Route path="/" element={!ageVerified ? <AgeVerification /> : <Layout />}>
+          <Route index element={<Home />} />
+          <Route path="planos" element={<Plans />} />
+          <Route path="confirmacao" element={<PaymentConfirmation />} />
+          <Route path="autenticar" element={<Autenticar />} />
+          <Route path="vip" element={<Navigate to="/planos" replace />} />
+          <Route path="termos" element={<Terms />} />
+          <Route path="privacidade" element={<Privacy />} />
+          <Route path="pagamento/:plan" element={<PaymentPage />} />
+        </Route>
+      </Routes>
     </HashRouter>
   );
 }
