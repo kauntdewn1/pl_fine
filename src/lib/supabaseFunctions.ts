@@ -8,6 +8,14 @@ export async function checkUserVip(email: string) {
   return data;
 }
 
+export async function checkUserAdmin(email: string) {
+  const { data, error } = await supabase
+    .rpc('is_user_admin', { user_email: email });
+  
+  if (error) throw error;
+  return data;
+}
+
 export async function toggleLike(postId: string, userEmail: string) {
   const { data, error } = await supabase
     .rpc('toggle_post_like', { 
