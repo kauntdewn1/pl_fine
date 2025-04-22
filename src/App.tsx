@@ -22,8 +22,8 @@ function App() {
   return (
     <HashRouter>
       <Routes>
-        {/* Rotas de Admin - Sem verificação de idade */}
-        <Route path="/admin">
+        {/* Rotas Admin - Completamente separadas da verificação de idade */}
+        <Route path="/admin/*">
           <Route path="register" element={<AdminRegister />} />
           <Route path="login" element={<AdminLogin />} />
           <Route 
@@ -38,8 +38,8 @@ function App() {
           />
         </Route>
 
-        {/* Rotas normais - Com verificação de idade */}
-        <Route path="/" element={!ageVerified ? <AgeVerification /> : <Layout />}>
+        {/* Rotas públicas - Com verificação de idade */}
+        <Route element={!ageVerified ? <AgeVerification /> : <Layout />}>
           <Route index element={<Home />} />
           <Route path="planos" element={<Plans />} />
           <Route path="confirmacao" element={<PaymentConfirmation />} />
