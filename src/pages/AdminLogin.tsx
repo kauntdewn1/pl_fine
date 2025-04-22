@@ -6,6 +6,7 @@ import { supabase } from '../lib/supabase';
 export default function AdminLogin() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
   const [credentials, setCredentials] = useState({
     email: '',
     password: ''
@@ -14,9 +15,11 @@ export default function AdminLogin() {
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
+    setError('');
     console.log('Iniciando processo de login para:', credentials.email);
 
     try {
+      // Autenticação com Supabase
       console.log('Tentando autenticar com Supabase Auth...');
       const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
         email: credentials.email,
@@ -25,8 +28,17 @@ export default function AdminLogin() {
 
       if (authError) {
         console.error('Erro na autenticação:', authError);
+        let errorMessage = 'Erro ao fazer login. ';
+        if (authError.message.includes('Invalid login credentials')) {
+          errorMessage = 'Email ou senha incorretos.';
+        } else if (authError.message.includes('Email not confirmed')) {
+          errorMessage = 'Por favor, confirme seu email antes de fazer login.';
+        }
+        setError(errorMessage);
+        toast.error(errorMessage);
         throw authError;
       }
+
       console.log('Autenticação bem-sucedida:', authData);
 
       // Verificar se o usuário é admin
@@ -41,12 +53,18 @@ export default function AdminLogin() {
 
       if (adminError) {
         console.error('Erro ao verificar status de admin:', adminError);
-        throw new Error('Erro ao verificar permissões de administrador');
+        const errorMessage = 'Erro ao verificar permissões de administrador';
+        setError(errorMessage);
+        toast.error(errorMessage);
+        throw new Error(errorMessage);
       }
 
       if (!adminData?.is_admin) {
         console.error('Usuário não é admin:', adminData);
-        throw new Error('Acesso restrito a administradores');
+        const errorMessage = 'Acesso restrito a administradores';
+        setError(errorMessage);
+        toast.error(errorMessage);
+        throw new Error(errorMessage);
       }
 
       console.log('Usuário confirmado como admin:', adminData);
@@ -55,7 +73,9 @@ export default function AdminLogin() {
       navigate('/admin');
     } catch (error: any) {
       console.error('Erro detalhado no login:', error);
-      toast.error(error.message || 'Erro ao fazer login. Tente novamente.');
+      const errorMessage = error.message || 'Erro ao fazer login. Tente novamente.';
+      setError(errorMessage);
+      toast.error(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -73,6 +93,12 @@ export default function AdminLogin() {
             Acesse sua conta de administrador
           </p>
         </div>
+
+        {error && (
+          <div className="mb-4 p-3 bg-red-500/10 border border-red-500/20 rounded-lg text-red-500 text-sm">
+            {error}
+          </div>
+        )}
 
         <form onSubmit={handleLogin} className="space-y-6">
           <div className="relative">

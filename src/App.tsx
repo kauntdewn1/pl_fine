@@ -1,5 +1,6 @@
 import React, { useEffect, Suspense } from 'react';
 import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
 import { Layout } from './components/Layout';
 import Home from './pages/Home';
 import Plans from './pages/Planos';
@@ -33,6 +34,28 @@ function App() {
 
   return (
     <HashRouter>
+      <Toaster
+        position="top-right"
+        toastOptions={{
+          duration: 4000,
+          style: {
+            background: '#333',
+            color: '#fff',
+          },
+          success: {
+            iconTheme: {
+              primary: '#E91E63',
+              secondary: '#fff',
+            },
+          },
+          error: {
+            iconTheme: {
+              primary: '#E91E63',
+              secondary: '#fff',
+            },
+          },
+        }}
+      />
       <Suspense fallback={<LoadingFallback />}>
         <Routes>
           {/* Rotas Admin - Completamente separadas da verificação de idade */}
