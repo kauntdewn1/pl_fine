@@ -19,7 +19,7 @@ export const handleWebhook = async (payload: WebhookPayload) => {
     const { status, transaction_id, created_at, email } = payload;
 
     // Verifica se o pagamento foi aprovado
-    if (status !== 'PAID') {
+    if (status.toUpperCase() !== 'PAID') {
       throw new Error('Pagamento não aprovado');
     }
 
