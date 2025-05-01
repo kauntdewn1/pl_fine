@@ -3,26 +3,214 @@
 @tailwind utilities;
 
 :root {
-  --background: #0f172a;
-  --card: #1e293b;
-  --text: #f8fafc;
-  --accent: #ec4899;
-  --accent-dark: #be185d;
+  --primary: #E91E63;
+  --background: #000000;
+  --surface: #1a1a1a;
+  --text-primary: #FFFFFF;
+  --text-secondary: rgba(255, 255, 255, 0.8);
+  --text-disabled: rgba(255, 255, 255, 0.6);
 }
 
+/* Estilos base */
 body {
-  background-color: var(--background);
-  color: var(--text);
+  @apply bg-black text-white min-h-screen;
+  font-family: 'Montserrat', sans-serif;
 }
 
-.btn-pagamento {
-  background-color: var(--accent);
-  color: white;
-  transition: all 0.3s ease;
+/* Estilos de scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
 }
 
-.btn-pagamento:hover {
-  background-color: var(--accent-dark);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+::-webkit-scrollbar-track {
+  @apply bg-black;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-[#E91E63]/50 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-[#E91E63];
+}
+
+/* Estilos de seleção */
+::selection {
+  @apply bg-[#E91E63] text-white;
+}
+
+/* Estilos de links */
+a {
+  @apply text-[#E91E63] transition-colors;
+}
+
+a:hover {
+  @apply text-[#E91E63]/80;
+}
+
+/* Estilos de botões */
+.btn {
+  @apply px-4 py-2 rounded-lg font-medium transition-all duration-300;
+}
+
+.btn-primary {
+  @apply bg-[#E91E63] text-white hover:bg-[#E91E63]/90;
+}
+
+.btn-secondary {
+  @apply bg-white/10 text-white hover:bg-white/20;
+}
+
+.btn-outline {
+  @apply border border-[#E91E63] text-[#E91E63] hover:bg-[#E91E63] hover:text-white;
+}
+
+/* Estilos de inputs */
+.input {
+  @apply bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white placeholder-white/40 focus:outline-none focus:border-[#E91E63] transition-colors;
+}
+
+/* Estilos de cards */
+.card {
+  @apply bg-[#1a1a1a] rounded-lg border border-white/10 p-4;
+}
+
+/* Estilos de modais */
+.modal {
+  @apply fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4;
+}
+
+.modal-content {
+  @apply bg-[#1a1a1a] rounded-lg p-6 max-w-md w-full border border-[#E91E63]/20;
+}
+
+/* Estilos de loading */
+.loading {
+  @apply w-12 h-12 border-4 border-[#E91E63] border-t-transparent rounded-full animate-spin;
+}
+
+/* Estilos de toast */
+.toast {
+  @apply bg-[#1a1a1a] text-white border border-[#E91E63]/20;
+}
+
+/* Estilos de grid */
+.grid-auto-fit {
+  @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4;
+}
+
+/* Estilos de animações */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-up {
+  animation: slideUp 0.3s ease-out;
+}
+
+/* Estilos de responsividade */
+@media (max-width: 640px) {
+  .container {
+    @apply px-4;
+  }
+}
+
+/* Estilos de acessibilidade */
+.focus-ring {
+  @apply focus:outline-none focus:ring-2 focus:ring-[#E91E63] focus:ring-offset-2 focus:ring-offset-black;
+}
+
+/* Estilos de tipografia */
+h1 {
+  @apply text-3xl font-bold mb-4;
+}
+
+h2 {
+  @apply text-2xl font-semibold mb-3;
+}
+
+h3 {
+  @apply text-xl font-medium mb-2;
+}
+
+p {
+  @apply text-white/80 leading-relaxed;
+}
+
+/* Estilos de listas */
+ul {
+  @apply list-disc list-inside space-y-2;
+}
+
+ol {
+  @apply list-decimal list-inside space-y-2;
+}
+
+/* Estilos de tabelas */
+table {
+  @apply w-full border-collapse;
+}
+
+th {
+  @apply bg-white/5 text-left p-4 font-medium;
+}
+
+td {
+  @apply border-t border-white/10 p-4;
+}
+
+/* Estilos de formulários */
+form {
+  @apply space-y-4;
+}
+
+label {
+  @apply block text-sm font-medium mb-1;
+}
+
+/* Estilos de badges */
+.badge {
+  @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+}
+
+.badge-primary {
+  @apply bg-[#E91E63] text-white;
+}
+
+.badge-secondary {
+  @apply bg-white/10 text-white;
+}
+
+/* Estilos de tooltips */
+.tooltip {
+  @apply relative inline-block;
+}
+
+.tooltip-text {
+  @apply invisible absolute z-10 px-3 py-2 text-sm text-white bg-[#1a1a1a] rounded-lg shadow-lg opacity-0 transition-opacity duration-300;
+}
+
+.tooltip:hover .tooltip-text {
+  @apply visible opacity-100;
 }

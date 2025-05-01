@@ -1,27 +1,22 @@
 import React, { useEffect, Suspense } from 'react';
 import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
-import { Layout } from './components/Layout';
-import Home from './pages/Home';
-import Plans from './pages/Planos';
-import Terms from './pages/Terms';
-import PaymentPage from './pages/PaymentPage';
 import { checkTableStructure } from './lib/supabaseFunctions';
+import { AgeVerificationGuard } from './components/AgeVerificationGuard';
+import { LoadingFallback } from './components/LoadingFallback';
 
-// Lazy load pages
-const Privacy = React.lazy(() => import('./pages/Privacy'));
+// Lazy loading dos componentes
+const Home = React.lazy(() => import('./pages/Home'));
+const Plans = React.lazy(() => import('./pages/Plans'));
 const PaymentConfirmation = React.lazy(() => import('./pages/PaymentConfirmation'));
 const Autenticar = React.lazy(() => import('./pages/Autenticar'));
-const Admin = React.lazy(() => import('./pages/Admin'));
-const AdminLogin = React.lazy(() => import('./pages/AdminLogin'));
+const Terms = React.lazy(() => import('./pages/Terms'));
+const Privacy = React.lazy(() => import('./pages/Privacy'));
+const PaymentPage = React.lazy(() => import('./pages/PaymentPage'));
 const AdminRegister = React.lazy(() => import('./pages/AdminRegister'));
-
-// Loading component
-const LoadingFallback = () => (
-  <div className="min-h-screen bg-black flex items-center justify-center">
-    <div className="text-[#E91E63] text-xl">Carregando...</div>
-  </div>
-);
+const AdminLogin = React.lazy(() => import('./pages/AdminLogin'));
+const Admin = React.lazy(() => import('./pages/Admin'));
+const Layout = React.lazy(() => import('./components/Layout'));
 
 function App() {
   useEffect(() => {
@@ -74,15 +69,17 @@ function App() {
             />
           </Route>
 
-          {/* Rotas públicas - Temporariamente sem verificação de idade */}
-          <Route element={<Layout />}>
-            <Route index element={<Home />} />
-            <Route path="planos" element={<Plans />} />
-            <Route path="confirmacao" element={<PaymentConfirmation />} />
-            <Route path="autenticar" element={<Autenticar />} />
-            <Route path="termos" element={<Terms />} />
-            <Route path="privacidade" element={<Privacy />} />
-            <Route path="pagamento/:plan" element={<PaymentPage />} />
+          {/* Rotas públicas - Com verificação de idade */}
+          <Route element={<AgeVerificationGuard />}>
+            <Route element={<Layout />}>
+              <Route index element={<Home />} />
+              <Route path="planos" element={<Plans />} />
+              <Route path="confirmacao" element={<PaymentConfirmation />} />
+              <Route path="autenticar" element={<Autenticar />} />
+              <Route path="termos" element={<Terms />} />
+              <Route path="privacidade" element={<Privacy />} />
+              <Route path="pagamento/:plan" element={<PaymentPage />} />
+            </Route>
           </Route>
         </Routes>
       </Suspense>
