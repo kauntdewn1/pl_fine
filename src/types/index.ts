@@ -61,7 +61,6 @@ export interface AppConfig {
 export interface AppState {
   user: User | null;
   isAuthenticated: boolean;
-  isAgeVerified: boolean;
   loading: boolean;
   error: string | null;
 }
@@ -70,7 +69,6 @@ export interface AppState {
 export type AppAction =
   | { type: 'SET_USER'; payload: User }
   | { type: 'SET_AUTHENTICATED'; payload: boolean }
-  | { type: 'SET_AGE_VERIFIED'; payload: boolean }
   | { type: 'SET_LOADING'; payload: boolean }
   | { type: 'SET_ERROR'; payload: string | null }
   | { type: 'LOGOUT' };

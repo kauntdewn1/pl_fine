@@ -76,7 +76,6 @@ export const COLORS = {
 // Constantes de mensagens
 export const MESSAGES = {
   ERRORS: {
-    AGE_VERIFICATION: 'Você precisa ter 18 anos ou mais para acessar este conteúdo.',
     AUTHENTICATION: 'Você precisa estar autenticado para acessar este conteúdo.',
     PAYMENT: 'Erro ao processar pagamento. Tente novamente.',
     NETWORK: 'Erro de conexão. Verifique sua internet.',
@@ -85,7 +84,6 @@ export const MESSAGES = {
   SUCCESS: {
     PAYMENT: 'Pagamento realizado com sucesso!',
     AUTHENTICATION: 'Login realizado com sucesso!',
-    AGE_VERIFICATION: 'Verificação de idade concluída!',
   },
 } as const;
 

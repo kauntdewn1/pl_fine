@@ -2,8 +2,7 @@
 
 ```mermaid
 graph TD
-    A[Entrada] --> B[Verificação de Idade]
-    B --> C[Home]
+    A[Entrada] --> C[Home]
     C --> D[Planos]
     D --> E[Processo de Compra]
     E --> F[Gumroad]
@@ -17,7 +16,6 @@ graph TD
     J --> N[Histórico]
 
     style A fill:#E91E63,stroke:#fff,color:#fff
-    style B fill:#1a1a1a,stroke:#E91E63,color:#fff
     style C fill:#1a1a1a,stroke:#E91E63,color:#fff
     style D fill:#1a1a1a,stroke:#E91E63,color:#fff
     style E fill:#1a1a1a,stroke:#E91E63,color:#fff
@@ -34,61 +32,75 @@ graph TD
 
 ## Detalhamento das Etapas
 
-### 1. Entrada e Verificação de Idade
-- **Componente**: `AgeVerification`
-- **Funcionalidades**:
-  - Modal de verificação
-  - Armazenamento do consentimento
-  - Redirecionamento para menores de idade
-
-### 2. Home
+### 1. Home
 - **Componente**: `Home`
 - **Funcionalidades**:
   - Apresentação do conteúdo
   - Call-to-action para planos
   - Preview do conteúdo
 
-### 3. Planos
+### 2. Planos
 - **Componente**: `Plans`
 - **Funcionalidades**:
   - Exibição dos planos disponíveis
   - Comparativo de benefícios
   - Botões de ação para compra
 
-### 4. Processo de Compra
+### 3. Processo de Compra
 - **Componente**: `PaymentPage`
 - **Funcionalidades**:
   - Seleção do plano
   - Redirecionamento para Gumroad
   - Processamento do pagamento
 
-### 5. Webhook e Confirmação
+### 4. Webhook e Confirmação
 - **Componente**: `webhook.ts`
 - **Funcionalidades**:
-  - Recebimento da confirmação
-  - Registro no banco de dados
-  - Rate limiting
-  - Validação de dados
+  - Recebimento de notificações
+  - Atualização de status
+  - Envio de confirmações
 
-### 6. Escolha do Canal
-
-- **Componente**: `Login`
+### 5. Escolha do Canal
+- **Componente**: `PaymentConfirmation`
 - **Funcionalidades**:
   - Seleção do canal preferido
-  - Integração com Telegram/WhatsApp/Email
-  - Registro da preferência
+  - Configuração de entrega
+  - Confirmação de preferências
 
-### 7. Área do Cliente
-
-- **Componentes**:
-  - `VipFeed`
-  - `Profile`
-  - `History`
+### 6. Área do Cliente
+- **Componente**: `ClientArea`
 - **Funcionalidades**:
-  - Feed de conteúdo personalizado
-  - Sistema de likes
-  - Perfil do usuário
-  - Histórico de acesso
+  - Dashboard personalizado
+  - Acesso ao conteúdo
+  - Gerenciamento de conta
+
+### 7. Feed de Conteúdo
+- **Componente**: `ContentFeed`
+- **Funcionalidades**:
+  - Exibição de posts
+  - Sistema de filtros
+  - Paginação
+
+### 8. Sistema de Likes
+- **Componente**: `LikeSystem`
+- **Funcionalidades**:
+  - Interação com posts
+  - Contagem de likes
+  - Favoritos
+
+### 9. Perfil
+- **Componente**: `Profile`
+- **Funcionalidades**:
+  - Informações do usuário
+  - Configurações
+  - Preferências
+
+### 10. Histórico
+- **Componente**: `History`
+- **Funcionalidades**:
+  - Registro de atividades
+  - Conteúdo visualizado
+  - Interações realizadas
 
 ## Fluxo de Dados
 

@@ -1,5 +1,3 @@
-import { saveClient } from './supabase';
-
 export async function handleGumroadWebhook(request: Request): Promise<Response> {
   try {
     const body = await request.json();
@@ -9,12 +7,8 @@ export async function handleGumroadWebhook(request: Request): Promise<Response> 
       return new Response('Missing required fields', { status: 400 });
     }
 
-    const plano = product_name.includes('VIP') ? 'vip' : 'basiquinha';
-
-    await saveClient({
-      email,
-      plano
-    });
+    // Simulando processamento do webhook
+    console.log('Webhook recebido:', { email, product_name });
 
     return new Response('OK', { status: 200 });
   } catch (error) {

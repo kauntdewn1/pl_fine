@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
-import { supabase } from '../lib/supabase';
 import { User } from '../types';
 import { MESSAGES } from '../constants';
 import { getLocalStorage, setLocalStorage } from '../utils';
@@ -23,15 +22,14 @@ export function useAuth() {
 
   const checkUserStatus = async (email: string) => {
     try {
-      const { data, error } = await supabase
-        .from('clientes_vip')
-        .select('*')
-        .eq('email', email)
-        .single();
-
-      if (error) throw error;
-
-      setUser(data);
+      // Simulando verificação de usuário
+      const mockUser: User = {
+        id: '1',
+        email,
+        plano: 'vip',
+        status: 'ativo'
+      };
+      setUser(mockUser);
     } catch (error) {
       console.error('Erro ao verificar status do usuário:', error);
       toast.error(MESSAGES.ERRORS.AUTHENTICATION);
@@ -44,15 +42,14 @@ export function useAuth() {
   const login = async (email: string) => {
     try {
       setLoading(true);
-      const { data, error } = await supabase
-        .from('clientes_vip')
-        .select('*')
-        .eq('email', email)
-        .single();
-
-      if (error) throw error;
-
-      setUser(data);
+      // Simulando login
+      const mockUser: User = {
+        id: '1',
+        email,
+        plano: 'vip',
+        status: 'ativo'
+      };
+      setUser(mockUser);
       setLocalStorage('userEmail', email);
       toast.success(MESSAGES.SUCCESS.AUTHENTICATION);
       return true;
@@ -83,14 +80,18 @@ export function usePosts() {
   const fetchPosts = useCallback(async () => {
     try {
       setLoading(true);
-      const { data, error } = await supabase
-        .from('vip_posts')
-        .select('*')
-        .order('created_at', { ascending: false });
-
-      if (error) throw error;
-
-      setPosts(data);
+      // Simulando busca de posts
+      const mockPosts = [
+        {
+          id: '1',
+          image_url: 'https://example.com/image1.jpg',
+          description: 'Post de exemplo 1',
+          created_at: new Date().toISOString(),
+          likes: 0,
+          user_liked: false
+        }
+      ];
+      setPosts(mockPosts);
     } catch (error) {
       console.error('Erro ao carregar posts:', error);
       setError('Erro ao carregar posts');
@@ -101,19 +102,13 @@ export function usePosts() {
 
   const likePost = async (postId: string, userEmail: string) => {
     try {
-      const { data, error } = await supabase.rpc('toggle_post_like', {
-        p_post_id: postId,
-        p_user_email: userEmail,
-      });
-
-      if (error) throw error;
-
+      // Simulando like em um post
       setPosts(posts.map(post => {
         if (post.id === postId) {
           return {
             ...post,
-            likes: data ? post.likes + 1 : post.likes - 1,
-            user_liked: data,
+            likes: post.likes + 1,
+            user_liked: true,
           };
         }
         return post;
@@ -140,14 +135,28 @@ export function usePlans() {
   const fetchPlans = async () => {
     try {
       setLoading(true);
-      const { data, error } = await supabase
-        .from('plans')
-        .select('*')
-        .order('price');
-
-      if (error) throw error;
-
-      setPlans(data);
+      // Simulando busca de planos
+      const mockPlans = [
+        {
+          id: '1',
+          name: 'Plano Básico',
+          price: 29.90,
+          features: ['Acesso básico', 'Suporte por email'],
+          openpixLink: 'https://example.com/basic',
+          qrCode: 'mock-qr-code',
+          qrCodeImage: 'https://example.com/qr-basic.png'
+        },
+        {
+          id: '2',
+          name: 'Plano VIP',
+          price: 59.90,
+          features: ['Acesso VIP', 'Suporte prioritário'],
+          openpixLink: 'https://example.com/vip',
+          qrCode: 'mock-qr-code',
+          qrCodeImage: 'https://example.com/qr-vip.png'
+        }
+      ];
+      setPlans(mockPlans);
     } catch (error) {
       console.error('Erro ao carregar planos:', error);
       setError('Erro ao carregar planos');
@@ -167,16 +176,12 @@ export function usePayment() {
   const processPayment = async (planId: string, userEmail: string) => {
     try {
       setLoading(true);
-      const { data, error } = await supabase
-        .from('plans')
-        .select('*')
-        .eq('id', planId)
-        .single();
-
-      if (error) throw error;
-
-      // Redirecionar para o Gumroad
-      window.location.href = data.gumroadLink;
+      // Simulando processamento de pagamento
+      const mockPlan = {
+        id: planId,
+        gumroadLink: 'https://example.com/payment'
+      };
+      window.location.href = mockPlan.gumroadLink;
     } catch (error) {
       console.error('Erro ao processar pagamento:', error);
       setError(MESSAGES.ERRORS.PAYMENT);
@@ -186,21 +191,4 @@ export function usePayment() {
   };
 
   return { loading, error, processPayment };
-}
-
-// Hook para gerenciar idade
-export function useAgeVerification() {
-  const [isVerified, setIsVerified] = useState<boolean | null>(null);
-
-  useEffect(() => {
-    const ageVerified = getLocalStorage<boolean>('ageVerified');
-    setIsVerified(ageVerified);
-  }, []);
-
-  const verifyAge = () => {
-    setLocalStorage('ageVerified', true);
-    setIsVerified(true);
-  };
-
-  return { isVerified, verifyAge };
 } 

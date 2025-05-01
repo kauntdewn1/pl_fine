@@ -6,9 +6,9 @@ interface AdminRouteProps {
 }
 
 export const AdminRoute = ({ children }: AdminRouteProps) => {
-  const isAdmin = getLocalStorage<boolean>('isAdmin');
+  const userEmail = getLocalStorage<string>('userEmail');
 
-  if (!isAdmin) {
+  if (!userEmail) {
     return <Navigate to="/admin/login" replace />;
   }
 

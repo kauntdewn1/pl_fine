@@ -2,38 +2,40 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserPlus, Loader2 } from 'lucide-react';
 import { toast } from 'react-hot-toast';
-import { useApp } from '../../context/AppContext';
 
-const AdminLogin: React.FC = () => {
+export default function AdminRegister() {
   const navigate = useNavigate();
-  const { adminLogin } = useApp();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [credentials, setCredentials] = useState({
     email: '',
-    password: ''
+    password: '',
+    confirmPassword: ''
   });
 
-  async function handleLogin(e: React.FormEvent) {
+  async function handleRegister(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
     setError('');
-    console.log('Iniciando processo de login para:', credentials.email);
+    console.log('Iniciando processo de registro para:', credentials.email);
+
+    if (credentials.password !== credentials.confirmPassword) {
+      console.log('Erro: Senhas não coincidem');
+      setError('As senhas não coincidem');
+      toast.error('As senhas não coincidem');
+      setLoading(false);
+      return;
+    }
 
     try {
-      const success = await adminLogin(credentials.email, credentials.password);
-      
-      if (success) {
-        toast.success('Login realizado com sucesso!');
-        navigate('/admin');
-      } else {
-        setError('Email ou senha inválidos');
-        toast.error('Email ou senha inválidos');
-      }
+      // Simulando registro
+      console.log('Registro bem-sucedido');
+      toast.success('Conta criada com sucesso!');
+      navigate('/admin/login');
     } catch (error) {
-      console.error('Erro no login:', error);
-      setError('Erro ao fazer login');
-      toast.error('Erro ao fazer login');
+      console.error('Erro no registro:', error);
+      setError('Erro ao criar conta');
+      toast.error('Erro ao criar conta');
     } finally {
       setLoading(false);
     }
@@ -44,11 +46,11 @@ const AdminLogin: React.FC = () => {
       <div className="max-w-md w-full bg-[#1a1a1a] rounded-lg p-8 border border-[#E91E63]/20">
         <div className="text-center mb-8">
           <UserPlus className="w-12 h-12 text-[#E91E63] mx-auto mb-4" />
-          <h1 className="text-2xl font-bold text-white">Login Administrativo</h1>
-          <p className="text-white/60 mt-2">Acesse sua conta de administrador</p>
+          <h1 className="text-2xl font-bold text-white">Criar Conta</h1>
+          <p className="text-white/60 mt-2">Preencha os dados abaixo</p>
         </div>
 
-        <form onSubmit={handleLogin} className="space-y-4">
+        <form onSubmit={handleRegister} className="space-y-4">
           <div>
             <label className="block text-white/80 mb-2">Email</label>
             <input
@@ -71,6 +73,17 @@ const AdminLogin: React.FC = () => {
             />
           </div>
 
+          <div>
+            <label className="block text-white/80 mb-2">Confirmar Senha</label>
+            <input
+              type="password"
+              value={credentials.confirmPassword}
+              onChange={(e) => setCredentials(prev => ({ ...prev, confirmPassword: e.target.value }))}
+              className="w-full bg-black/50 border border-[#E91E63]/20 rounded-lg px-4 py-2 text-white"
+              required
+            />
+          </div>
+
           {error && (
             <div className="text-[#E91E63] text-sm">{error}</div>
           )}
@@ -83,25 +96,23 @@ const AdminLogin: React.FC = () => {
             {loading ? (
               <>
                 <Loader2 className="w-5 h-5 inline-block mr-2 animate-spin" />
-                Entrando...
+                Criando conta...
               </>
             ) : (
-              'Entrar'
+              'Criar Conta'
             )}
           </button>
         </form>
 
         <div className="mt-6 text-center">
           <button
-            onClick={() => navigate('/admin/register')}
+            onClick={() => navigate('/admin/login')}
             className="text-[#E91E63] hover:underline"
           >
-            Criar conta de administrador
+            Já tem uma conta? Faça login
           </button>
         </div>
       </div>
     </div>
   );
-};
-
-export default AdminLogin; 
+} 

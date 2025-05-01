@@ -7,7 +7,6 @@ import { getLocalStorage, setLocalStorage } from '../utils';
 const initialState: AppState = {
   user: null,
   isAuthenticated: false,
-  isAgeVerified: false,
   loading: false,
   error: null,
 };
@@ -27,11 +26,6 @@ function appReducer(state: AppState, action: AppAction): AppState {
         ...state,
         isAuthenticated: action.payload,
       };
-    case 'SET_AGE_VERIFIED':
-      return {
-        ...state,
-        isAgeVerified: action.payload,
-      };
     case 'SET_LOADING':
       return {
         ...state,
@@ -45,7 +39,6 @@ function appReducer(state: AppState, action: AppAction): AppState {
     case 'LOGOUT':
       return {
         ...initialState,
-        isAgeVerified: state.isAgeVerified,
       };
     default:
       return state;
@@ -56,6 +49,10 @@ function appReducer(state: AppState, action: AppAction): AppState {
 const AppContext = createContext<{
   state: AppState;
   dispatch: React.Dispatch<AppAction>;
+  login: (email: string) => Promise<boolean>;
+  logout: () => void;
+  adminLogin: (email: string, password: string) => Promise<boolean>;
+  adminLogout: () => void;
 } | null>(null);
 
 // Provider
@@ -65,14 +62,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
   // Efeito para carregar estado inicial
   React.useEffect(() => {
     const userEmail = getLocalStorage<string>('userEmail');
-    const ageVerified = getLocalStorage<boolean>('ageVerified');
 
     if (userEmail) {
       dispatch({ type: 'SET_AUTHENTICATED', payload: true });
-    }
-
-    if (ageVerified) {
-      dispatch({ type: 'SET_AGE_VERIFIED', payload: true });
     }
   }, []);
 
@@ -108,9 +100,41 @@ export function AppProvider({ children }: { children: ReactNode }) {
     dispatch({ type: 'LOGOUT' });
   };
 
-  const verifyAge = () => {
-    setLocalStorage('ageVerified', true);
-    dispatch({ type: 'SET_AGE_VERIFIED', payload: true });
+  // Funções de autenticação administrativa
+  const adminLogin = async (email: string, password: string) => {
+    try {
+      dispatch({ type: 'SET_LOADING', payload: true });
+      
+      // Simulando autenticação administrativa
+      if (email === 'admin@exemplo.com' && password === 'admin123') {
+        const adminUser: User = {
+          id: '1',
+          email,
+          plano: 'admin',
+          status: 'ativo',
+          is_admin: true
+        };
+
+        setLocalStorage('userEmail', email);
+        dispatch({ type: 'SET_USER', payload: adminUser });
+        return true;
+      }
+
+      throw new Error('Credenciais inválidas');
+    } catch (error) {
+      dispatch({ 
+        type: 'SET_ERROR', 
+        payload: MESSAGES.ERRORS.AUTHENTICATION 
+      });
+      return false;
+    } finally {
+      dispatch({ type: 'SET_LOADING', payload: false });
+    }
+  };
+
+  const adminLogout = () => {
+    setLocalStorage('userEmail', null);
+    dispatch({ type: 'LOGOUT' });
   };
 
   return (
@@ -120,7 +144,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
         dispatch,
         login,
         logout,
-        verifyAge,
+        adminLogin,
+        adminLogout
       }}
     >
       {children}

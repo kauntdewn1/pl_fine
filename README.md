@@ -15,12 +15,13 @@ Plataforma de conteúdo exclusivo com sistema de assinatura e pagamentos.
 
 ## Funcionalidades
 
-- Verificação de idade
-- Sistema de assinatura VIP
-- Pagamentos via cartão de crédito e criptomoedas
-- Área de membros
-- Galeria de conteúdo
-- Blog
+- Autenticação de usuários
+- Sistema de pagamentos
+- Área administrativa
+- Feed de conteúdo
+- Sistema de likes
+- Perfil do usuário
+- Histórico de atividades
 
 ## Configuração do Ambiente
 
