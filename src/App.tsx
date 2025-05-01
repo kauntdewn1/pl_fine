@@ -56,29 +56,18 @@ function App() {
       />
       <Suspense fallback={<LoadingFallback />}>
         <Routes>
-          {/* Rotas públicas */}
-          <Route path={ROUTES.HOME} element={<Home />} />
-          <Route path={ROUTES.PLANS} element={<Plans />} />
-          <Route path={ROUTES.PAYMENT} element={<PaymentPage />} />
-          <Route path={ROUTES.CONFIRMATION} element={<PaymentConfirmation />} />
-          <Route path={ROUTES.AUTHENTICATE} element={<Autenticar />} />
-          <Route path={ROUTES.TERMS} element={<Terms />} />
-          <Route path={ROUTES.PRIVACITY} element={<Privacy />} />
-
-          {/* Rotas administrativas */}
-          <Route path={ROUTES.ADMIN.LOGIN} element={<AdminLogin />} />
-          <Route
-            path={ROUTES.ADMIN.ROOT}
-            element={
-              <AdminRoute>
-                <AdminPanel />
-              </AdminRoute>
-            }
-          />
-
-          {/* Rotas Admin - Completamente separadas da verificação de idade */}
-          <Route path="/admin/*">
+          {/* Rotas administrativas - Sem verificação de idade */}
+          <Route path="/admin">
+            <Route path="login" element={<AdminLogin />} />
             <Route path="register" element={<AdminRegister />} />
+            <Route
+              path="/"
+              element={
+                <AdminRoute>
+                  <AdminPanel />
+                </AdminRoute>
+              }
+            />
             <Route 
               index 
               element={
@@ -94,13 +83,13 @@ function App() {
           {/* Rotas públicas - Com verificação de idade */}
           <Route element={<AgeVerificationGuard />}>
             <Route element={<Layout />}>
-              <Route index element={<Home />} />
-              <Route path="planos" element={<Plans />} />
-              <Route path="confirmacao" element={<PaymentConfirmation />} />
-              <Route path="autenticar" element={<Autenticar />} />
-              <Route path="termos" element={<Terms />} />
-              <Route path="privacidade" element={<Privacy />} />
-              <Route path="pagamento/:plan" element={<PaymentPage />} />
+              <Route path="/" element={<Home />} />
+              <Route path="/planos" element={<Plans />} />
+              <Route path="/confirmacao" element={<PaymentConfirmation />} />
+              <Route path="/autenticar" element={<Autenticar />} />
+              <Route path="/termos" element={<Terms />} />
+              <Route path="/privacidade" element={<Privacy />} />
+              <Route path="/pagamento/:plan" element={<PaymentPage />} />
             </Route>
           </Route>
         </Routes>
