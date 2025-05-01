@@ -1,9 +1,13 @@
 import React, { useEffect, Suspense } from 'react';
-import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { checkTableStructure } from './lib/supabaseFunctions';
 import { AgeVerificationGuard } from './components/AgeVerificationGuard';
 import { LoadingFallback } from './components/LoadingFallback';
+import { AdminRoute } from './components/admin/AdminRoute';
+import { AdminPanel } from './components/admin/AdminPanel';
+import { AdminLogin } from './pages/admin/Login';
+import { ROUTES } from './constants';
 
 // Lazy loading dos componentes
 const Home = React.lazy(() => import('./pages/Home'));
@@ -14,7 +18,6 @@ const Terms = React.lazy(() => import('./pages/Terms'));
 const Privacy = React.lazy(() => import('./pages/Privacy'));
 const PaymentPage = React.lazy(() => import('./pages/PaymentPage'));
 const AdminRegister = React.lazy(() => import('./pages/AdminRegister'));
-const AdminLogin = React.lazy(() => import('./pages/AdminLogin'));
 const Admin = React.lazy(() => import('./pages/Admin'));
 const Layout = React.lazy(() => import('./components/Layout'));
 
@@ -28,7 +31,7 @@ function App() {
   }, []);
 
   return (
-    <HashRouter>
+    <BrowserRouter>
       <Toaster
         position="top-right"
         toastOptions={{
@@ -53,10 +56,29 @@ function App() {
       />
       <Suspense fallback={<LoadingFallback />}>
         <Routes>
+          {/* Rotas públicas */}
+          <Route path={ROUTES.HOME} element={<Home />} />
+          <Route path={ROUTES.PLANS} element={<Plans />} />
+          <Route path={ROUTES.PAYMENT} element={<PaymentPage />} />
+          <Route path={ROUTES.CONFIRMATION} element={<PaymentConfirmation />} />
+          <Route path={ROUTES.AUTHENTICATE} element={<Autenticar />} />
+          <Route path={ROUTES.TERMS} element={<Terms />} />
+          <Route path={ROUTES.PRIVACITY} element={<Privacy />} />
+
+          {/* Rotas administrativas */}
+          <Route path={ROUTES.ADMIN.LOGIN} element={<AdminLogin />} />
+          <Route
+            path={ROUTES.ADMIN.ROOT}
+            element={
+              <AdminRoute>
+                <AdminPanel />
+              </AdminRoute>
+            }
+          />
+
           {/* Rotas Admin - Completamente separadas da verificação de idade */}
           <Route path="/admin/*">
             <Route path="register" element={<AdminRegister />} />
-            <Route path="login" element={<AdminLogin />} />
             <Route 
               index 
               element={
@@ -83,7 +105,7 @@ function App() {
           </Route>
         </Routes>
       </Suspense>
-    </HashRouter>
+    </BrowserRouter>
   );
 }
 

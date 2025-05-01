@@ -1,87 +1,69 @@
-import { supabase } from '../lib/supabase';
-import { checkRateLimit } from '../lib/rateLimit';
+import { WebhookPayload } from '../types';
+import { PLANS } from '../constants';
+import { setLocalStorage, getLocalStorage } from '../utils';
 
-export async function POST(request: Request) {
+interface PaymentData {
+  status: string;
+  transactionId: string;
+  createdAt: string;
+  plan: {
+    id: string;
+    name: string;
+    price: number;
+  };
+  email?: string;
+}
+
+export const handleWebhook = async (payload: WebhookPayload) => {
   try {
-    // Verificar rate limit
-    const clientIP = request.headers.get('x-forwarded-for') || 'unknown';
-    if (!checkRateLimit(clientIP)) {
-      return new Response(
-        JSON.stringify({ error: 'Muitas requisições. Tente novamente mais tarde.' }), 
-        { status: 429 }
-      );
+    const { status, transaction_id, created_at, email } = payload;
+
+    // Verifica se o pagamento foi aprovado
+    if (status !== 'PAID') {
+      throw new Error('Pagamento não aprovado');
     }
 
-    const payload = await request.json();
+    // Encontra o plano correspondente
+    const plan = Object.values(PLANS).find(p => p.id === transaction_id);
     
-    // Validar payload
-    if (!payload || typeof payload !== 'object') {
-      return new Response(
-        JSON.stringify({ error: 'Payload inválido' }), 
-        { status: 400 }
-      );
-    }
-    
-    // Verificar se é uma venda válida
-    if (payload.event === 'sale' && payload.product_id) {
-      const { email, product_id, price } = payload;
-      
-      // Validar campos obrigatórios
-      if (!email || !product_id || !price) {
-        return new Response(
-          JSON.stringify({ error: 'Campos obrigatórios faltando' }), 
-          { status: 400 }
-        );
-      }
-      
-      // Determinar o plano com base no product_id
-      const plano = product_id === 'basiquinha' ? 'basico' : 'vip';
-      
-      // Registrar no Supabase
-      const { error } = await supabase
-        .from('clientes_vip')
-        .insert([
-          {
-            email,
-            plano,
-            status: 'pago',
-            preco: price,
-            data_compra: new Date().toISOString()
-          }
-        ]);
-
-      if (error) {
-        console.error('Erro ao registrar venda:', error);
-        return new Response(
-          JSON.stringify({ 
-            error: 'Erro ao registrar venda',
-            details: error.message 
-          }), 
-          { status: 500 }
-        );
-      }
-
-      return new Response(
-        JSON.stringify({ 
-          success: true,
-          message: 'Venda registrada com sucesso'
-        }), 
-        { status: 200 }
-      );
+    if (!plan) {
+      throw new Error('Plano não encontrado');
     }
 
-    return new Response(
-      JSON.stringify({ error: 'Evento inválido' }), 
-      { status: 400 }
-    );
+    // Obtém pagamentos existentes
+    const existingPayments = getLocalStorage<PaymentData[]>('payments') || [];
+
+    // Cria novo registro de pagamento
+    const newPayment: PaymentData = {
+      status: 'PAID',
+      transactionId: transaction_id,
+      createdAt: created_at,
+      plan: {
+        id: plan.id,
+        name: plan.name,
+        price: plan.price,
+      },
+      email,
+    };
+
+    // Adiciona novo pagamento à lista
+    const updatedPayments = [...existingPayments, newPayment];
+
+    // Salva lista atualizada
+    setLocalStorage('payments', updatedPayments);
+
+    // Salva último pagamento para referência rápida
+    setLocalStorage('lastPayment', newPayment);
+
+    return {
+      success: true,
+      message: 'Pagamento processado com sucesso',
+    };
   } catch (error) {
     console.error('Erro ao processar webhook:', error);
-    return new Response(
-      JSON.stringify({ 
-        error: 'Erro ao processar webhook',
-        details: error instanceof Error ? error.message : 'Erro desconhecido'
-      }), 
-      { status: 500 }
-    );
+    return {
+      success: false,
+      message: error instanceof Error ? error.message : 'Erro ao processar pagamento',
+    };
   }
-} 
+}; 

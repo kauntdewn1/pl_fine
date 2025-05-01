@@ -26,7 +26,9 @@ export interface Plan {
   name: string;
   price: number;
   features: string[];
-  gumroadLink: string;
+  openpixLink: string;
+  qrCode: string;
+  qrCodeImage: string;
 }
 
 // Tipos de resposta da API
@@ -43,6 +45,9 @@ export interface WebhookPayload {
   product_id: string;
   email: string;
   price: number;
+  status: 'paid' | 'pending' | 'failed';
+  transaction_id: string;
+  created_at: string;
 }
 
 // Tipos de configuração
