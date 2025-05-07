@@ -104,12 +104,10 @@ export default function Home() {
               </ul>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <a
-                  href="https://paulaazevedo.gumroad.com/l/basiquinha?wanted=true"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn w-full bg-pink-600 hover:bg-pink-700 text-white font-semibold py-3 px-6 rounded-xl shadow-lg text-center"
+                  href="https://openpix.com.br/pay/dca7fd01-bd6e-4a2d-bb7c-16f3ad07e8b2"
+                  className="mt-8 block w-full rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                 >
-                  💳 Assinar com Cartão, PayPal ou Apple Pay
+                  Assinar Plano Básico
                 </a>
               </div>
             </div>
@@ -141,12 +139,10 @@ export default function Home() {
               </ul>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <a
-                  href="https://paulaazevedo.gumroad.com/l/vip?wanted=true"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn w-full bg-pink-600 hover:bg-pink-700 text-white font-semibold py-3 px-6 rounded-xl shadow-lg text-center"
+                  href="https://openpix.com.br/pay/19b39aee-9a21-4568-bc59-2432a0b1912e"
+                  className="mt-8 block w-full rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                 >
-                  💳 Assinar com Cartão, PayPal ou Apple Pay
+                  Assinar Plano VIP
                 </a>
               </div>
             </div>

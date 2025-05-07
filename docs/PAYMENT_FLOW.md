@@ -1,14 +1,25 @@
 # Fluxo de Pagamento
 
-## Visão Geral
+O sistema de pagamento utiliza o OpenPix para processar pagamentos via Pix. O fluxo é o seguinte:
 
-O sistema de pagamento utiliza o Gumroad para processar assinaturas. O fluxo é o seguinte:
+1. Usuário seleciona um plano
+2. É redirecionado para a página de pagamento do OpenPix
+3. Realiza o pagamento via Pix
+4. Após a confirmação do pagamento, o acesso é liberado automaticamente
 
-1. Usuário seleciona um plano na página `/planos`
-2. É redirecionado para a página de pagamento do Gumroad
-3. Após o pagamento, é redirecionado para a página de confirmação
-4. Escolhe o canal de entrega (Telegram, WhatsApp ou Email)
-5. O webhook registra a venda no Supabase
+## Componentes do Sistema
+
+- Frontend: Interface de seleção de planos
+- OpenPix: Processamento de pagamentos
+- Webhook: Recebe notificações de pagamento
+- Banco de Dados: Armazena informações de assinatura
+
+## Integrações
+
+- OpenPix API
+- Webhook para notificações de pagamento
+- Sistema de autenticação
+- Banco de dados para armazenamento
 
 ## Endpoints
 

@@ -10,18 +10,28 @@ Plataforma de conteúdo exclusivo com sistema de assinatura e pagamentos.
 - Vite
 - TailwindCSS
 - Supabase (Banco de dados)
-- GumRoad (Processamento de pagamentos)
+- OpenPix (Processamento de pagamentos via Pix)
 - Netlify (Hospedagem)
 
 ## Funcionalidades
 
 - Autenticação de usuários
-- Sistema de pagamentos
+- Sistema de pagamentos via Pix
 - Área administrativa
 - Feed de conteúdo
 - Sistema de likes
 - Perfil do usuário
 - Histórico de atividades
+
+## Planos e Pagamentos
+
+### Acesso Básico – Conteúdo Paula
+- Valor: R$ 29,90
+- [Link de Pagamento](https://openpix.com.br/pay/dca7fd01-bd6e-4a2d-bb7c-16f3ad07e8b2)
+
+### Acesso VIP – Conteúdo Exclusivo
+- Valor: R$ 59,90
+- [Link de Pagamento](https://openpix.com.br/pay/19b39aee-9a21-4568-bc59-2432a0b1912e)
 
 ## Configuração do Ambiente
 
@@ -31,22 +41,20 @@ Plataforma de conteúdo exclusivo com sistema de assinatura e pagamentos.
 git clone https://github.com/kauntdewn1/pl_fine.git
 ```
 
-2.Instale as dependências:
+2. Instale as dependências:
 
 ```bash
 npm install
 ```
 
-Crie um arquivo .env com as seguintes variáveis:
+3. Crie um arquivo .env com as seguintes variáveis:
 
 ```env
 VITE_SUPABASE_URL=sua_url_do_supabase
 VITE_SUPABASE_ANON_KEY=sua_chave_anonima
-VITE_GUMROAD_PRODUCT_ID=seu_product_id
-VITE_GUMROAD_ACCESS_TOKEN=seu_access_token
 ```
 
-4.Inicie o servidor de desenvolvimento:
+4. Inicie o servidor de desenvolvimento:
 
 ```bash
 npm run dev
