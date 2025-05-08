@@ -23,7 +23,7 @@ jobs:
           args: --severity-threshold=high
 
       - name: Run OWASP ZAP Scan
-        uses: zaproxy/action-baseline@v0.11.0
+        uses: zaproxy/action-baseline@v0.14.0
         with:
           target: 'https://paulinha.com.br'
           rules_file_name: '.zap/rules.tsv'
