@@ -25,7 +25,7 @@ O sistema de pagamento utiliza o OpenPix para processar pagamentos via Pix. O fl
 
 ### `/api/webhook`
 
-- Processa eventos do Gumroad
+- Processa eventos do OpenPix
 - Registra vendas no Supabase
 - Atualiza status de assinaturas
 

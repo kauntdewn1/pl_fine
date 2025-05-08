@@ -178,10 +178,12 @@ export function usePayment() {
       setLoading(true);
       // Simulando processamento de pagamento
       const mockPlan = {
-        id: planId,
-        gumroadLink: 'https://example.com/payment'
+        id: 'mock-plan',
+        name: 'Plano Mock',
+        price: 29.90,
+        openpixLink: 'https://openpix.com.br/pay/dca7fd01-bd6e-4a2d-bb7c-16f3ad07e8b2'
       };
-      window.location.href = mockPlan.gumroadLink;
+      window.location.href = mockPlan.openpixLink;
     } catch (error) {
       console.error('Erro ao processar pagamento:', error);
       setError(MESSAGES.ERRORS.PAYMENT);
