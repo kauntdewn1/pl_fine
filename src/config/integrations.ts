@@ -42,16 +42,20 @@ export const integrations: IntegrationConfig = {
       basic: {
         id: 'befab603-e772-4651-bb57-0926ebf166bc',
         link: 'https://openpix.com.br/pay/befab603-e772-4651-bb57-0926ebf166bc',
-        qrCode: '00020126580014br.gov.bcb.pix01367ed52236-4b7d-418b-a64b-d5b344e0d000520400005303986540529.905802BR5907FLOWOFF6009Sao_Paulo6229052567b59eb4a9d24a27966a6f3c963048E33',
-        qrCodeImage: 'https://res.cloudinary.com/dt9m3pkjv/image/upload/v1746119742/qrCode-BASICO_valffe.png',
-        price: 29.90,
+        qrCode:
+          '00020126580014br.gov.bcb.pix01367ed52236-4b7d-418b-a64b-d5b344e0d000520400005303986540529.905802BR5907FLOWOFF6009Sao_Paulo6229052567b59eb4a9d24a27966a6f3c963048E33',
+        qrCodeImage:
+          'https://res.cloudinary.com/dt9m3pkjv/image/upload/v1746119742/qrCode-BASICO_valffe.png',
+        price: 29.9,
       },
       vip: {
         id: '773a3409-02cd-45e0-afe6-2758235c20a1',
         link: 'https://openpix.com.br/pay/773a3409-02cd-45e0-afe6-2758235c20a1',
-        qrCode: '00020126580014br.gov.bcb.pix01367ed52236-4b7d-418b-a64b-d5b344e0d000520400005303986540559.905802BR5907FLOWOFF6009Sao_Paulo62290525f723ba94dd4d4c2e97f476e2c63044B8B',
-        qrCodeImage: 'https://res.cloudinary.com/dt9m3pkjv/image/upload/v1746119742/qrCode_-_VIP_puevyk.png',
-        price: 59.90,
+        qrCode:
+          '00020126580014br.gov.bcb.pix01367ed52236-4b7d-418b-a64b-d5b344e0d000520400005303986540559.905802BR5907FLOWOFF6009Sao_Paulo62290525f723ba94dd4d4c2e97f476e2c63044B8B',
+        qrCodeImage:
+          'https://res.cloudinary.com/dt9m3pkjv/image/upload/v1746119742/qrCode_-_VIP_puevyk.png',
+        price: 59.9,
       },
     },
     webhookSecret: import.meta.env.VITE_OPENPIX_WEBHOOK_SECRET,
@@ -83,22 +87,16 @@ export function validateConfig() {
     'VITE_SMTP_HOST',
   ];
 
-  const missingVars = requiredEnvVars.filter(
-    (envVar) => !import.meta.env[envVar]
-  );
+  const missingVars = requiredEnvVars.filter(envVar => !import.meta.env[envVar]);
 
   if (missingVars.length > 0) {
-    throw new Error(
-      `Variáveis de ambiente obrigatórias faltando: ${missingVars.join(', ')}`
-    );
+    throw new Error(`Variáveis de ambiente obrigatórias faltando: ${missingVars.join(', ')}`);
   }
 }
 
 // Funções para obter URLs de produtos
 export function getProductUrl(productId: string): string {
-  const product = Object.values(integrations.openpix.productIds).find(
-    (p) => p.id === productId
-  );
+  const product = Object.values(integrations.openpix.productIds).find(p => p.id === productId);
   return product?.link || '';
 }
 
@@ -109,4 +107,4 @@ export function getChannelUrls(email: string) {
     whatsapp: `https://wa.me/+553131931679?text=Quero+acesso+VIP+confirmado+${email}`,
     email: `mailto:azevedomendespaula@gmail.com?subject=Acesso%20VIP&body=Confirmado%20${email}`,
   };
-} 
+}

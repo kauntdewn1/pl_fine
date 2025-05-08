@@ -1,88 +1,65 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Heart, MessageCircle, Share2, Bookmark, Loader2 } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import { toast } from 'react-hot-toast';
-import { getVipPosts, toggleLike, checkUserVip } from '../lib/supabaseFunctions';
+import { useAuth } from '@/hooks';
+import { supabase } from '@/config/supabase';
+import { Post } from '@/types';
 
-interface Post {
-  id: string;
-  image_url: string;
-  description: string;
-  created_at: string;
-  likes: number;
-  comments: number;
-  user_liked: boolean;
-}
-
-export default function VipFeed() {
-  const navigate = useNavigate();
+export const VipFeed = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
-  const [isVip, setIsVip] = useState(false);
+  const navigate = useNavigate();
+  const { user } = useAuth();
 
-  useEffect(() => {
-    const userEmail = localStorage.getItem('userEmail');
-    if (!userEmail) {
-      toast.error('Você precisa estar logado para acessar este conteúdo');
-      navigate('/planos');
-      return;
-    }
-
-    checkVipStatus(userEmail);
-    loadPosts(userEmail);
-  }, [navigate]);
-
-  async function checkVipStatus(userEmail: string) {
+  const checkVipStatus = useCallback(async () => {
     try {
-      const isVipUser = await checkUserVip(userEmail);
-      setIsVip(isVipUser);
-      
-      if (!isVipUser) {
-        toast.error('Você precisa ser um usuário VIP para acessar este conteúdo');
+      if (!user) {
+        navigate('/login');
+        return;
+      }
+
+      const { data: vipStatus } = await supabase
+        .from('vip_status')
+        .select('*')
+        .eq('user_id', user.id)
+        .single();
+
+      if (!vipStatus?.is_active) {
         navigate('/planos');
+        return;
       }
     } catch (error) {
       console.error('Erro ao verificar status VIP:', error);
-      toast.error('Erro ao verificar seu status. Tente novamente.');
+      toast.error('Erro ao verificar status VIP');
     }
-  }
+  }, [user, navigate]);
 
-  async function loadPosts(userEmail: string) {
+  const loadPosts = useCallback(async () => {
     try {
-      const data = await getVipPosts(userEmail);
-      setPosts(data);
+      const { data: vipPosts, error } = await supabase
+        .from('posts')
+        .select('*')
+        .eq('is_vip', true)
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        throw error;
+      }
+
+      setPosts(vipPosts);
     } catch (error) {
       console.error('Erro ao carregar posts:', error);
-      toast.error('Erro ao carregar o feed. Tente novamente.');
+      toast.error('Erro ao carregar posts');
     } finally {
       setLoading(false);
     }
-  }
+  }, []);
 
-  async function handleLike(postId: string) {
-    const userEmail = localStorage.getItem('userEmail');
-    if (!userEmail) return;
-
-    try {
-      const liked = await toggleLike(postId, userEmail);
-      
-      setPosts(posts.map(post => {
-        if (post.id === postId) {
-          return {
-            ...post,
-            likes: liked ? post.likes + 1 : post.likes - 1,
-            user_liked: liked
-          };
-        }
-        return post;
-      }));
-
-      toast.success(liked ? 'Curtido!' : 'Curtida removida');
-    } catch (error) {
-      console.error('Erro ao dar like:', error);
-      toast.error('Erro ao processar sua curtida. Tente novamente.');
-    }
-  }
+  useEffect(() => {
+    checkVipStatus();
+    loadPosts();
+  }, [checkVipStatus, loadPosts]);
 
   if (loading) {
     return (
@@ -97,67 +74,17 @@ export default function VipFeed() {
     );
   }
 
-  if (!isVip) {
-    return null;
-  }
-
   return (
-    <div className="min-h-screen bg-black py-8">
-      <div className="max-w-2xl mx-auto px-4">
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-white mb-2">Seu Feed VIP</h1>
-          <p className="text-white/60">Conteúdo exclusivo atualizado regularmente</p>
-        </div>
-
-        <div className="space-y-8">
-          {posts.map((post) => (
-            <div key={post.id} className="bg-black/40 backdrop-blur-sm rounded-2xl overflow-hidden border border-[#E91E63]/20">
-              <div className="relative">
-                <img
-                  src={post.image_url}
-                  alt={post.description}
-                  className="w-full h-auto object-cover"
-                />
-                <div className="absolute top-4 right-4">
-                  <button className="p-2 rounded-full bg-black/50 hover:bg-black/70 transition-colors">
-                    <Bookmark className="w-6 h-6 text-white" />
-                  </button>
-                </div>
-              </div>
-
-              <div className="p-4">
-                <div className="flex items-center space-x-4 mb-4">
-                  <button 
-                    onClick={() => handleLike(post.id)}
-                    className={`flex items-center space-x-2 transition-colors ${
-                      post.user_liked ? 'text-[#E91E63]' : 'text-white/80 hover:text-[#E91E63]'
-                    }`}
-                  >
-                    <Heart className="w-6 h-6" />
-                    <span>{post.likes}</span>
-                  </button>
-                  <button className="flex items-center space-x-2 text-white/80 hover:text-[#E91E63] transition-colors">
-                    <MessageCircle className="w-6 h-6" />
-                    <span>{post.comments}</span>
-                  </button>
-                  <button className="flex items-center space-x-2 text-white/80 hover:text-[#E91E63] transition-colors">
-                    <Share2 className="w-6 h-6" />
-                  </button>
-                </div>
-
-                <p className="text-white/80">{post.description}</p>
-                <p className="text-white/40 text-sm mt-2">
-                  {new Date(post.created_at).toLocaleDateString('pt-BR', {
-                    day: '2-digit',
-                    month: '2-digit',
-                    year: 'numeric'
-                  })}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
+    <div className="container mx-auto px-4 py-8">
+      <h1 className="text-3xl font-bold mb-8">Feed VIP</h1>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {posts.map(post => (
+          <div key={post.id} className="bg-white rounded-lg shadow-md p-6">
+            <h2 className="text-xl font-semibold mb-4">{post.title}</h2>
+            <p className="text-gray-600">{post.content}</p>
+          </div>
+        ))}
       </div>
     </div>
   );
-} 
+};

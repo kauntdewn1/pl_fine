@@ -3,6 +3,15 @@ import { useNavigate, Link } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import { supabase } from '../lib/supabase';
 import { debugAdminCheck } from '../lib/supabaseFunctions';
+import { SupabaseError } from '@/types';
+import { logger } from '@/utils/logger';
+
+interface AdminData {
+  email: string;
+  is_admin: boolean;
+  created_at?: string;
+  updated_at?: string;
+}
 
 export default function AdminLogin() {
   const navigate = useNavigate();
@@ -10,25 +19,25 @@ export default function AdminLogin() {
   const [error, setError] = useState('');
   const [credentials, setCredentials] = useState({
     email: '',
-    password: ''
+    password: '',
   });
 
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
     setError('');
-    console.log('Iniciando processo de login para:', credentials.email);
+    logger.info('Iniciando processo de login', { email: credentials.email });
 
     try {
       // Autenticação com Supabase
-      console.log('Tentando autenticar com Supabase Auth...');
+      logger.info('Tentando autenticar com Supabase Auth');
       const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
         email: credentials.email,
-        password: credentials.password
+        password: credentials.password,
       });
 
       if (authError) {
-        console.error('Erro na autenticação:', authError);
+        logger.error('Erro na autenticação', { error: authError });
         let errorMessage = 'Erro ao fazer login. ';
         if (authError.message.includes('Invalid login credentials')) {
           errorMessage = 'Email ou senha incorretos.';
@@ -40,45 +49,49 @@ export default function AdminLogin() {
         throw authError;
       }
 
-      console.log('Autenticação bem-sucedida:', authData);
+      logger.info('Autenticação bem-sucedida', { data: authData });
 
       // Debug da verificação de admin
       const debugResult = await debugAdminCheck(credentials.email);
-      console.log('Debug da verificação de admin:', debugResult);
+      logger.info('Debug da verificação de admin', { result: debugResult });
 
       // Verificar se o usuário é admin
-      console.log('Verificando status de admin na tabela clientes_vip...');
+      logger.info('Verificando status de admin na tabela clientes_vip');
       const { data: adminData, error: adminError } = await supabase
         .from('clientes_vip')
         .select('*')
         .eq('email', credentials.email)
         .single();
 
-      console.log('Resultado da consulta admin:', { adminData, adminError });
+      logger.info('Resultado da consulta admin', { data: adminData, error: adminError });
 
       if (adminError) {
-        console.error('Erro ao verificar status de admin:', adminError);
-        const errorMessage = 'Erro ao verificar permissões de administrador. Detalhes: ' + adminError.message;
+        logger.error('Erro ao verificar status de admin', { error: adminError });
+        const errorMessage =
+          'Erro ao verificar permissões de administrador. Detalhes: ' + adminError.message;
         setError(errorMessage);
         toast.error(errorMessage);
         throw new Error(errorMessage);
       }
 
-      if (!adminData?.is_admin) {
-        console.error('Usuário não é admin:', adminData);
+      const typedAdminData = adminData as AdminData;
+
+      if (!typedAdminData?.is_admin) {
+        logger.error('Usuário não é admin', { data: typedAdminData });
         const errorMessage = 'Acesso restrito a administradores';
         setError(errorMessage);
         toast.error(errorMessage);
         throw new Error(errorMessage);
       }
 
-      console.log('Usuário confirmado como admin:', adminData);
+      logger.info('Usuário confirmado como admin', { data: typedAdminData });
       localStorage.setItem('userEmail', credentials.email);
       toast.success('Login realizado com sucesso!');
       navigate('/admin');
-    } catch (error: any) {
-      console.error('Erro detalhado no login:', error);
-      const errorMessage = error.message || 'Erro ao fazer login. Tente novamente.';
+    } catch (error) {
+      const supabaseError = error as SupabaseError;
+      logger.error('Erro detalhado no login', { error: supabaseError });
+      const errorMessage = supabaseError.message || 'Erro ao fazer login. Tente novamente.';
       setError(errorMessage);
       toast.error(errorMessage);
     } finally {
@@ -91,12 +104,10 @@ export default function AdminLogin() {
       <div className="max-w-md w-full bg-black/40 backdrop-blur-lg p-8 rounded-2xl border border-[#E91E63]/20 shadow-lg">
         <div className="text-center mb-8">
           <div className="w-16 h-16 bg-[#E91E63]/10 rounded-full flex items-center justify-center mx-auto mb-4">
-            <i className='bx bxs-user text-[#E91E63] text-3xl'></i>
+            <i className="bx bxs-user text-[#E91E63] text-3xl"></i>
           </div>
           <h2 className="text-2xl font-bold text-white mb-2">Login Administrativo</h2>
-          <p className="text-white/60">
-            Acesse sua conta de administrador
-          </p>
+          <p className="text-white/60">Acesse sua conta de administrador</p>
         </div>
 
         {error && (
@@ -108,12 +119,12 @@ export default function AdminLogin() {
         <form onSubmit={handleLogin} className="space-y-6">
           <div className="relative">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <i className='bx bx-envelope text-[#E91E63] text-xl'></i>
+              <i className="bx bx-envelope text-[#E91E63] text-xl"></i>
             </div>
             <input
               type="email"
               value={credentials.email}
-              onChange={(e) => setCredentials({ ...credentials, email: e.target.value })}
+              onChange={e => setCredentials({ ...credentials, email: e.target.value })}
               className="w-full bg-black/50 border border-[#E91E63]/20 rounded-lg pl-10 pr-4 py-3 text-white placeholder-white/60"
               placeholder="Email"
               required
@@ -122,12 +133,12 @@ export default function AdminLogin() {
 
           <div className="relative">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <i className='bx bx-lock-alt text-[#E91E63] text-xl'></i>
+              <i className="bx bx-lock-alt text-[#E91E63] text-xl"></i>
             </div>
             <input
               type="password"
               value={credentials.password}
-              onChange={(e) => setCredentials({ ...credentials, password: e.target.value })}
+              onChange={e => setCredentials({ ...credentials, password: e.target.value })}
               className="w-full bg-black/50 border border-[#E91E63]/20 rounded-lg pl-10 pr-4 py-3 text-white placeholder-white/60"
               placeholder="Senha"
               required
@@ -141,20 +152,20 @@ export default function AdminLogin() {
           >
             {loading ? (
               <>
-                <i className='bx bx-loader-alt animate-spin text-xl'></i>
+                <i className="bx bx-loader-alt animate-spin text-xl"></i>
                 <span>Entrando...</span>
               </>
             ) : (
               <>
-                <i className='bx bx-log-in text-xl'></i>
+                <i className="bx bx-log-in text-xl"></i>
                 <span>Entrar</span>
               </>
             )}
           </button>
 
           <div className="text-center">
-            <Link 
-              to="/admin/register" 
+            <Link
+              to="/admin/register"
               className="text-[#E91E63] hover:text-[#E91E63]/90 transition-colors text-sm"
             >
               Criar conta de administrador
@@ -164,4 +175,4 @@ export default function AdminLogin() {
       </div>
     </div>
   );
-} 
+}

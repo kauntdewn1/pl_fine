@@ -7,7 +7,7 @@ import { useApp } from '../context/AppContext';
 // Componente de proteção de rota
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { state } = useApp();
-  
+
   if (!state.isAuthenticated) {
     return <Navigate to="/admin/login" replace />;
   }
@@ -21,7 +21,7 @@ const AppRoutes: React.FC = () => {
       <Routes>
         {/* Rotas públicas */}
         <Route path="/admin/login" element={<AdminLogin />} />
-        
+
         {/* Rotas protegidas */}
         <Route
           path="/admin/*"
@@ -39,4 +39,4 @@ const AppRoutes: React.FC = () => {
   );
 };
 
-export default AppRoutes; 
+export default AppRoutes;

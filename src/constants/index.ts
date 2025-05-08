@@ -19,20 +19,18 @@ export const PLANS = {
   BASIC: {
     id: 'befab603-e772-4651-bb57-0926ebf166bc',
     name: 'Plano Básico',
-    price: 29.90,
-    features: [
-      'Acesso ao conteúdo básico',
-      'Atualizações semanais',
-      'Suporte por email',
-    ],
+    price: 29.9,
+    features: ['Acesso ao conteúdo básico', 'Atualizações semanais', 'Suporte por email'],
     openpixLink: 'https://openpix.com.br/pay/befab603-e772-4651-bb57-0926ebf166bc',
-    qrCode: '00020126580014br.gov.bcb.pix01367ed52236-4b7d-418b-a64b-d5b344e0d000520400005303986540529.905802BR5907FLOWOFF6009Sao_Paulo6229052567b59eb4a9d24a27966a6f3c963048E33',
-    qrCodeImage: 'https://res.cloudinary.com/dt9m3pkjv/image/upload/v1746119742/qrCode-BASICO_valffe.png',
+    qrCode:
+      '00020126580014br.gov.bcb.pix01367ed52236-4b7d-418b-a64b-d5b344e0d000520400005303986540529.905802BR5907FLOWOFF6009Sao_Paulo6229052567b59eb4a9d24a27966a6f3c963048E33',
+    qrCodeImage:
+      'https://res.cloudinary.com/dt9m3pkjv/image/upload/v1746119742/qrCode-BASICO_valffe.png',
   },
   VIP: {
     id: '773a3409-02cd-45e0-afe6-2758235c20a1',
     name: 'Plano VIP',
-    price: 59.90,
+    price: 59.9,
     features: [
       'Acesso ao conteúdo VIP',
       'Atualizações diárias',
@@ -40,8 +38,10 @@ export const PLANS = {
       'Conteúdo exclusivo',
     ],
     openpixLink: 'https://openpix.com.br/pay/773a3409-02cd-45e0-afe6-2758235c20a1',
-    qrCode: '00020126580014br.gov.bcb.pix01367ed52236-4b7d-418b-a64b-d5b344e0d000520400005303986540559.905802BR5907FLOWOFF6009Sao_Paulo62290525f723ba94dd4d4c2e97f476e2c63044B8B',
-    qrCodeImage: 'https://res.cloudinary.com/dt9m3pkjv/image/upload/v1746119742/qrCode_-_VIP_puevyk.png',
+    qrCode:
+      '00020126580014br.gov.bcb.pix01367ed52236-4b7d-418b-a64b-d5b344e0d000520400005303986540559.905802BR5907FLOWOFF6009Sao_Paulo62290525f723ba94dd4d4c2e97f476e2c63044B8B',
+    qrCodeImage:
+      'https://res.cloudinary.com/dt9m3pkjv/image/upload/v1746119742/qrCode_-_VIP_puevyk.png',
   },
 } as const;
 
@@ -105,4 +105,4 @@ export const VALIDATION = {
     REQUIRE_NUMBER: true,
     REQUIRE_SPECIAL: true,
   },
-} as const; 
+} as const;

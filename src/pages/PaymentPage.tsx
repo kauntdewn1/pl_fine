@@ -5,16 +5,16 @@ import { Crown, Lock } from 'lucide-react';
 const PLANOS = {
   basico: {
     nome: 'Plano Básico',
-    preco: 29.90,
+    preco: 29.9,
     descricao: 'Acesso ao conteúdo básico e exclusivo',
-    openpixLink: 'https://openpix.com.br/pay/dca7fd01-bd6e-4a2d-bb7c-16f3ad07e8b2'
+    openpixLink: 'https://openpix.com.br/pay/dca7fd01-bd6e-4a2d-bb7c-16f3ad07e8b2',
   },
   vip: {
     nome: 'Plano VIP',
-    preco: 59.90,
+    preco: 59.9,
     descricao: 'Acesso completo a todo o conteúdo exclusivo',
-    openpixLink: 'https://openpix.com.br/pay/19b39aee-9a21-4568-bc59-2432a0b1912e'
-  }
+    openpixLink: 'https://openpix.com.br/pay/19b39aee-9a21-4568-bc59-2432a0b1912e',
+  },
 };
 
 export default function PaymentPage() {
@@ -78,7 +78,8 @@ export default function PaymentPage() {
               </button>
 
               <p className="text-white/60 text-sm text-center">
-                Ao clicar em "Finalizar Pagamento", você será redirecionado para a plataforma de pagamento segura do OpenPix.
+                Ao clicar em "Finalizar Pagamento", você será redirecionado para a plataforma de
+                pagamento segura do OpenPix.
               </p>
             </div>
           </div>
@@ -86,4 +87,4 @@ export default function PaymentPage() {
       </div>
     </div>
   );
-} 
+}

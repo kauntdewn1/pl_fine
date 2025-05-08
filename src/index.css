@@ -3,31 +3,39 @@
 @tailwind utilities;
 
 :root {
-  --primary: #E91E63;
+  --primary: #e91e63;
   --background: #000000;
   --surface: #1a1a1a;
-  --text-primary: #FFFFFF;
+  --text-primary: #ffffff;
   --text-secondary: rgba(255, 255, 255, 0.8);
   --text-disabled: rgba(255, 255, 255, 0.6);
 }
 
+/* Estilos base */
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  @apply min-h-screen font-sans antialiased;
+  font-family:
+    'Montserrat',
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    'Roboto',
+    'Oxygen',
+    'Ubuntu',
+    'Cantarell',
+    'Fira Sans',
+    'Droid Sans',
+    'Helvetica Neue',
     sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   background-color: var(--background);
   color: var(--text-primary);
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
-/* Estilos personalizados */
+/* Utilitários */
 .bg-background {
   background-color: var(--background);
 }
@@ -52,97 +60,9 @@ code {
   color: var(--text-disabled);
 }
 
-/* Animações */
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.animate-spin {
-  animation: spin 1s linear infinite;
-}
-
-/* Transições */
-.transition-colors {
-  transition-property: background-color, border-color, color, fill, stroke;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 150ms;
-}
-
-/* Utilitários */
-.backdrop-blur-sm {
-  backdrop-filter: blur(4px);
-}
-
-.backdrop-blur-lg {
-  backdrop-filter: blur(16px);
-}
-
-/* Scrollbar personalizada */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--surface);
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--primary);
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--primary);
-  opacity: 0.8;
-}
-
-/* Estilos base */
-body {
-  @apply bg-black text-white min-h-screen;
-  font-family: 'Montserrat', sans-serif;
-}
-
-/* Estilos de scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-::-webkit-scrollbar-track {
-  @apply bg-black;
-}
-
-::-webkit-scrollbar-thumb {
-  @apply bg-[#E91E63]/50 rounded-full;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  @apply bg-[#E91E63];
-}
-
-/* Estilos de seleção */
-::selection {
-  @apply bg-[#E91E63] text-white;
-}
-
-/* Estilos de links */
-a {
-  @apply text-[#E91E63] transition-colors;
-}
-
-a:hover {
-  @apply text-[#E91E63]/80;
-}
-
-/* Estilos de botões */
+/* Botões */
 .btn {
-  @apply px-4 py-2 rounded-lg font-medium transition-all duration-300;
+  @apply inline-flex items-center justify-center px-4 py-2 rounded-lg font-medium transition-all duration-300;
 }
 
 .btn-primary {
@@ -157,41 +77,147 @@ a:hover {
   @apply border border-[#E91E63] text-[#E91E63] hover:bg-[#E91E63] hover:text-white;
 }
 
-/* Estilos de inputs */
+/* Inputs */
 .input {
-  @apply bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white placeholder-white/40 focus:outline-none focus:border-[#E91E63] transition-colors;
+  @apply w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white placeholder-white/40 focus:outline-none focus:border-[#E91E63] transition-colors;
 }
 
-/* Estilos de cards */
+/* Componentes visuais */
 .card {
-  @apply bg-[#1a1a1a] rounded-lg border border-white/10 p-4;
+  background-color: var(--surface);
+  @apply rounded-lg border border-white/10 p-4;
 }
 
-/* Estilos de modais */
 .modal {
   @apply fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4;
 }
 
 .modal-content {
-  @apply bg-[#1a1a1a] rounded-lg p-6 max-w-md w-full border border-[#E91E63]/20;
+  background-color: var(--surface);
+  @apply rounded-lg p-6 max-w-md w-full border border-[#E91E63]/20;
 }
 
-/* Estilos de loading */
 .loading {
   @apply w-12 h-12 border-4 border-[#E91E63] border-t-transparent rounded-full animate-spin;
 }
 
-/* Estilos de toast */
 .toast {
-  @apply bg-[#1a1a1a] text-white border border-[#E91E63]/20;
+  background-color: var(--surface);
+  @apply text-white border border-[#E91E63]/20 px-4 py-2 rounded-md;
 }
 
-/* Estilos de grid */
+/* Layout e Grid */
 .grid-auto-fit {
   @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4;
 }
 
-/* Estilos de animações */
+/* Tipografia */
+h1 {
+  @apply text-3xl font-bold mb-4;
+}
+h2 {
+  @apply text-2xl font-semibold mb-3;
+}
+h3 {
+  @apply text-xl font-medium mb-2;
+}
+p {
+  color: var(--text-secondary);
+  @apply leading-relaxed;
+}
+
+/* Listas */
+ul,
+ol {
+  @apply list-inside space-y-2;
+}
+ul {
+  @apply list-disc;
+}
+ol {
+  @apply list-decimal;
+}
+
+/* Tabelas */
+table {
+  @apply w-full border-collapse;
+}
+th {
+  @apply bg-white/5 text-left p-4 font-medium;
+}
+td {
+  @apply border-t border-white/10 p-4;
+}
+
+/* Formulários */
+form {
+  @apply space-y-4;
+}
+label {
+  @apply block text-sm font-medium mb-1;
+}
+
+/* Badges */
+.badge {
+  @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+}
+.badge-primary {
+  @apply bg-[#E91E63] text-white;
+}
+.badge-secondary {
+  @apply bg-white/10 text-white;
+}
+
+/* Tooltips */
+.tooltip {
+  @apply relative inline-block;
+}
+.tooltip-text {
+  background-color: var(--surface);
+  @apply invisible absolute z-10 px-3 py-2 text-sm text-white rounded-lg shadow-lg opacity-0 transition-opacity duration-300;
+}
+.tooltip:hover .tooltip-text {
+  @apply visible opacity-100;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  @apply w-2 h-2;
+}
+::-webkit-scrollbar-track {
+  background-color: var(--background);
+}
+::-webkit-scrollbar-thumb {
+  background-color: var(--primary);
+  opacity: 0.5;
+  @apply rounded-full;
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--primary);
+}
+
+/* Seleção de texto */
+::selection {
+  background-color: var(--primary);
+  @apply text-white;
+}
+
+/* Links */
+a {
+  color: var(--primary);
+  @apply transition-colors hover:opacity-80;
+}
+
+/* Animações personalizadas */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -199,10 +225,6 @@ a:hover {
   to {
     opacity: 1;
   }
-}
-
-.animate-fade-in {
-  animation: fadeIn 0.3s ease-in-out;
 }
 
 @keyframes slideUp {
@@ -216,92 +238,24 @@ a:hover {
   }
 }
 
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
 .animate-slide-up {
   animation: slideUp 0.3s ease-out;
 }
 
-/* Estilos de responsividade */
-@media (max-width: 640px) {
-  .container {
-    @apply px-4;
-  }
-}
-
-/* Estilos de acessibilidade */
+/* Acessibilidade */
 .focus-ring {
   @apply focus:outline-none focus:ring-2 focus:ring-[#E91E63] focus:ring-offset-2 focus:ring-offset-black;
 }
 
-/* Estilos de tipografia */
-h1 {
-  @apply text-3xl font-bold mb-4;
-}
-
-h2 {
-  @apply text-2xl font-semibold mb-3;
-}
-
-h3 {
-  @apply text-xl font-medium mb-2;
-}
-
-p {
-  @apply text-white/80 leading-relaxed;
-}
-
-/* Estilos de listas */
-ul {
-  @apply list-disc list-inside space-y-2;
-}
-
-ol {
-  @apply list-decimal list-inside space-y-2;
-}
-
-/* Estilos de tabelas */
-table {
-  @apply w-full border-collapse;
-}
-
-th {
-  @apply bg-white/5 text-left p-4 font-medium;
-}
-
-td {
-  @apply border-t border-white/10 p-4;
-}
-
-/* Estilos de formulários */
-form {
-  @apply space-y-4;
-}
-
-label {
-  @apply block text-sm font-medium mb-1;
-}
-
-/* Estilos de badges */
-.badge {
-  @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
-}
-
-.badge-primary {
-  @apply bg-[#E91E63] text-white;
-}
-
-.badge-secondary {
-  @apply bg-white/10 text-white;
-}
-
-/* Estilos de tooltips */
-.tooltip {
-  @apply relative inline-block;
-}
-
-.tooltip-text {
-  @apply invisible absolute z-10 px-3 py-2 text-sm text-white bg-[#1a1a1a] rounded-lg shadow-lg opacity-0 transition-opacity duration-300;
-}
-
-.tooltip:hover .tooltip-text {
-  @apply visible opacity-100;
+/* Responsivo */
+@media (max-width: 640px) {
+  .container {
+    @apply px-4;
+  }
 }

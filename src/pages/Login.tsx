@@ -23,16 +23,14 @@ export default function Login() {
 
     try {
       // Register the channel preference in Supabase
-      const { error: supabaseError } = await supabase
-        .from('clientes_vip')
-        .insert([
-          {
-            email,
-            canal_entrega: channel,
-            status: 'pago',
-            plano: plano || 'vip' // Default to 'vip' if not specified
-          }
-        ]);
+      const { error: supabaseError } = await supabase.from('clientes_vip').insert([
+        {
+          email,
+          canal_entrega: channel,
+          status: 'pago',
+          plano: plano || 'vip', // Default to 'vip' if not specified
+        },
+      ]);
 
       if (supabaseError) throw supabaseError;
 
@@ -40,7 +38,7 @@ export default function Login() {
       const redirectUrls = {
         telegram: 'https://t.me/PaulaAzevedo_Bot?start=vip',
         whatsapp: 'https://wa.me/+553131931679?text=Quero+acesso+VIP+confirmado',
-        email: 'mailto:azevedomendespaula@gmail.com?subject=Acesso%20VIP&body=Confirmado'
+        email: 'mailto:azevedomendespaula@gmail.com?subject=Acesso%20VIP&body=Confirmado',
       };
 
       window.location.href = redirectUrls[channel];
@@ -58,9 +56,7 @@ export default function Login() {
         <div className="text-center">
           <div className="text-5xl mb-4">💖</div>
           <h1 className="text-3xl font-bold mb-2 text-[#ff007a]">Acesso Confirmado!</h1>
-          <p className="text-lg mb-8 text-gray-600">
-            Como você prefere receber seu conteúdo VIP?
-          </p>
+          <p className="text-lg mb-8 text-gray-600">Como você prefere receber seu conteúdo VIP?</p>
 
           {error && (
             <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg mb-6">

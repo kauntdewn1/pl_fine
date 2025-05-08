@@ -18,7 +18,9 @@ const Success: React.FC = () => {
       }
 
       try {
-        const { data: { session } } = await supabase.auth.getSession();
+        const {
+          data: { session },
+        } = await supabase.auth.getSession();
         if (!session) {
           toast.error('Usuário não autenticado');
           navigate('/login');
@@ -74,7 +76,8 @@ const Success: React.FC = () => {
             Pagamento realizado com sucesso!
           </h2>
           <p className="text-gray-600 mb-6">
-            Seu plano foi ativado com sucesso. Agora você tem acesso a todos os recursos do seu plano.
+            Seu plano foi ativado com sucesso. Agora você tem acesso a todos os recursos do seu
+            plano.
           </p>
           <button
             onClick={() => navigate('/dashboard')}
@@ -88,4 +91,4 @@ const Success: React.FC = () => {
   );
 };
 
-export default Success; 
+export default Success;

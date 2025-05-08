@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useLocation, Navigate } from 'react-router-dom';
-import { Mail, MessageSquare, MessageSquareText } from 'lucide-react';
+import { Mail, MessageSquare } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { toast } from 'react-hot-toast';
 
@@ -32,7 +32,7 @@ export const PaymentConfirmation: React.FC = () => {
       const redirectUrls = {
         telegram: 'https://t.me/paulaVIPclub',
         whatsapp: `https://wa.me/553131931679?text=${encodeURIComponent(`Olá, acabei de fazer o pagamento do plano ${plano === 'vip' ? 'VIP' : 'Básico'}. Meu email é ${email}`)}`,
-        email: `mailto:azevedomendespaula@gmail.com?subject=Acesso ${plano === 'vip' ? 'VIP' : 'Básico'}&body=Olá, acabei de fazer o pagamento do plano ${plano === 'vip' ? 'VIP' : 'Básico'}. Meu email é ${email}`
+        email: `mailto:azevedomendespaula@gmail.com?subject=Acesso ${plano === 'vip' ? 'VIP' : 'Básico'}&body=Olá, acabei de fazer o pagamento do plano ${plano === 'vip' ? 'VIP' : 'Básico'}. Meu email é ${email}`,
       };
 
       window.location.href = redirectUrls[channel];
@@ -91,11 +91,13 @@ export const PaymentConfirmation: React.FC = () => {
 
         <div className="mt-8 text-center text-text/60">
           <p>Você receberá o acesso em até 24 horas após o contato.</p>
-          <p className="mt-2">Em caso de dúvidas, entre em contato pelo email: azevedomendespaula@gmail.com</p>
+          <p className="mt-2">
+            Em caso de dúvidas, entre em contato pelo email: azevedomendespaula@gmail.com
+          </p>
         </div>
       </div>
     </div>
   );
 };
 
-export default PaymentConfirmation; 
+export default PaymentConfirmation;

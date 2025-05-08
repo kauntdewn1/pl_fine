@@ -16,15 +16,11 @@ export default function Home() {
           />
           <div className="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
         </div>
-        
+
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-2xl">
-            <h1 className="text-4xl md:text-6xl font-bold mb-6 text-white">
-              Conteúdo Exclusivo
-            </h1>
-            <p className="text-xl text-white/90 mb-8">
-              Acesso a fotos e vídeos exclusivos
-            </p>
+            <h1 className="text-4xl md:text-6xl font-bold mb-6 text-white">Conteúdo Exclusivo</h1>
+            <p className="text-xl text-white/90 mb-8">Acesso a fotos e vídeos exclusivos</p>
             <Link
               to="/planos"
               className="inline-flex items-center justify-center gap-2 bg-[#E91E63] hover:bg-[#E91E63]/90 text-white px-8 py-4 rounded-full transition-all duration-300 shadow-lg hover:shadow-[#E91E63]/20 hover:shadow-2xl transform hover:-translate-y-0.5 text-lg font-medium"
@@ -41,29 +37,34 @@ export default function Home() {
           <div className="grid md:grid-cols-3 gap-8">
             {[
               {
-                title: "Preview dos Ensaios",
-                image: "https://res.cloudinary.com/dt9m3pkjv/image/upload/v1743376995/PAULA/wa1d8vpmpj0n4hrqf7as.png"
+                title: 'Preview dos Ensaios',
+                image:
+                  'https://res.cloudinary.com/dt9m3pkjv/image/upload/v1743376995/PAULA/wa1d8vpmpj0n4hrqf7as.png',
               },
               {
-                title: "Vídeos semanais",
-                image: "https://res.cloudinary.com/dt9m3pkjv/image/upload/v1743376994/PAULA/tyqsrd7oytuxaalmddg5.png"
+                title: 'Vídeos semanais',
+                image:
+                  'https://res.cloudinary.com/dt9m3pkjv/image/upload/v1743376994/PAULA/tyqsrd7oytuxaalmddg5.png',
               },
               {
-                title: "Mensagens exclusivas",
-                image: "https://res.cloudinary.com/dt9m3pkjv/image/upload/v1743376993/PAULA/geznhhqtqhe7fj0obmj3.png"
-              }
+                title: 'Mensagens exclusivas',
+                image:
+                  'https://res.cloudinary.com/dt9m3pkjv/image/upload/v1743376993/PAULA/geznhhqtqhe7fj0obmj3.png',
+              },
             ].map((item, index) => (
               <div key={index} className="relative group cursor-pointer">
                 <div className="aspect-[3/4] rounded-2xl overflow-hidden border border-[#E91E63]/20 shadow-lg shadow-[#E91E63]/10">
-                  <ImageWithFallback 
-                    src={item.image} 
+                  <ImageWithFallback
+                    src={item.image}
                     alt={item.title}
                     className="w-full h-full object-cover filter blur-sm group-hover:blur-0 transition-all duration-300"
                     fallbackSrc="/preview-fallback.jpg"
                   />
                   <div className="absolute inset-0 bg-black/60 backdrop-blur-sm flex flex-col items-center justify-center gap-4">
                     <Lock size={32} className="text-[#E91E63]" />
-                    <h3 className="text-xl font-medium text-white text-center px-6">{item.title}</h3>
+                    <h3 className="text-xl font-medium text-white text-center px-6">
+                      {item.title}
+                    </h3>
                     <p className="text-white/80 text-sm">Disponível para assinantes</p>
                   </div>
                 </div>
@@ -98,8 +99,7 @@ export default function Home() {
                   Acesso imediato às minhas fotos
                 </li>
                 <li className="flex items-center gap-2">
-                  <span className="text-[#E91E63]">✓</span>
-                  1 vez por semana faço novas :)
+                  <span className="text-[#E91E63]">✓</span>1 vez por semana faço novas :)
                 </li>
               </ul>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -133,8 +133,8 @@ export default function Home() {
                   Acesso imediato às minhas fotos e vídeos
                 </li>
                 <li className="flex items-center gap-2">
-                  <span className="text-[#E91E63]">✓</span>
-                  1 vez por semana farei com carinho mais fotos e vídeos :)
+                  <span className="text-[#E91E63]">✓</span>1 vez por semana farei com carinho mais
+                  fotos e vídeos :)
                 </li>
               </ul>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -165,8 +165,13 @@ export default function Home() {
             </div>
             <div className="w-full md:w-1/2">
               <h2 className="text-4xl font-bold text-[#E91E63] mb-6">Sobre a Paula</h2>
-              <p className="text-lg mb-4 text-white">"Sou Paula, uma mulher que ama provocar com arte, elegância e liberdade."</p>
-              <p className="text-lg text-white/80">"Meus conteúdos são feitos com carinho e sempre pensando no que te faz desejar mais."</p>
+              <p className="text-lg mb-4 text-white">
+                "Sou Paula, uma mulher que ama provocar com arte, elegância e liberdade."
+              </p>
+              <p className="text-lg text-white/80">
+                "Meus conteúdos são feitos com carinho e sempre pensando no que te faz desejar
+                mais."
+              </p>
             </div>
           </div>
         </div>

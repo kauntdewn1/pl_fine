@@ -72,7 +72,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const login = async (email: string) => {
     try {
       dispatch({ type: 'SET_LOADING', payload: true });
-      
+
       // Aqui você implementaria a lógica de login
       const user: User = {
         id: '1',
@@ -85,9 +85,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
       dispatch({ type: 'SET_USER', payload: user });
       return true;
     } catch (error) {
-      dispatch({ 
-        type: 'SET_ERROR', 
-        payload: MESSAGES.ERRORS.AUTHENTICATION 
+      dispatch({
+        type: 'SET_ERROR',
+        payload: MESSAGES.ERRORS.AUTHENTICATION,
       });
       return false;
     } finally {
@@ -104,7 +104,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const adminLogin = async (email: string, password: string) => {
     try {
       dispatch({ type: 'SET_LOADING', payload: true });
-      
+
       // Simulando autenticação administrativa
       if (email === 'admin@exemplo.com' && password === 'admin123') {
         const adminUser: User = {
@@ -112,7 +112,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
           email,
           plano: 'admin',
           status: 'ativo',
-          is_admin: true
+          is_admin: true,
         };
 
         setLocalStorage('userEmail', email);
@@ -122,9 +122,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
       throw new Error('Credenciais inválidas');
     } catch (error) {
-      dispatch({ 
-        type: 'SET_ERROR', 
-        payload: MESSAGES.ERRORS.AUTHENTICATION 
+      dispatch({
+        type: 'SET_ERROR',
+        payload: MESSAGES.ERRORS.AUTHENTICATION,
       });
       return false;
     } finally {
@@ -138,14 +138,14 @@ export function AppProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <AppContext.Provider 
-      value={{ 
-        state, 
+    <AppContext.Provider
+      value={{
+        state,
         dispatch,
         login,
         logout,
         adminLogin,
-        adminLogout
+        adminLogout,
       }}
     >
       {children}
@@ -160,4 +160,4 @@ export function useApp() {
     throw new Error('useApp deve ser usado dentro de um AppProvider');
   }
   return context;
-} 
+}

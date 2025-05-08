@@ -7,4 +7,4 @@ export function LoadingFallback() {
       </div>
     </div>
   );
-} 
+}

@@ -57,4 +57,4 @@ export class RateLimiter {
 export function checkRateLimit(key: string): boolean {
   const limiter = RateLimiter.getInstance();
   return limiter.checkLimit(key);
-} 
+}

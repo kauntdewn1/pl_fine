@@ -11,7 +11,9 @@ export const VIP: React.FC = () => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const { data: { session } } = await supabase.auth.getSession();
+        const {
+          data: { session },
+        } = await supabase.auth.getSession();
         if (!session) {
           navigate('/planos');
           return;
@@ -66,14 +68,16 @@ export const VIP: React.FC = () => {
         <div className="grid md:grid-cols-2 gap-8">
           {/* Content Grid */}
           {Array.from({ length: 6 }).map((_, index) => (
-            <div 
+            <div
               key={index}
               className="bg-card rounded-lg shadow-lg p-6 hover:bg-card/80 transition-colors cursor-pointer"
             >
               <div className="aspect-video bg-accent/10 rounded-lg mb-4 flex items-center justify-center">
                 <span className="text-accent">Conteúdo Exclusivo {index + 1}</span>
               </div>
-              <h3 className="text-xl font-semibold text-text mb-2">Título do Conteúdo {index + 1}</h3>
+              <h3 className="text-xl font-semibold text-text mb-2">
+                Título do Conteúdo {index + 1}
+              </h3>
               <p className="text-text/80">
                 Descrição breve do conteúdo exclusivo disponível para assinantes.
               </p>

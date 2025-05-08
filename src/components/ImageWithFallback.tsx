@@ -7,7 +7,12 @@ interface ImageWithFallbackProps {
   className?: string;
 }
 
-export function ImageWithFallback({ src, alt, fallbackSrc, className = '' }: ImageWithFallbackProps) {
+export function ImageWithFallback({
+  src,
+  alt,
+  fallbackSrc,
+  className = '',
+}: ImageWithFallbackProps) {
   const [error, setError] = useState(false);
 
   const handleError = () => {
@@ -16,11 +21,11 @@ export function ImageWithFallback({ src, alt, fallbackSrc, className = '' }: Ima
 
   return (
     <img
-      src={error ? (fallbackSrc || '/placeholder.jpg') : src}
+      src={error ? fallbackSrc || '/placeholder.jpg' : src}
       alt={alt}
       className={className}
       onError={handleError}
       loading="lazy"
     />
   );
-} 
+}

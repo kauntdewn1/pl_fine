@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { Lock, Loader2, ArrowLeft } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 import { supabase } from '../lib/supabase';
+import { SupabaseError } from '@/types';
+import { logger } from '@/utils/logger';
 
 export default function AdminForgotPassword() {
   const navigate = useNavigate();
@@ -12,23 +14,35 @@ export default function AdminForgotPassword() {
   const [code, setCode] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [error, setError] = useState('');
 
   async function handleSendResetEmail(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
+    setError('');
+    logger.info('Iniciando processo de recuperação de senha', { email });
 
     try {
-      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      logger.info('Enviando email de recuperação');
+      const { error: resetError } = await supabase.auth.resetPasswordForEmail(email, {
         redirectTo: `${window.location.origin}/admin/reset-password`,
       });
 
-      if (error) throw error;
+      if (resetError) {
+        logger.error('Erro ao enviar email de recuperação', { error: resetError });
+        throw resetError;
+      }
 
-      toast.success('Email de recuperação enviado!');
+      logger.info('Email de recuperação enviado com sucesso');
+      toast.success('Email de recuperação enviado! Verifique sua caixa de entrada.');
       setStep('code');
-    } catch (error: any) {
-      console.error('Erro ao enviar email:', error);
-      toast.error(error.message || 'Erro ao enviar email de recuperação. Tente novamente.');
+    } catch (error) {
+      const supabaseError = error as SupabaseError;
+      logger.error('Erro detalhado na recuperação de senha', { error: supabaseError });
+      const errorMessage =
+        supabaseError.message || 'Erro ao enviar email de recuperação. Tente novamente.';
+      setError(errorMessage);
+      toast.error(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -42,15 +56,16 @@ export default function AdminForgotPassword() {
       const { error } = await supabase.auth.verifyOtp({
         email,
         token: code,
-        type: 'recovery'
+        type: 'recovery',
       });
 
       if (error) throw error;
 
       setStep('new-password');
-    } catch (error: any) {
+    } catch (error) {
+      const supabaseError = error as SupabaseError;
       console.error('Erro ao verificar código:', error);
-      toast.error(error.message || 'Código inválido. Tente novamente.');
+      toast.error(supabaseError.message || 'Código inválido. Tente novamente.');
     } finally {
       setLoading(false);
     }
@@ -68,16 +83,17 @@ export default function AdminForgotPassword() {
 
     try {
       const { error } = await supabase.auth.updateUser({
-        password: newPassword
+        password: newPassword,
       });
 
       if (error) throw error;
 
       toast.success('Senha atualizada com sucesso!');
       navigate('/admin/login');
-    } catch (error: any) {
+    } catch (error) {
+      const supabaseError = error as SupabaseError;
       console.error('Erro ao atualizar senha:', error);
-      toast.error(error.message || 'Erro ao atualizar senha. Tente novamente.');
+      toast.error(supabaseError.message || 'Erro ao atualizar senha. Tente novamente.');
     } finally {
       setLoading(false);
     }
@@ -105,7 +121,7 @@ export default function AdminForgotPassword() {
               <input
                 type="email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={e => setEmail(e.target.value)}
                 className="w-full bg-black/50 border border-[#E91E63]/20 rounded-lg px-4 py-2 text-white"
                 required
               />
@@ -134,7 +150,7 @@ export default function AdminForgotPassword() {
               <input
                 type="text"
                 value={code}
-                onChange={(e) => setCode(e.target.value)}
+                onChange={e => setCode(e.target.value)}
                 className="w-full bg-black/50 border border-[#E91E63]/20 rounded-lg px-4 py-2 text-white"
                 required
               />
@@ -163,7 +179,7 @@ export default function AdminForgotPassword() {
               <input
                 type="password"
                 value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
+                onChange={e => setNewPassword(e.target.value)}
                 className="w-full bg-black/50 border border-[#E91E63]/20 rounded-lg px-4 py-2 text-white"
                 required
                 minLength={6}
@@ -174,7 +190,7 @@ export default function AdminForgotPassword() {
               <input
                 type="password"
                 value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
+                onChange={e => setConfirmPassword(e.target.value)}
                 className="w-full bg-black/50 border border-[#E91E63]/20 rounded-lg px-4 py-2 text-white"
                 required
                 minLength={6}
@@ -200,13 +216,13 @@ export default function AdminForgotPassword() {
         <div className="text-center mt-4">
           <button
             onClick={() => navigate('/admin/login')}
-            className="text-white/60 hover:text-white transition-colors flex items-center justify-center"
+            className="text-white/60 hover:text-white flex items-center justify-center gap-1 mx-auto"
           >
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Voltar para o Login
+            <ArrowLeft size={16} />
+            Voltar para o login
           </button>
         </div>
       </div>
     </div>
   );
-} 
+}

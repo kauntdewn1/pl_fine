@@ -10,7 +10,7 @@ export default function AdminRegister() {
   const [credentials, setCredentials] = useState({
     email: '',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
   });
 
   async function handleRegister(e: React.FormEvent) {
@@ -56,7 +56,7 @@ export default function AdminRegister() {
             <input
               type="email"
               value={credentials.email}
-              onChange={(e) => setCredentials(prev => ({ ...prev, email: e.target.value }))}
+              onChange={e => setCredentials(prev => ({ ...prev, email: e.target.value }))}
               className="w-full bg-black/50 border border-[#E91E63]/20 rounded-lg px-4 py-2 text-white"
               required
             />
@@ -67,7 +67,7 @@ export default function AdminRegister() {
             <input
               type="password"
               value={credentials.password}
-              onChange={(e) => setCredentials(prev => ({ ...prev, password: e.target.value }))}
+              onChange={e => setCredentials(prev => ({ ...prev, password: e.target.value }))}
               className="w-full bg-black/50 border border-[#E91E63]/20 rounded-lg px-4 py-2 text-white"
               required
             />
@@ -78,15 +78,13 @@ export default function AdminRegister() {
             <input
               type="password"
               value={credentials.confirmPassword}
-              onChange={(e) => setCredentials(prev => ({ ...prev, confirmPassword: e.target.value }))}
+              onChange={e => setCredentials(prev => ({ ...prev, confirmPassword: e.target.value }))}
               className="w-full bg-black/50 border border-[#E91E63]/20 rounded-lg px-4 py-2 text-white"
               required
             />
           </div>
 
-          {error && (
-            <div className="text-[#E91E63] text-sm">{error}</div>
-          )}
+          {error && <div className="text-[#E91E63] text-sm">{error}</div>}
 
           <button
             type="submit"
@@ -115,4 +113,4 @@ export default function AdminRegister() {
       </div>
     </div>
   );
-} 
+}

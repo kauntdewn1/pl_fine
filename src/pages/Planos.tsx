@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { supabase } from '../lib/supabase';
-import { Lock, Send, MessageSquare, Mail, Zap, Crown, AlertCircle, ArrowRight, Loader2 } from 'lucide-react';
-import { toast } from 'react-hot-toast';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Send, MessageSquare, Mail, Crown, Loader2 } from 'lucide-react';
+import { toast } from 'react-hot-toast';
 
 declare global {
   interface Window {
@@ -45,16 +44,14 @@ export function Planos() {
       const formData = new FormData(form);
       const dados = Object.fromEntries(formData);
 
-      const { error } = await supabase
-        .from('clientes_vip')
-        .insert([dados]);
+      const { error } = await supabase.from('clientes_vip').insert([dados]);
 
       if (error) throw error;
 
       const redirectUrls = {
         telegram: 'https://t.me/PaulaAzevedo_Bot?start=vip',
         whatsapp: 'https://wa.me/553131931679?text=Quero+acesso+VIP+confirmado',
-        email: 'mailto:suporte@paulaazevedo.site?subject=Acesso%20VIP&body=Confirmado'
+        email: 'mailto:suporte@paulaazevedo.site?subject=Acesso%20VIP&body=Confirmado',
       };
 
       window.location.href = redirectUrls[canal];
@@ -94,9 +91,7 @@ export function Planos() {
                     <Crown className="text-[#E91E63]" size={32} />
                   </div>
                   <h1 className="text-3xl font-bold text-white mb-2">Acesso Confirmado!</h1>
-                  <p className="text-white/60">
-                    Escolha como deseja receber seu conteúdo VIP:
-                  </p>
+                  <p className="text-white/60">Escolha como deseja receber seu conteúdo VIP:</p>
                 </div>
 
                 <form id="canalForm" className="hidden">
@@ -200,4 +195,4 @@ export function Planos() {
       </div>
     </div>
   );
-} 
+}

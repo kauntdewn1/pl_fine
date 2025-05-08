@@ -1,3 +1,5 @@
+/// <reference lib="dom" />
+
 import { useState } from 'react';
 import { PLANS } from '../constants';
 import { setLocalStorage, getLocalStorage } from '../utils';
@@ -9,6 +11,10 @@ interface PaymentHistory {
   createdAt: string;
 }
 
+const generateUniqueId = () => {
+  return Math.random().toString(36).substring(2) + Date.now().toString(36);
+};
+
 export const usePayment = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -19,17 +25,14 @@ export const usePayment = () => {
 
     try {
       const plan = Object.values(PLANS).find(p => p.id === planId);
-      
-      if (!plan) {
-        throw new Error('Plano não encontrado');
-      }
+      if (!plan) throw new Error('Plano não encontrado');
 
       // Obtém histórico de pagamentos
       const paymentHistory = getLocalStorage<PaymentHistory[]>('paymentHistory') || [];
 
       // Cria novo registro de pagamento
       const newPayment: PaymentHistory = {
-        id: crypto.randomUUID(),
+        id: generateUniqueId(),
         planId: plan.id,
         status: 'pending',
         createdAt: new Date().toISOString(),
@@ -70,4 +73,4 @@ export const usePayment = () => {
     loading,
     error,
   };
-}; 
+};

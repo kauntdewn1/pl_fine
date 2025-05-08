@@ -1,9 +1,14 @@
+/// <reference lib="dom" />
+
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
-import { User } from '../types';
+import type { User } from '../types';
 import { MESSAGES } from '../constants';
-import { getLocalStorage, setLocalStorage } from '../utils';
+import { setLocalStorage } from '../utils';
+import { supabase } from '@/config/supabase';
+import { paymentService } from '@/lib/paymentService';
+import { Plan } from '@/types';
 
 // Hook para gerenciar autenticação
 export function useAuth() {
@@ -11,50 +16,46 @@ export function useAuth() {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const userEmail = getLocalStorage<string>('userEmail');
-    if (userEmail) {
-      checkUserStatus(userEmail);
-    } else {
+  const checkUserStatus = useCallback(async () => {
+    try {
+      const {
+        data: { user: supabaseUser },
+      } = await supabase.auth.getUser();
+      if (supabaseUser) {
+        const user: User = {
+          id: supabaseUser.id,
+          email: supabaseUser.email || '',
+          plano: 'vip',
+          status: 'ativo',
+        };
+        setUser(user);
+      }
+    } catch (error) {
+      console.error('Erro ao verificar status do usuário:', error);
+    } finally {
       setLoading(false);
     }
   }, []);
 
-  const checkUserStatus = async (email: string) => {
-    try {
-      // Simulando verificação de usuário
-      const mockUser: User = {
-        id: '1',
-        email,
-        plano: 'vip',
-        status: 'ativo'
-      };
-      setUser(mockUser);
-    } catch (error) {
-      console.error('Erro ao verificar status do usuário:', error);
-      toast.error(MESSAGES.ERRORS.AUTHENTICATION);
-      navigate('/');
-    } finally {
-      setLoading(false);
-    }
-  };
+  useEffect(() => {
+    checkUserStatus();
+  }, [checkUserStatus]);
 
   const login = async (email: string) => {
     try {
       setLoading(true);
-      // Simulando login
       const mockUser: User = {
         id: '1',
         email,
         plano: 'vip',
-        status: 'ativo'
+        status: 'ativo',
       };
       setUser(mockUser);
       setLocalStorage('userEmail', email);
       toast.success(MESSAGES.SUCCESS.AUTHENTICATION);
       return true;
     } catch (error) {
-      console.error('Erro ao fazer login:', error);
+      toast.error('Erro ao fazer login');
       toast.error(MESSAGES.ERRORS.AUTHENTICATION);
       return false;
     } finally {
@@ -73,48 +74,57 @@ export function useAuth() {
 
 // Hook para gerenciar posts
 export function usePosts() {
-  const [posts, setPosts] = useState([]);
+  interface Post {
+    id: string;
+    image_url: string;
+    description: string;
+    created_at: string;
+    likes: number;
+    user_liked: boolean;
+  }
+
+  const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   const fetchPosts = useCallback(async () => {
     try {
       setLoading(true);
-      // Simulando busca de posts
-      const mockPosts = [
+      const mockPosts: Post[] = [
         {
           id: '1',
           image_url: 'https://example.com/image1.jpg',
           description: 'Post de exemplo 1',
           created_at: new Date().toISOString(),
           likes: 0,
-          user_liked: false
-        }
+          user_liked: false,
+        },
       ];
       setPosts(mockPosts);
     } catch (error) {
-      console.error('Erro ao carregar posts:', error);
+      toast.error('Erro ao carregar posts');
       setError('Erro ao carregar posts');
     } finally {
       setLoading(false);
     }
   }, []);
 
-  const likePost = async (postId: string, userEmail: string) => {
+  const likePost = async (postId: string) => {
     try {
-      // Simulando like em um post
-      setPosts(posts.map(post => {
-        if (post.id === postId) {
-          return {
-            ...post,
-            likes: post.likes + 1,
-            user_liked: true,
-          };
-        }
-        return post;
-      }));
+      setPosts(prevPosts =>
+        prevPosts.map(post => {
+          if (post.id === postId) {
+            return {
+              ...post,
+              likes: post.likes + 1,
+              user_liked: true,
+            };
+          }
+          return post;
+        }),
+      );
     } catch (error) {
-      console.error('Erro ao dar like:', error);
+      toast.error('Erro ao dar like');
       toast.error('Erro ao processar sua curtida');
     }
   };
@@ -124,73 +134,43 @@ export function usePosts() {
 
 // Hook para gerenciar planos
 export function usePlans() {
-  const [plans, setPlans] = useState([]);
+  const [plans, setPlans] = useState<Plan[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    fetchPlans();
-  }, []);
-
-  const fetchPlans = async () => {
+  const fetchPlans = useCallback(async () => {
     try {
-      setLoading(true);
-      // Simulando busca de planos
-      const mockPlans = [
-        {
-          id: '1',
-          name: 'Plano Básico',
-          price: 29.90,
-          features: ['Acesso básico', 'Suporte por email'],
-          openpixLink: 'https://example.com/basic',
-          qrCode: 'mock-qr-code',
-          qrCodeImage: 'https://example.com/qr-basic.png'
-        },
-        {
-          id: '2',
-          name: 'Plano VIP',
-          price: 59.90,
-          features: ['Acesso VIP', 'Suporte prioritário'],
-          openpixLink: 'https://example.com/vip',
-          qrCode: 'mock-qr-code',
-          qrCodeImage: 'https://example.com/qr-vip.png'
-        }
-      ];
-      setPlans(mockPlans);
+      const data = await paymentService.getPlans();
+      setPlans(data);
     } catch (error) {
-      console.error('Erro ao carregar planos:', error);
-      setError('Erro ao carregar planos');
+      console.error('Erro ao buscar planos:', error);
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
-  return { plans, loading, error };
+  useEffect(() => {
+    fetchPlans();
+  }, [fetchPlans]);
+
+  return { plans, loading };
 }
 
 // Hook para gerenciar pagamentos
 export function usePayment() {
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
-  const processPayment = async (planId: string, userEmail: string) => {
+  const createPayment = async (planId: string, userEmail: string) => {
+    setLoading(true);
     try {
-      setLoading(true);
-      // Simulando processamento de pagamento
-      const mockPlan = {
-        id: 'mock-plan',
-        name: 'Plano Mock',
-        price: 29.90,
-        openpixLink: 'https://openpix.com.br/pay/dca7fd01-bd6e-4a2d-bb7c-16f3ad07e8b2'
-      };
-      window.location.href = mockPlan.openpixLink;
+      const payment = await paymentService.createPayment(planId, userEmail);
+      return payment;
     } catch (error) {
-      console.error('Erro ao processar pagamento:', error);
-      setError(MESSAGES.ERRORS.PAYMENT);
+      console.error('Erro ao criar pagamento:', error);
+      throw error;
     } finally {
       setLoading(false);
     }
   };
 
-  return { loading, error, processPayment };
-} 
+  return { createPayment, loading };
+}

@@ -1,9 +1,6 @@
 /** @type {import('tailwindcss').Config} */
-export default {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-  ],
+module.exports = {
+  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
       colors: {
@@ -15,20 +12,29 @@ export default {
         'text-disabled': 'rgba(255, 255, 255, 0.6)',
       },
       fontFamily: {
-        sans: ['Montserrat', 'sans-serif'],
+        sans: ['Montserrat', 'system-ui', 'sans-serif'],
       },
       animation: {
-        'spin-slow': 'spin 3s linear infinite',
-        'bounce-slow': 'bounce 3s infinite',
+        spin: 'spin 1s linear infinite',
+        'fade-in': 'fadeIn 0.3s ease-in-out',
+        'slide-up': 'slideUp 0.3s ease-out',
       },
       keyframes: {
-        wiggle: {
-          '0%, 100%': { transform: 'rotate(-3deg)' },
-          '50%': { transform: 'rotate(3deg)' },
-        }
+        spin: {
+          from: { transform: 'rotate(0deg)' },
+          to: { transform: 'rotate(360deg)' },
+        },
+        fadeIn: {
+          from: { opacity: '0' },
+          to: { opacity: '1' },
+        },
+        slideUp: {
+          from: { transform: 'translateY(20px)', opacity: '0' },
+          to: { transform: 'translateY(0)', opacity: '1' },
+        },
       },
       boxShadow: {
-        'glow': '0 0 15px rgba(233, 30, 99, 0.5)',
+        glow: '0 0 15px rgba(233, 30, 99, 0.5)',
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
@@ -41,4 +47,4 @@ export default {
     require('@tailwindcss/typography'),
     require('@tailwindcss/aspect-ratio'),
   ],
-}
+};

@@ -11,7 +11,7 @@ const AdminLogin: React.FC = () => {
   const [error, setError] = useState('');
   const [credentials, setCredentials] = useState({
     email: '',
-    password: ''
+    password: '',
   });
 
   async function handleLogin(e: React.FormEvent) {
@@ -22,7 +22,7 @@ const AdminLogin: React.FC = () => {
 
     try {
       const success = await adminLogin(credentials.email, credentials.password);
-      
+
       if (success) {
         toast.success('Login realizado com sucesso!');
         navigate('/admin');
@@ -54,7 +54,7 @@ const AdminLogin: React.FC = () => {
             <input
               type="email"
               value={credentials.email}
-              onChange={(e) => setCredentials(prev => ({ ...prev, email: e.target.value }))}
+              onChange={e => setCredentials(prev => ({ ...prev, email: e.target.value }))}
               className="w-full bg-black/50 border border-[#E91E63]/20 rounded-lg px-4 py-2 text-white"
               required
             />
@@ -65,15 +65,13 @@ const AdminLogin: React.FC = () => {
             <input
               type="password"
               value={credentials.password}
-              onChange={(e) => setCredentials(prev => ({ ...prev, password: e.target.value }))}
+              onChange={e => setCredentials(prev => ({ ...prev, password: e.target.value }))}
               className="w-full bg-black/50 border border-[#E91E63]/20 rounded-lg px-4 py-2 text-white"
               required
             />
           </div>
 
-          {error && (
-            <div className="text-[#E91E63] text-sm">{error}</div>
-          )}
+          {error && <div className="text-[#E91E63] text-sm">{error}</div>}
 
           <button
             type="submit"
@@ -104,4 +102,4 @@ const AdminLogin: React.FC = () => {
   );
 };
 
-export default AdminLogin; 
+export default AdminLogin;

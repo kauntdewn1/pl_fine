@@ -26,17 +26,17 @@ export default function Autenticar() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'apikey': SUPABASE_API_KEY,
-          'Authorization': `Bearer ${SUPABASE_API_KEY}`
+          apikey: SUPABASE_API_KEY,
+          Authorization: `Bearer ${SUPABASE_API_KEY}`,
         },
-        body: JSON.stringify(dados)
+        body: JSON.stringify(dados),
       });
 
       if (resposta.ok) {
         const redirectUrls = {
           telegram: 'https://t.me/PaulaAzevedo_Bot?start=vip',
           whatsapp: 'https://wa.me/553131931679?text=Quero+acesso+VIP+confirmado',
-          email: 'mailto:suporte@paulaazevedo.site?subject=Acesso%20VIP&body=Confirmado'
+          email: 'mailto:suporte@paulaazevedo.site?subject=Acesso%20VIP&body=Confirmado',
         };
         window.location.href = redirectUrls[canal];
       } else {
@@ -54,9 +54,7 @@ export default function Autenticar() {
         <div className="text-center">
           <div className="text-5xl mb-4">💖</div>
           <h1 className="text-3xl font-bold mb-2 text-accent">Acesso Confirmado!</h1>
-          <p className="text-lg mb-8 text-gray-600">
-            Como você prefere receber seu conteúdo VIP?
-          </p>
+          <p className="text-lg mb-8 text-gray-600">Como você prefere receber seu conteúdo VIP?</p>
 
           <form id="canalForm">
             <input type="hidden" name="email" id="email" value="" />
@@ -114,4 +112,4 @@ export default function Autenticar() {
       </div>
     </div>
   );
-} 
+}

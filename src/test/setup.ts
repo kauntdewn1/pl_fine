@@ -1,11 +1,11 @@
-import '@testing-library/jest-dom'
-import { cleanup } from '@testing-library/react'
-import { afterEach } from 'vitest'
+import '@testing-library/jest-dom';
+import { cleanup } from '@testing-library/react';
+import { afterEach } from 'vitest';
 
 // Limpa o DOM após cada teste
 afterEach(() => {
-  cleanup()
-})
+  cleanup();
+});
 
 // Mock do ResizeObserver
 class ResizeObserver {
@@ -14,7 +14,7 @@ class ResizeObserver {
   disconnect() {}
 }
 
-window.ResizeObserver = ResizeObserver
+window.ResizeObserver = ResizeObserver;
 
 // Mock do IntersectionObserver
 class IntersectionObserver {
@@ -24,7 +24,7 @@ class IntersectionObserver {
   disconnect() {}
 }
 
-window.IntersectionObserver = IntersectionObserver
+window.IntersectionObserver = IntersectionObserver;
 
 // Mock do matchMedia
 Object.defineProperty(window, 'matchMedia', {
@@ -39,7 +39,7 @@ Object.defineProperty(window, 'matchMedia', {
     removeEventListener: vi.fn(),
     dispatchEvent: vi.fn(),
   })),
-})
+});
 
 // Mock do localStorage
 const localStorageMock = {
@@ -47,11 +47,11 @@ const localStorageMock = {
   setItem: vi.fn(),
   removeItem: vi.fn(),
   clear: vi.fn(),
-}
+};
 
 Object.defineProperty(window, 'localStorage', {
   value: localStorageMock,
-})
+});
 
 // Mock do sessionStorage
 const sessionStorageMock = {
@@ -59,16 +59,16 @@ const sessionStorageMock = {
   setItem: vi.fn(),
   removeItem: vi.fn(),
   clear: vi.fn(),
-}
+};
 
 Object.defineProperty(window, 'sessionStorage', {
   value: sessionStorageMock,
-})
+});
 
 // Mock do fetch
-global.fetch = vi.fn()
+global.fetch = vi.fn();
 
 // Mock do console
-console.error = vi.fn()
-console.warn = vi.fn()
-console.log = vi.fn() 
+console.error = vi.fn();
+console.warn = vi.fn();
+console.log = vi.fn();

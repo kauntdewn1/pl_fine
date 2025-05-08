@@ -22,13 +22,13 @@ export interface Post {
 
 // Tipos de plano
 export interface Plan {
-  id: string;
-  name: string;
-  price: number;
-  features: string[];
-  openpixLink: string;
-  qrCode: string;
-  qrCodeImage: string;
+  readonly id: string;
+  readonly name: string;
+  readonly price: number;
+  readonly features: readonly string[];
+  readonly openpixLink: string;
+  readonly qrCode: string;
+  readonly qrCodeImage: string;
 }
 
 // Tipos de resposta da API
@@ -88,4 +88,11 @@ export interface BaseProps {
 // Tipos de eventos
 export interface FormEvent extends React.FormEvent<HTMLFormElement> {}
 export interface ChangeEvent extends React.ChangeEvent<HTMLInputElement> {}
-export interface ClickEvent extends React.MouseEvent<HTMLButtonElement> {} 
+export interface ClickEvent extends React.MouseEvent<HTMLButtonElement> {}
+
+export interface SupabaseError {
+  message: string;
+  status?: number;
+  name?: string;
+  details?: string;
+}

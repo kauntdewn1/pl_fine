@@ -1,4 +1,3 @@
-export default async (request) =>
-  new Response('Hello, World!', {
-    headers: { 'content-type': 'text/html' },
-  })
+export default async function handler(_request) {
+  return new Response('Hello, World!');
+}

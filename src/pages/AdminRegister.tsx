@@ -3,6 +3,18 @@ import { useNavigate } from 'react-router-dom';
 import { UserPlus, Loader2 } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 import { supabase } from '../lib/supabase';
+import { SupabaseError } from '@/types';
+import { logger } from '@/utils/logger';
+
+interface AdminData {
+  email: string;
+  is_admin: boolean;
+  status: string;
+  plano: string;
+  user_id: string;
+  created_at?: string;
+  updated_at?: string;
+}
 
 export default function AdminRegister() {
   const navigate = useNavigate();
@@ -11,17 +23,17 @@ export default function AdminRegister() {
   const [credentials, setCredentials] = useState({
     email: '',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
   });
 
   async function handleRegister(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
     setError('');
-    console.log('Iniciando processo de registro para:', credentials.email);
+    logger.info('Iniciando processo de registro', { email: credentials.email });
 
     if (credentials.password !== credentials.confirmPassword) {
-      console.log('Erro: Senhas não coincidem');
+      logger.warn('Erro: Senhas não coincidem');
       setError('As senhas não coincidem');
       toast.error('As senhas não coincidem');
       setLoading(false);
@@ -30,40 +42,43 @@ export default function AdminRegister() {
 
     try {
       // Verificar se já existe um admin com este email
-      console.log('Verificando se já existe um admin...');
+      logger.info('Verificando se já existe um admin');
       const { data: existingAdmin, error: checkError } = await supabase
         .from('clientes_vip')
         .select('*')
         .eq('email', credentials.email)
         .single();
 
-      console.log('Resultado da verificação de admin existente:', { existingAdmin, checkError });
+      logger.info('Resultado da verificação de admin existente', {
+        data: existingAdmin,
+        error: checkError,
+      });
 
       if (existingAdmin) {
-        console.error('Admin já existe:', existingAdmin);
+        logger.error('Admin já existe', { data: existingAdmin });
         throw new Error('Este email já está registrado como administrador');
       }
 
       // Criar usuário no Supabase Auth
-      console.log('Criando usuário no Supabase Auth...');
+      logger.info('Criando usuário no Supabase Auth');
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email: credentials.email,
-        password: credentials.password
+        password: credentials.password,
       });
 
       if (authError) {
-        console.error('Erro ao criar usuário:', authError);
+        logger.error('Erro ao criar usuário', { error: authError });
         throw authError;
       }
-      
+
       if (!authData.user) {
         throw new Error('Erro ao criar usuário: dados do usuário não disponíveis');
       }
 
-      console.log('Usuário criado com sucesso:', authData);
+      logger.info('Usuário criado com sucesso', { data: authData });
 
       // Criar registro na tabela clientes_vip
-      console.log('Criando registro na tabela clientes_vip...');
+      logger.info('Criando registro na tabela clientes_vip');
       const { data: adminData, error: dbError } = await supabase
         .from('clientes_vip')
         .insert([
@@ -72,23 +87,29 @@ export default function AdminRegister() {
             is_admin: true,
             status: 'ativo',
             plano: 'admin',
-            user_id: authData.user.id
-          }
+            user_id: authData.user.id,
+          },
         ])
         .select()
         .single();
 
       if (dbError) {
-        console.error('Erro ao criar registro de admin:', dbError);
+        logger.error('Erro ao criar registro de admin', { error: dbError });
         throw dbError;
       }
-      console.log('Registro de admin criado com sucesso:', adminData);
 
-      toast.success('Administrador registrado com sucesso! Por favor, confirme seu email antes de fazer login.');
+      const typedAdminData = adminData as AdminData;
+      logger.info('Registro de admin criado com sucesso', { data: typedAdminData });
+
+      toast.success(
+        'Administrador registrado com sucesso! Por favor, confirme seu email antes de fazer login.',
+      );
       navigate('/admin/login');
-    } catch (error: any) {
-      console.error('Erro detalhado no registro:', error);
-      const errorMessage = error.message || 'Erro ao registrar administrador. Tente novamente.';
+    } catch (error) {
+      const supabaseError = error as SupabaseError;
+      logger.error('Erro detalhado no registro', { error: supabaseError });
+      const errorMessage =
+        supabaseError.message || 'Erro ao registrar administrador. Tente novamente.';
       setError(errorMessage);
       toast.error(errorMessage);
     } finally {
@@ -119,7 +140,7 @@ export default function AdminRegister() {
             <input
               type="email"
               value={credentials.email}
-              onChange={(e) => setCredentials({ ...credentials, email: e.target.value })}
+              onChange={e => setCredentials({ ...credentials, email: e.target.value })}
               className="w-full bg-black/50 border border-[#E91E63]/20 rounded-lg px-4 py-2 text-white"
               required
             />
@@ -129,7 +150,7 @@ export default function AdminRegister() {
             <input
               type="password"
               value={credentials.password}
-              onChange={(e) => setCredentials({ ...credentials, password: e.target.value })}
+              onChange={e => setCredentials({ ...credentials, password: e.target.value })}
               className="w-full bg-black/50 border border-[#E91E63]/20 rounded-lg px-4 py-2 text-white"
               required
               minLength={6}
@@ -140,7 +161,7 @@ export default function AdminRegister() {
             <input
               type="password"
               value={credentials.confirmPassword}
-              onChange={(e) => setCredentials({ ...credentials, confirmPassword: e.target.value })}
+              onChange={e => setCredentials({ ...credentials, confirmPassword: e.target.value })}
               className="w-full bg-black/50 border border-[#E91E63]/20 rounded-lg px-4 py-2 text-white"
               required
               minLength={6}
@@ -173,4 +194,4 @@ export default function AdminRegister() {
       </div>
     </div>
   );
-} 
+}

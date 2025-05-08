@@ -25,7 +25,7 @@ export const handleWebhook = async (payload: WebhookPayload) => {
 
     // Encontra o plano correspondente
     const plan = Object.values(PLANS).find(p => p.id === transaction_id);
-    
+
     if (!plan) {
       throw new Error('Plano não encontrado');
     }
@@ -66,4 +66,4 @@ export const handleWebhook = async (payload: WebhookPayload) => {
       message: error instanceof Error ? error.message : 'Erro ao processar pagamento',
     };
   }
-}; 
+};

@@ -16,13 +16,11 @@ export default function Privacy() {
         </div>
 
         <div className="space-y-6 text-white/80">
-          <p>
-            Acesse nossa política de privacidade completa no link abaixo:
-          </p>
-          
+          <p>Acesse nossa política de privacidade completa no link abaixo:</p>
+
           <div className="flex justify-center">
-            <a 
-              href="https://paulaazevedo.site/privacidade" 
+            <a
+              href="https://paulaazevedo.site/privacidade"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center gap-2 bg-[#E91E63] hover:bg-[#E91E63]/90 text-white px-8 py-4 rounded-full transition-all duration-300 shadow-lg hover:shadow-[#E91E63]/20 hover:shadow-2xl transform hover:-translate-y-0.5"
@@ -35,8 +33,8 @@ export default function Privacy() {
           <div className="mt-8 pt-8 border-t border-[#E91E63]/10">
             <p className="text-sm text-center">
               Em caso de dúvidas, entre em contato através do email:{' '}
-              <a 
-                href="mailto:contato@paulaazevedo.com" 
+              <a
+                href="mailto:contato@paulaazevedo.com"
                 className="text-[#E91E63] hover:text-[#E91E63]/90 transition-colors"
               >
                 contato@paulaazevedo.com

@@ -22,7 +22,9 @@ export const Pagamento: React.FC = () => {
     try {
       setLoading(true);
 
-      const { data: { session } } = await supabase.auth.getSession();
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
       if (!session) {
         toast.error('Por favor, faça login para continuar');
         navigate('/login');
@@ -38,7 +40,6 @@ export const Pagamento: React.FC = () => {
       // Redirecionar para o checkout do Gumroad
       const gumroadUrl = `https://${import.meta.env.VITE_GUMROAD_SHOP_NAME}.gumroad.com/l/${productId}?wanted=true&email=${encodeURIComponent(email)}`;
       window.location.href = gumroadUrl;
-
     } catch (error) {
       console.error('Erro ao processar pagamento:', error);
       toast.error('Ocorreu um erro ao processar seu pagamento');
@@ -55,7 +56,7 @@ export const Pagamento: React.FC = () => {
     <div className="min-h-screen bg-background py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-2xl mx-auto">
         <h1 className="text-4xl font-bold text-text mb-8 text-center">Finalizar Compra</h1>
-        
+
         <div className="bg-card p-6 rounded-lg shadow-lg">
           <h2 className="text-2xl font-semibold text-text mb-4">Resumo do Pedido</h2>
           <div className="space-y-4">
@@ -83,4 +84,4 @@ export const Pagamento: React.FC = () => {
   );
 };
 
-export default Pagamento; 
+export default Pagamento;
